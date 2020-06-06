@@ -1,0 +1,16 @@
+<?php
+
+namespace src\Shared\Infraestructure;
+
+use src\Shared\Domain\UuidGenerator;
+use Ramsey\Uuid\Uuid;
+
+class RamseyUuidGenerator implements UuidGenerator
+{
+
+
+    public function generate(): string
+    {
+        return Uuid::uuid4()->toString();
+    }
+}
