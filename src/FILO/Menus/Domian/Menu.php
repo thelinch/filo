@@ -27,6 +27,11 @@ class Menu extends AggregateRoot
         $menu->record(new MenuCreateDomainEvent($id->value(), $name->value()));
         return $menu;
     }
+    public function update(MenuName $name, MenuPrice $price)
+    {
+        $this->name = $this->name()->rename($name->value());
+        $this->price = $this->price()->update($price->value());
+    }
     public function name(): MenuName
     {
         return $this->name;

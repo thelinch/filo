@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use Filo\Menus\Application\All\MenuListFindPartner;
 use Filo\Menus\Application\Create\MenuCreator;
 use Filo\Menus\Application\Delete\MenuDelete;
 use Filo\Menus\Application\Find\MenuFinder;
+use Filo\Menus\Application\Update\MenuUpdate;
 use Filo\Partners\Application\All\PartnerList;
 use Filo\Partners\Application\Create\PartnerCreator;
 use Filo\Partners\Application\Delete\PartnerDelete;
@@ -54,6 +56,12 @@ class AppServiceProvider extends ServiceProvider
         });
         $this->app->bind("menuDelete", function ($app) {
             return new MenuDelete($app->make("Filo\Menus\Infraestructure\EloquentMenuRepository"));
+        });
+        $this->app->bind("menuListFindPartner", function ($app) {
+            return new MenuListFindPartner($app->make("Filo\Menus\Infraestructure\EloquentMenuRepository"));
+        });
+        $this->app->bind("menuUpdate", function ($app) {
+            return new MenuUpdate($app->make("Filo\Menus\Infraestructure\EloquentMenuRepository"));
         });
     }
 

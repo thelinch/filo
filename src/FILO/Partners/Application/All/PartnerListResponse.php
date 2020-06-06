@@ -22,7 +22,7 @@ class PartnerListResponse implements Response, JsonSerializable
         })->toArray();
     }
     public function jsonSerialize()
-    {;
+    {
         return [
             "nextPage" => $this->nextPage,
             "numberPerPage" => $this->numberPerPage,

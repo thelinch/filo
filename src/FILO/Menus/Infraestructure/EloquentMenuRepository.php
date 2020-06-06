@@ -30,7 +30,7 @@ class EloquentMenuRepository implements MenuRepositoryI
     }
     function all(NextPage $nextPage, NumberPerPage $numberPerPage, PartnerId $partnerId): MenuPaginate
     {
-        $menus = PartnerModel::find($partnerId->value())->menus()->paginate($numberPerPage->value())->get();
+        $menus = PartnerModel::find($partnerId->value())->menus()->paginate($numberPerPage->value());
         $menusPaginate = MenuPaginate::create(
             new NextPage(3),
             new PreviusPage(3),

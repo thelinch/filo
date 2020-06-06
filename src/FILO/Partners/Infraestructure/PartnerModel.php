@@ -29,7 +29,7 @@ class PartnerModel extends Model
     }
     public function menus()
     {
-        return $this->hasMany(MenuModel::class)->where("state", "<>", "0");
+        return $this->hasMany(MenuModel::class, "partner_id")->where("state", "<>", "0");
     }
     public function category()
     {

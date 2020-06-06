@@ -23,10 +23,13 @@ Route::group(["prefix" => "partners"], function () {
     Route::get("{idPartner}/delete", "PartnerDeleteController@__invoke");
     Route::post("save", "PartnerPostController@__invoke");
     Route::post("update", "PartnerUpdateController@__invoke");
+    Route::get("{idPartner}/menus", "Menu\MenuListController@__invoke");
 });
 
 Route::group(["prefix" => "menus"], function () {
     Route::post("save", "Menu\MenuPostController@__invoke");
+    Route::post("update", "Menu\MenuUpdateController@__invoke");
+
     Route::get("{idMenu}/find", "Menu\MenuGetController@__invoke");
     Route::get("{idMenu}/delete", "Menu\MenuDeleteController@__invoke");
 });
