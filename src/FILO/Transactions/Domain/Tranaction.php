@@ -14,14 +14,31 @@ class Transaction extends AggregateRoot
     private PartnerId $partnerId;
     private string $state;
     private UserId $userId;
-    public function __construct(UserId $userId, TransactionId $id, string $state, TransactionTotal $total, PartnerId $partnerId, TransactionDetail ...$details)
+    private TransactionCode $code;
+    public function __construct(UserId $userId, TransactionId $id, string $state, TransactionTotal $total, PartnerId $partnerId, array $details, TransactionCode $code)
     {
         $this->userId = $userId;
         $this->id = $id;
         $this->total = $total;
         $this->details = $details;
         $this->partnerId = $partnerId;
+        $this->code = $code;
         $this->state = $state;
+    }
+
+    public static function create(UserId $userId, TransactionId $id, string $state, TransactionTotal $total, PartnerId $partnerId, array $details, TransactionCode $code): self
+    {
+        $transaction = new self($userId, $id, $state, $total, $partnerId, $details, $code);
+        $transaction->record(new TransactionCreatedDomainEvent($id->value(), $total->value(), $partnerId->value(), $details));
+        return $transaction;
+    }
+
+    public function code(): TransactionCode
+    {
+        return  $this->code;
+    }
+    public function generateCode()
+    {
     }
     public function userId(): UserId
     {

@@ -30,3 +30,10 @@ Route::group(["prefix" => "menus"], function () {
     Route::get("{idMenu}/find", "Menu\MenuGetController@__invoke");
     Route::get("{idMenu}/delete", "Menu\MenuDeleteController@__invoke");
 });
+
+Route::group(["prefix" => "users"], function () {
+    Route::post("save", "User\UserPostController@__invoke");
+    Route::post("update", "User\UserUpdateController@__invoke");
+    Route::get("{idUser}/find", "User\UserGetController@__invoke");
+    Route::get("{idUser}/delete", "User\UserDeleteController@__invoke");
+});

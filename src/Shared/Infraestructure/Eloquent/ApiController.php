@@ -2,6 +2,8 @@
 
 namespace src\Shared\Infraestructure\Eloquent;
 
+use src\Shared\Domain\Bus\Event\EventBus;
+
 /* use src\Shared\Domain\Bus\Command\Command;
 use src\Shared\Domain\Bus\Command\CommandBus;
 use src\Shared\Domain\Bus\Query\Query;

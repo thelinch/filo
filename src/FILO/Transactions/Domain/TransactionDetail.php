@@ -2,19 +2,20 @@
 
 namespace Filo\Transactions\Domain;
 
+use Filo\Menus\Domain\Menu;
 use Filo\Menus\Domain\MenuId;
 
 class TransactionDetail
 {
     private string $id;
-    private MenuId $menuId;
-    private float $quality;
+    private Menu $menu;
+    private float $quantity;
 
-    public function __construct(string $id, MenuId $menuId, float $quality)
+    public function __construct(string $id, Menu $menu, float $quantity)
     {
         $this->id = $id;
-        $this->menuId = $menuId;
-        $this->quality = $quality;
+        $this->menu = $menu;
+        $this->quantity = $quantity;
     }
     public function id(): string
     {
@@ -24,8 +25,8 @@ class TransactionDetail
     {
         return $this->menuId;
     }
-    public function quality(): float
+    public function quantity(): float
     {
-        return $this->quality;
+        return $this->quantity;
     }
 }

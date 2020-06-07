@@ -11,4 +11,8 @@ class UserPhone extends StringValueObject
     {
         parent::__construct($value);
     }
+    public function update(string $value)
+    {
+        return new self($value);
+    }
 }

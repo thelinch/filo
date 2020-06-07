@@ -24,7 +24,7 @@ class Menu extends AggregateRoot
     {
 
         $menu = new self($id, $partnerId, $price, $votes, $name);
-        $menu->record(new MenuCreateDomainEvent($id->value(), $name->value()));
+        $menu->record(new MenuCreateDomainEvent($id->value(),  $name->value(), $partnerId->value()));
         return $menu;
     }
     public function name(): MenuName

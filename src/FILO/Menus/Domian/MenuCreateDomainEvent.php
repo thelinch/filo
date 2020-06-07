@@ -7,9 +7,12 @@ use src\Shared\Domain\Bus\Event\DomainEvent;
 class MenuCreateDomainEvent extends DomainEvent
 {
     private string $name;
-    public function __construct(string $id, string $name, string $eventId = null, string $ocurredOn = null)
+    private string $partnerId;
+
+    public function __construct(string $id, string $name, string $partnerId, string $eventId = null, string $ocurredOn = null)
     {
         $this->name = $name;
+        $this->partnerId = $partnerId;
         parent::__construct($id, $eventId, $ocurredOn);
     }
     public static function eventName(): string
@@ -21,6 +24,7 @@ class MenuCreateDomainEvent extends DomainEvent
 
         return [
             "name" => $this->name,
+            "partnerId" => $this->partnerId
 
         ];
     }

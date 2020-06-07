@@ -4,15 +4,16 @@ namespace Filo\Users\Domain;
 
 use src\Shared\Domain\ValueObject\StringValueObject;
 
-class UserName extends StringValueObject
+class UserPassword extends StringValueObject
 {
+
+
     public function __construct(string $value)
     {
         parent::__construct($value);
     }
-    public function rename(string $value): self
+    public function update(string $password)
     {
-
-        return new self($value);
+        return new self($password);
     }
 }

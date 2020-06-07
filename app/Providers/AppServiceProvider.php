@@ -12,7 +12,15 @@ use Filo\Partners\Application\Find\PartnerFinder;
 use Filo\Partners\Application\Update\PartnerUpdate;
 use Filo\Partners\Domain\PartnerRepositoryI;
 use Filo\Partners\Infraestructure\EloquentPartnerRepository;
+use Filo\Users\Application\Create\UserCreator;
+use Filo\Users\Application\Delete\UserDelete;
+use Filo\Users\Application\Find\UserFinder;
+use Filo\Users\Application\Update\UserUpdated;
 use Illuminate\Support\ServiceProvider;
+use src\Shared\Domain\Bus\Event\EventBus;
+use src\Shared\Domain\CodeGenerator;
+use src\Shared\Infraestructure\Bus\Event\ProophEventBus;
+use src\Shared\Infraestructure\NativeCodeGenerator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,6 +35,14 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             PartnerRepositoryI::class,
             EloquentPartnerRepository::class
+        );
+        $this->app->bind(
+            EventBus::class,
+            ProophEventBus::class
+        );
+        $this->app->bind(
+            CodeGenerator::class,
+            NativeCodeGenerator::class
         );
         $this->app->bind("partnerFinder", function ($app) {
             return new PartnerFinder($app->make("Filo\Partners\Infraestructure\EloquentPartnerRepository"));
@@ -47,13 +63,27 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->bind("menuCreator", function ($app) {
-            return new MenuCreator($app->make("Filo\Menus\Infraestructure\EloquentMenuRepository"));
+            return new MenuCreator($app->make("Filo\Menus\Infraestructure\EloquentMenuRepository"), $app->make("src\Shared\Infraestructure\Bus\Event\ProophEventBus"));
         });
         $this->app->bind("menuFinder", function ($app) {
             return new MenuFinder($app->make("Filo\Menus\Infraestructure\EloquentMenuRepository"));
         });
         $this->app->bind("menuDelete", function ($app) {
             return new MenuDelete($app->make("Filo\Menus\Infraestructure\EloquentMenuRepository"));
+        });
+
+        //USER
+        $this->app->bind("userCreator", function ($app) {
+            return new UserCreator($app->make("Filo\Users\Infraestructure\EloquentUserRepository"));
+        });
+        $this->app->bind("userFinder", function ($app) {
+            return new UserFinder($app->make("Filo\Users\Infraestructure\EloquentUserRepository"));
+        });
+        $this->app->bind("userUpdated", function ($app) {
+            return new UserUpdated($app->make("Filo\Users\Infraestructure\EloquentUserRepository"));
+        });
+        $this->app->bind("userDelete", function ($app) {
+            return new UserDelete($app->make("Filo\Users\Infraestructure\EloquentUserRepository"));
         });
     }
 
