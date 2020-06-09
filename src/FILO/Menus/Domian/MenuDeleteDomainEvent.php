@@ -4,7 +4,7 @@ namespace Filo\Menus\Domain;
 
 use src\Shared\Domain\Bus\Event\DomainEvent;
 
-class MenuCreateDomainEvent extends DomainEvent
+class MenuDeleteDomainEvent extends DomainEvent
 {
     private string $name;
     private string $partnerId;

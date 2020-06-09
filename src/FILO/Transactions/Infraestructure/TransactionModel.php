@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TransactionModel extends Model
 {
-    protected $fillable = ["id", "user_id", "total", "state", "partner_id"];
+    protected $fillable = ["id", "user_id", "total", "state", "partner_id", "code"];
     protected $keyType = 'string';
     protected $table = "transactions";
     protected $primaryKey = 'id';
@@ -17,6 +17,6 @@ class TransactionModel extends Model
 
     public function details()
     {
-        return $this->hasMany(TransactionModelDetail::class);
+        return $this->hasMany(TransactionModelDetail::class, "transaction_id");
     }
 }

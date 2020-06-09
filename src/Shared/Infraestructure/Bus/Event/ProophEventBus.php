@@ -29,10 +29,7 @@ class ProophEventBus implements EventBus
 
     private function registerRouterEventBus(ServiceBusEventBus $bus)
     {
-        $router = new EventRouter();
-        $plugin = new OnEventStrategy();
-        $plugin->attachToMessageBus($bus);
-        $router->route(MenuCreateDomainEvent::class)->to(PartnerCounterDishesIncrement::class);
+        $router = new EventRouter([MenuCreateDomainEvent::class => [PartnerCounterDishesIncrement::class]]);
         $router->attachToMessageBus($bus);
     }
 }

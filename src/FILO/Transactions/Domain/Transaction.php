@@ -4,9 +4,10 @@ namespace Filo\Transactions\Domain;
 
 use Filo\Partners\Domain\PartnerId;
 use Filo\Users\Domain\UserId;
+use JsonSerializable;
 use src\Shared\Domain\Aggregate\AggregateRoot;
 
-class Transaction extends AggregateRoot
+class Transaction extends AggregateRoot implements JsonSerializable
 {
     private TransactionId $id;
     private TransactionTotal $total;
@@ -32,7 +33,14 @@ class Transaction extends AggregateRoot
         $transaction->record(new TransactionCreatedDomainEvent($id->value(), $total->value(), $partnerId->value(), $details));
         return $transaction;
     }
-
+    public function jsonSerialize()
+    {
+        return [
+            "id" => $this->id->value(),
+            "items" => $this->details,
+            "total" => $this->total()->value()
+        ];
+    }
     public function code(): TransactionCode
     {
         return  $this->code;

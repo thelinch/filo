@@ -20,6 +20,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(["prefix" => "partners"], function () {
     Route::get("list", "PartnerListController@__invoke");
     Route::get("{idPartner}/find", "PartnerGetController@__invoke");
+    Route::get("{idPartner}/transactions", "Transaction\TransactionFindByPartnerController@__invoke");
+
     Route::get("{idPartner}/delete", "PartnerDeleteController@__invoke");
     Route::post("save", "PartnerPostController@__invoke");
     Route::post("update", "PartnerUpdateController@__invoke");
@@ -36,4 +38,7 @@ Route::group(["prefix" => "users"], function () {
     Route::post("update", "User\UserUpdateController@__invoke");
     Route::get("{idUser}/find", "User\UserGetController@__invoke");
     Route::get("{idUser}/delete", "User\UserDeleteController@__invoke");
+});
+Route::group(["prefix" => "transactions"], function () {
+    Route::post("save", "Transaction\TransactionPostController@__invoke");
 });

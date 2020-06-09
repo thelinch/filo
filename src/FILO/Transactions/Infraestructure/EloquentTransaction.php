@@ -32,24 +32,21 @@ class EloquentTransaction implements TransactionRepository
             "user_id" => $transaction->userId()->value(),
             "total" => $transaction->total()->value(),
             "partner_id" => $transaction->partnerId()->value(),
-            "state" => $transaction->state,
+            "state" => $transaction->state(),
             "code" => $transaction->code()->value()
         ]);
-
-        collect($transaction->details())->each(function ($item) use ($transactionModel) {
-            $transactionModel->details()->save([
+        $transactionDetails = collect($transaction->details())->map(function ($item) {
+            return [
                 "quantity" => $item->quantity(),
-                "menu_id" => $item->menuId()->value(),
-            ]);
+                "menu_id" => $item->id(),
+            ];
         });
+        $transactionModel->details()->createMany($transactionDetails);
         DB::commit();
     }
-    function findByPartner(PartnerId $partnerId): ?array
+    function findByPartner(PartnerId $partnerId): array
     {
         $transactions = $this->model->with(["details"])->where(["partner_id" => $partnerId->value(), "state" => "1"])->get();
-        if ($transactions->isEmpty()) {
-            return null;
-        }
         $transactions = $transactions->map(function ($transactionModel) {
             $details = collect($transactionModel->details)->map(function ($detail) use ($transactionModel) {
                 return new  TransactionDetail($detail->id, new Menu(
@@ -72,12 +69,9 @@ class EloquentTransaction implements TransactionRepository
         })->toArray();
         return $transactions;
     }
-    function findByUser(UserId $id): ?array
+    function findByUser(UserId $id): array
     {
-        $transactions = $this->model->with(["details.menu"])->where(["user_id" => $id->value(), "state" => "1"])->get();
-        if ($transactions->isEmpty()) {
-            return null;
-        }
+        $transactions = $this->model->with(["details"])->where(["user_id" => $id->value(), "state" => "1"])->get();
         $transactions = $transactions->map(function ($transactionModel) {
             $details = collect($transactionModel->details)->map(function ($detail) use ($transactionModel) {
                 return new  TransactionDetail($detail->id, new Menu(

@@ -4,8 +4,10 @@ namespace Filo\Transactions\Domain;
 
 use Filo\Menus\Domain\Menu;
 use Filo\Menus\Domain\MenuId;
+use JsonSerializable;
+use Serializable;
 
-class TransactionDetail
+class TransactionDetail implements JsonSerializable
 {
     private string $id;
     private Menu $menu;
@@ -17,13 +19,25 @@ class TransactionDetail
         $this->menu = $menu;
         $this->quantity = $quantity;
     }
+    public function jsonSerialize()
+    {
+        return [
+            "id" => $this->id,
+            "quantity" => $this->quantity,
+            "menu" => [
+                "id" => $this->menu->id()->value(),
+                "name" => $this->menu->name()->value(),
+                "price" => $this->menu->price()->value()
+            ]
+        ];
+    }
     public function id(): string
     {
         return $this->id;
     }
-    public function menuId(): MenuId
+    public function menu(): Menu
     {
-        return $this->menuId;
+        return $this->menu;
     }
     public function quantity(): float
     {

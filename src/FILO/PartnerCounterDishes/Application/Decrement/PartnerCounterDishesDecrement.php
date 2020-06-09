@@ -2,6 +2,7 @@
 
 namespace Filo\PartnerCounterDishes\Application\Decrement;
 
+use Filo\Menus\Domain\MenuDeleteDomainEvent;
 use Filo\PartnerCounterDishes\Domain\PartnerCounterDishes;
 use Filo\PartnerCounterDishes\Domain\PartnerCounterDishesRepository;
 use Filo\PartnerCounterDishes\Domain\PartnerCounterDishesTotal;
@@ -20,11 +21,14 @@ class PartnerCounterDishesDecrement
         $this->repository = $repository;
     }
 
-    public function __invoke(PartnerId $partnerId): void
+    public function handle(MenuDeleteDomainEvent $event): void
     {
+        $partnerId = new PartnerId($event->partnerId());
         $partner = $this->partnerFinder->__invoke($partnerId);
-        $counter = new PartnerCounterDishes($partnerId, new PartnerCounterDishesTotal($partner->dishes()->value()));
-        $counter->decrement();
-        $this->repository->updateCounterDishes($counter);
+        if ($partner->dishes()->value() > 0) {
+            $counter = new PartnerCounterDishes($partnerId, new PartnerCounterDishesTotal($partner->dishes()->value()));
+            $counter->decrement();
+            $this->repository->updateCounterDishes($counter);
+        }
     }
 }

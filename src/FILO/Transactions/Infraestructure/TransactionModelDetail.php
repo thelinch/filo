@@ -8,14 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class TransactionModelDetail extends Model
 {
-    protected $fillable = ["id", "quantity", "transaction_id", "menu_id",];
+    protected $fillable = ["id", "quantity", "transaction_id", "menu_id"];
     protected $keyType = 'string';
     protected $table = "transactionsdetails";
     protected $primaryKey = 'id';
     public $incrementing = false;
-    protected $attributes  = [
+    /*     protected $attributes  = [
         "state" => "1"
-    ];
+    ]; */
     public function transaction()
     {
         return $this->belongsTo(TransactionModel::class);

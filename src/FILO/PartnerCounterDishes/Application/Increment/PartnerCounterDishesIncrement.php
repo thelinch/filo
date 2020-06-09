@@ -9,9 +9,8 @@ use Filo\PartnerCounterDishes\Domain\PartnerCounterDishesTotal;
 use Filo\Partners\Application\Find\PartnerFinder;
 use Filo\Partners\Domain\PartnerId;
 use Illuminate\Support\Facades\App;
-use Prooph\Common\Event\ActionEventListenerAggregate;
 
-class PartnerCounterDishesIncrement implements ActionEventListenerAggregate
+class PartnerCounterDishesIncrement
 {
     private PartnerFinder $partnerFinder;
 
@@ -22,9 +21,9 @@ class PartnerCounterDishesIncrement implements ActionEventListenerAggregate
         $this->repository = $repository;
     }
 
-    public function __invoke(MenuCreateDomainEvent $event)
+    public function handle(MenuCreateDomainEvent $event)
     {
-        $partnerId = new PartnerId($event->partnerId);
+        $partnerId = new PartnerId($event->partnerId());
         $partner = $this->partnerFinder->__invoke($partnerId);
         $counter = new PartnerCounterDishes($partnerId, new PartnerCounterDishesTotal($partner->dishes()->value()));
         $counter->increment();
