@@ -11,9 +11,9 @@ class UserModel extends Model
     protected $keyType = 'string';
     protected $primaryKey = 'id';
     public $incrementing = false;
-    protected $attributes  = [
+    /*  protected $attributes  = [
         "state" => 1
-    ];
+    ]; */
     protected $timestamp = false;
     protected $table = "users";
     public function partner()

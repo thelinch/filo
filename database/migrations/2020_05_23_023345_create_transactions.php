@@ -21,6 +21,7 @@ class CreateTransactions extends Migration
             $table->uuid("partner_id");
             $table->foreign("partner_id")->references("id")->on("partners");
             $table->string("state")->default("1");
+            $table->string("code")->unique();
             $table->timestamps();
         });
     }

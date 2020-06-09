@@ -10,4 +10,9 @@ class UserName extends StringValueObject
     {
         parent::__construct($value);
     }
+    public function rename(string $value): self
+    {
+
+        return new self($value);
+    }
 }
