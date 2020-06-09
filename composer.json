@@ -18,7 +18,8 @@
         "prooph/common": "^4.4",
         "prooph/service-bus": "^6.2",
         "react/promise": "^2.8",
-        "rosamarsky/laravel-command-bus": "^2.0"
+        "rosamarsky/laravel-command-bus": "^2.0",
+        "spatie/laravel-model-states": "^1.6"
     },
     "require-dev": {
         "facade/ignition": "^2.0",
