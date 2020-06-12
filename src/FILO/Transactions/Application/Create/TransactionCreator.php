@@ -32,7 +32,7 @@ class TransactionCreator
         PartnerId $partnerId,
         array $details
     ) {
-        $transaction = Transaction::create($userId, $id, "1", $total, $partnerId, $details, new TransactionCode($this->codeGenerator->generate()));
+        $transaction = Transaction::create($userId, $id, $total, $partnerId, $details, new TransactionCode($this->codeGenerator->generate()));
         $this->repository->create($transaction);
         //Mando a ejecutar un efecto secundario la cual lenvira un mensaje al wassap la cual sera asincrono
         $this->eventBus->publish(...$transaction->pullDomainEvents());

@@ -41,4 +41,5 @@ Route::group(["prefix" => "users"], function () {
 });
 Route::group(["prefix" => "transactions"], function () {
     Route::post("save", "Transaction\TransactionPostController@__invoke");
+    Route::get("{transactionId}/cancelled", "Transaction\TransactionCancelledGetController@__invoke");
 });

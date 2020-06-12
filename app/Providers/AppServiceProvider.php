@@ -15,7 +15,9 @@ use Filo\Partners\Application\Update\PartnerUpdate;
 use Filo\Partners\Domain\PartnerRepositoryI;
 use Filo\Partners\Infraestructure\EloquentPartnerRepository;
 use Filo\Transactions\Application\Create\TransactionCreator;
+use Filo\Transactions\Application\Delete\TransactionDeleter;
 use Filo\Transactions\Application\FindByPartner\TransactionFindByPartner;
+use Filo\Transactions\Domain\Services\TransactionFinder;
 use Filo\Users\Application\Create\UserCreator;
 use Filo\Users\Application\Delete\UserDelete;
 use Filo\Users\Application\Find\UserFinder;
@@ -102,6 +104,12 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind("transactionFindByPartner", function ($app) {
             return new TransactionFindByPartner($app->make("Filo\Transactions\Infraestructure\EloquentTransaction"));
+        });
+        $this->app->bind("transactionFinder", function ($app) {
+            return new TransactionFinder($app->make("Filo\Transactions\Infraestructure\EloquentTransaction"));
+        });
+        $this->app->bind("transactionDeleter", function ($app) {
+            return new TransactionDeleter($app->make("Filo\Transactions\Infraestructure\EloquentTransaction"));
         });
     }
 

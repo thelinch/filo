@@ -13,10 +13,10 @@ class Transaction extends AggregateRoot implements JsonSerializable
     private TransactionTotal $total;
     private array $details;
     private PartnerId $partnerId;
-    private string $state;
+    private TransactionState $state;
     private UserId $userId;
     private TransactionCode $code;
-    public function __construct(UserId $userId, TransactionId $id, string $state, TransactionTotal $total, PartnerId $partnerId, array $details, TransactionCode $code)
+    public function __construct(UserId $userId, TransactionId $id, TransactionState $state, TransactionTotal $total, PartnerId $partnerId, array $details, TransactionCode $code)
     {
         $this->userId = $userId;
         $this->id = $id;
@@ -27,18 +27,25 @@ class Transaction extends AggregateRoot implements JsonSerializable
         $this->state = $state;
     }
 
-    public static function create(UserId $userId, TransactionId $id, string $state, TransactionTotal $total, PartnerId $partnerId, array $details, TransactionCode $code): self
+    public static function create(UserId $userId, TransactionId $id, TransactionTotal $total, PartnerId $partnerId, array $details, TransactionCode $code): self
     {
-        $transaction = new self($userId, $id, $state, $total, $partnerId, $details, $code);
+        $transaction = new self($userId, $id, TransactionState::Received(), $total, $partnerId, $details, $code);
         $transaction->record(new TransactionCreatedDomainEvent($id->value(), $total->value(), $partnerId->value(), $details));
         return $transaction;
+    }
+    public function transitonStateToDelete(): void
+    {
+        $this->state = TransactionState::cancelled();
+        $this->record(new TransactionStateTransitionToDeleteDomainEvent($this->id()->value()));
     }
     public function jsonSerialize()
     {
         return [
             "id" => $this->id->value(),
             "items" => $this->details,
-            "total" => $this->total()->value()
+            "total" => $this->total()->value(),
+            "state" => $this->state()->value(),
+            "code" => $this->code->value()
         ];
     }
     public function code(): TransactionCode
@@ -52,7 +59,7 @@ class Transaction extends AggregateRoot implements JsonSerializable
     {
         return $this->userId;
     }
-    public function state(): string
+    public function state(): TransactionState
     {
 
         return $this->state;
