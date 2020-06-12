@@ -2,6 +2,7 @@
 
 namespace Filo\PartnerCounterDishes\Application\Increment;
 
+use Filo\Menus\Domain\MenuCreateDomainEvent;
 use Filo\PartnerCounterDishes\Domain\PartnerCounterDishes;
 use Filo\PartnerCounterDishes\Domain\PartnerCounterDishesRepository;
 use Filo\PartnerCounterDishes\Domain\PartnerCounterDishesTotal;
@@ -20,8 +21,9 @@ class PartnerCounterDishesIncrement
         $this->repository = $repository;
     }
 
-    public function __invoke(PartnerId $partnerId)
+    public function handle(MenuCreateDomainEvent $event)
     {
+        $partnerId = new PartnerId($event->partnerId());
         $partner = $this->partnerFinder->__invoke($partnerId);
         $counter = new PartnerCounterDishes($partnerId, new PartnerCounterDishesTotal($partner->dishes()->value()));
         $counter->increment();
