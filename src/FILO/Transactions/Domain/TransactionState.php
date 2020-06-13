@@ -15,7 +15,7 @@ class TransactionState extends StringValueObject
     public function isAllowedTransitionToCancelled()
     {
 
-        if ($this->value() == "En camino" || $this->value() == "Cancelado") {
+        if ($this->value() == "En Camino" || $this->value() == "Cancelado") {
             throw new TransitionNotAllowed();
             //Erorr
         }

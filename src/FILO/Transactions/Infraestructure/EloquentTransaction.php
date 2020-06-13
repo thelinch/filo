@@ -82,11 +82,6 @@ class EloquentTransaction implements TransactionRepository
             new TransactionCode($transactionModel->code)
         );
     }
-    function cancelled(Transaction $transaction): void
-    {
-        $transactionModel = $this->model->find($transaction->id()->value());
-        $transactionModel->state->transitionTo(Cancelled::class);
-    }
     function findById(TransactionId $id): ?Transaction
     {
         $transactionModel = $this->model->with("details")->find($id->value());

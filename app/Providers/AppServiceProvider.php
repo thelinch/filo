@@ -18,6 +18,8 @@ use Filo\Transactions\Application\Create\TransactionCreator;
 use Filo\Transactions\Application\Delete\TransactionDeleter;
 use Filo\Transactions\Application\FindByPartner\TransactionFindByPartner;
 use Filo\Transactions\Domain\Services\TransactionFinder;
+use Filo\Transactions\Domain\TransactionStateRepository;
+use Filo\Transactions\Infraestructure\EloquentTransactionState;
 use Filo\Users\Application\Create\UserCreator;
 use Filo\Users\Application\Delete\UserDelete;
 use Filo\Users\Application\Find\UserFinder;
@@ -47,6 +49,12 @@ class AppServiceProvider extends ServiceProvider
             PartnerCounterDishesRepository::class,
             EloquentCounterDishesRepository::class
         );
+
+        $this->app->bind(
+            TransactionStateRepository::class,
+            EloquentTransactionState::class
+        );
+
         $this->app->bind(
             EventBus::class,
             LaravelEventBus::class
@@ -107,9 +115,6 @@ class AppServiceProvider extends ServiceProvider
         });
         $this->app->bind("transactionFinder", function ($app) {
             return new TransactionFinder($app->make("Filo\Transactions\Infraestructure\EloquentTransaction"));
-        });
-        $this->app->bind("transactionDeleter", function ($app) {
-            return new TransactionDeleter($app->make("Filo\Transactions\Infraestructure\EloquentTransaction"));
         });
     }
 

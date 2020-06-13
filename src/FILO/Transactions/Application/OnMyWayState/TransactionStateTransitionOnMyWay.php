@@ -1,6 +1,6 @@
 <?php
 
-namespace Filo\Transactions\Application\Delete;
+namespace Filo\Transactions\Application\OnMyWayState;
 
 use Filo\Transactions\Domain\Services\TransactionFinder;
 use Filo\Transactions\Domain\TransactionId;
@@ -8,10 +8,10 @@ use Filo\Transactions\Domain\TransactionRepository;
 use Filo\Transactions\Domain\TransactionStateRepository;
 use Illuminate\Support\Facades\App;
 
-class TransactionDeleter
+class TransactionStateTransitionOnMyWay
 {
-    private TransactionFinder $finder;
     private TransactionStateRepository $repository;
+    private TransactionFinder $finder;
     public function __construct(TransactionStateRepository $repository)
     {
         $this->repository = $repository;
@@ -19,11 +19,9 @@ class TransactionDeleter
     }
     public function __invoke(TransactionId $id)
     {
-
         $transaction = $this->finder->__invoke($id);
-        if ($transaction->state()->isAllowedTransitionToCancelled()) {
-            $transaction->transitonStateToDelete();
-            $this->repository->cancelled($transaction);
+        if ($transaction->state()->isAllowedTransitionToOnMyWay()) {
+            $this->repository->onMyWay($transaction);
         }
     }
 }
