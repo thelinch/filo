@@ -12,7 +12,7 @@ class TransactionCancelledGetController extends ApiController
     private TransactionDeleter $deletor;
     public function __construct()
     {
-        $this->deletor = App::make("transactionDeleter");
+        $this->deletor = App::make(TransactionDeleter::class);
     }
     public function exceptions(): array
     {
