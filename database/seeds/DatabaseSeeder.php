@@ -12,8 +12,9 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            // cityseeder::class,
-            categoryseeder::class
+            cityseeder::class,
+            categoryseeder::class,
+            roles::class
         ]);
     }
 }

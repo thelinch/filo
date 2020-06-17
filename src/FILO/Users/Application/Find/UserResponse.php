@@ -3,6 +3,7 @@
 namespace Filo\Users\Application\Find;
 
 use Filo\Users\Domain\User;
+use Filo\Users\Domain\UserRole;
 use JsonSerializable;
 
 class UserResponse implements JsonSerializable
@@ -12,6 +13,7 @@ class UserResponse implements JsonSerializable
     private string $email;
     private string $phone;
     private string $direction;
+    private array $roles;
     public function __construct(User $user)
     {
         $this->id = $user->id()->value();
@@ -19,6 +21,7 @@ class UserResponse implements JsonSerializable
         $this->email = $user->email()->value();
         $this->phone = $user->phone()->value();
         $this->direction = $user->direction()->value();
+        $this->roles = collect($user->roles())->map(fn (UserRole $role) => $role->value())->toArray();
     }
     public function jsonSerialize()
     {
@@ -27,7 +30,8 @@ class UserResponse implements JsonSerializable
             "email" => $this->email,
             "name" => $this->name,
             "phone" => $this->phone,
-            "direction" => $this->direction
+            "direction" => $this->direction,
+            "roles" => $this->roles
         ];
     }
 }

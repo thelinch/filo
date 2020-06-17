@@ -4,6 +4,7 @@ namespace Filo\Transactions\Application\Create;
 
 use Filo\Partners\Application\Find\PartnerFinder;
 use Filo\Partners\Domain\PartnerId;
+use Filo\Partners\Domain\PartnerNotAvailableForAttetion;
 use Filo\Transactions\Domain\Transaction;
 use Filo\Transactions\Domain\TransactionCode;
 use Filo\Transactions\Domain\TransactionId;
@@ -37,7 +38,7 @@ class TransactionCreator
     ) {
         $partner = $this->partnerFinder->__invoke($partnerId);
         if (!$partner->isAvailableForAttention()) {
-            dd("no se puede atender");
+            throw new PartnerNotAvailableForAttetion($partnerId);
         }
 
         $transaction = Transaction::create($userId, $id, $total, $partnerId, $details, new TransactionCode($this->codeGenerator->generate()));
