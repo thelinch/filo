@@ -14,6 +14,7 @@ class PartnerResponse implements Response, JsonSerializable
     private int $dishes;
     private  $category;
     private $workdays;
+    private $city;
     public function __construct(Partner $partner)
     {
         $this->id = $partner->id()->value();
@@ -21,6 +22,7 @@ class PartnerResponse implements Response, JsonSerializable
         $this->description = $partner->description()->value();
         $this->dishes = $partner->dishes()->value();
         $this->category = ["id" => $partner->category()->id(), "name" => $partner->category()->name()];
+        $this->city = $partner->city();
         $this->workdays = collect($partner->daysWork())->map(function ($dayWork) {
             return [
                 "id" => $dayWork->id(),
@@ -43,6 +45,7 @@ class PartnerResponse implements Response, JsonSerializable
                 "description" => $this->description,
                 "dishes" => $this->dishes,
                 "category" => $this->category,
+                "city" => $this->city,
                 "workdays" => $this->workdays
             ];
     }

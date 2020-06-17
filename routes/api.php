@@ -34,14 +34,16 @@ Route::group(["prefix" => "menus"], function () {
 });
 
 Route::group(["prefix" => "users"], function () {
-    Route::post("save", "User\UserPostController@__invoke");
+    Route::post("save", "User\UserPostController@__invoke")->name("register");
+    Route::post("login", "User\UserLoginController@__invoke")->name("login");
     Route::post("update", "User\UserUpdateController@__invoke");
     Route::get("{idUser}/find", "User\UserGetController@__invoke");
+    Route::get("me", "User\UserAuthController@__invoke");
     Route::get("{idUser}/delete", "User\UserDeleteController@__invoke");
 });
 Route::group(["prefix" => "transactions"], function () {
     Route::post("save", "Transaction\TransactionPostController@__invoke");
     Route::get("{transactionId}/cancelled", "Transaction\TransactionCancelledGetController@__invoke");
     Route::get("{transactionId}/onMyWay", "Transaction\TransactionStateOnMyWayController@__invoke");
-    Route::get("{transactionId}/Attended", "Transaction\TransactionCancelledGetController@__invoke");
+    Route::get("{transactionId}/attended", "Transaction\TransactionStateAttendedController@__invoke");
 });

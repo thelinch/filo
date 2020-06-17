@@ -6,6 +6,7 @@ use Filo\Partners\Domain\Pagination\PaginationPartner;
 use Filo\Partners\Domain\Partner;
 use Filo\Partners\Domain\PartnerAddress;
 use Filo\Partners\Domain\PartnerCategory;
+use Filo\Partners\Domain\PartnerCity;
 use Filo\Partners\Domain\PartnerDayWork;
 use Filo\Partners\Domain\PartnerDescription;
 use Filo\Partners\Domain\PartnerDishes;
@@ -40,6 +41,7 @@ class EloquentPartnerRepository implements PartnerRepositoryI
         $partnerModel->direction = $partner->address()->value();
         $partnerModel->user_id = $partner->userId()->value();
         $partnerModel->petitions = 0;
+        $partnerModel->city()->associate($partner->city()->id());
         $partnerModel->category()->associate($partner->category()->id());
         $partnerModel->save();
         collect($partner->daysWork())->each(function ($daywork) use ($partnerModel) {
@@ -75,7 +77,7 @@ class EloquentPartnerRepository implements PartnerRepositoryI
     }
     public function search(PartnerId $id): ?Partner
     {
-        $partner = $this->model->with(["category", "workdays"])->find($id->value());
+        $partner = $this->model->with(["category", "workdays", "city"])->find($id->value());
         if ($partner == null) {
             return null;
         }
@@ -91,7 +93,8 @@ class EloquentPartnerRepository implements PartnerRepositoryI
             new PartnerAddress($partner->direction),
             new PartnerPhone("9847545"),
             new UserId($partner->user_id),
-            $partnerWorkDays->toArray()
+            new PartnerCity($partner->city->id, $partner->city->name),
+            ...$partnerWorkDays->toArray()
 
         );
         return $partnerDomain;

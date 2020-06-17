@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Filo\Partners\Application\Create\PartnerCreator as CreatePartnerCreator;
 use Filo\Partners\Domain\PartnerAddress;
 use Filo\Partners\Domain\PartnerCategory;
+use Filo\Partners\Domain\PartnerCity;
 use Filo\Partners\Domain\PartnerDayWork;
 use Filo\Partners\Domain\PartnerDescription;
 use Filo\Partners\Domain\PartnerDishes;
@@ -31,7 +32,7 @@ class PartnerPostController extends ApiController
 
     public function __invoke(Request $request)
     {
-        $partnerParameter = $request->only(["id", "address", "name", "category", "daysworks", "phone", "description", "user"]);
+        $partnerParameter = $request->only(["id", "address", "name", "category", "daysworks", "phone", "description", "user", "city"]);
         $daysWorks = collect($partnerParameter["daysworks"])->map(function ($daywork) {
             return new PartnerDayWork($daywork["startime"], $daywork["endtime"], $daywork["day"]["name"], $daywork["day"]["id"], $daywork["id"]);
         });
@@ -44,6 +45,7 @@ class PartnerPostController extends ApiController
             new PartnerName($partnerParameter["name"]),
             new PartnerDescription($partnerParameter["description"]),
             new PartnerDishes(0),
+            new PartnerCity($partnerParameter["city"]["id"], $partnerParameter["city"]["name"]),
             $daysWorks->toArray()
         );
     }

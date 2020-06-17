@@ -7,12 +7,15 @@ use src\Shared\Domain\Bus\Event\DomainEvent;
 class TransactionStateTransitionToDeleteDomainEvent extends DomainEvent
 {
     private string $transitionId;
+    private string $code;
     public function __construct(
         string $transitionId,
+        string $code,
         string $eventId = null,
         string $occurredOn = null
     ) {
         parent::__construct($transitionId, $eventId, $occurredOn);
+        $this->code = $code;
         $this->transitionId = $transitionId;
     }
     public static function eventName(): string
@@ -35,7 +38,10 @@ class TransactionStateTransitionToDeleteDomainEvent extends DomainEvent
             'id'     => $this->transitionId,
         ];
     }
-
+    public function code(): string
+    {
+        return $this->code;
+    }
     public function transitionId(): string
     {
         return $this->transitionId;

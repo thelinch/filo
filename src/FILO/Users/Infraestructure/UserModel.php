@@ -3,10 +3,13 @@
 namespace Filo\Users\Infraestructure;
 
 use Filo\Partners\Infraestructure\PartnerModel;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
 
-class UserModel extends Model
+class UserModel extends Authenticatable
 {
+    use HasApiTokens, Notifiable;
     protected $fillable = ["id", "name", "email", "password", "phone", "direction"];
     protected $keyType = 'string';
     protected $primaryKey = 'id';

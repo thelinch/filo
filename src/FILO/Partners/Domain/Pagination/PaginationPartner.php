@@ -5,6 +5,7 @@ namespace Filo\Partners\Domain\Pagination;
 use Filo\Partners\Domain\Partner;
 use Filo\Partners\Domain\PartnerAddress;
 use Filo\Partners\Domain\PartnerCategory;
+use Filo\Partners\Domain\PartnerCity;
 use Filo\Partners\Domain\PartnerDayWork;
 use Filo\Partners\Domain\PartnerDescription;
 use Filo\Partners\Domain\PartnerDishes;
@@ -51,7 +52,8 @@ final class PaginationPartner extends Pagination
                     new PartnerAddress($partnerModel->direction),
                     new PartnerPhone("wdwdw"),
                     new UserId($partnerModel->user_id),
-                    $partnerWorkDays->toArray()
+                    new PartnerCity($partnerModel->city->id, $partnerModel->city->name),
+                    ...$partnerWorkDays->toArray()
                 )
             );
         });

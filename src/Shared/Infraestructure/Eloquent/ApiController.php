@@ -2,6 +2,7 @@
 
 namespace src\Shared\Infraestructure\Eloquent;
 
+use CodelyTv\Shared\Infrastructure\Symfony\ApiExceptionsHttpStatusCodeMapping;
 use src\Shared\Domain\Bus\Event\EventBus;
 
 /* use src\Shared\Domain\Bus\Command\Command;
@@ -12,6 +13,14 @@ use src\Shared\Domain\Bus\Query\Response; */
 
 abstract class ApiController extends \Illuminate\Routing\Controller
 {
+    public function __construct(ApiExceptionsHttpStatusCodeMapping $exceptionHandler)
+    {
+        foreach ($this->exceptions() as $exception) {
+            fn (int $httpCode, string $exceptionClass) => $exceptionHandler->register($exceptionClass, $httpCode);
+        }
+    }
+
+
     /*    private CommandBus $commandBus;
     private QueryBus $queryBus;
     public function __construct(CommandBus $commandBus, QueryBus $queryBus)

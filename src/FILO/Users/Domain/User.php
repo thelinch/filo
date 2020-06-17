@@ -2,9 +2,10 @@
 
 namespace Filo\Users\Domain;
 
+use JsonSerializable;
 use src\Shared\Domain\Aggregate\AggregateRoot;
 
-class User extends AggregateRoot
+class User extends AggregateRoot  implements JsonSerializable
 {
 
     private UserId $id;
@@ -32,6 +33,15 @@ class User extends AggregateRoot
     {
 
         return new self($id, $direction, $name, $phone, $password, $email);
+    }
+    public function jsonSerialize()
+    {
+        return [
+            "id" => $this->id->value(),
+            "name" => $this->name()->value(),
+            "phone" => $this->phone()->value(),
+            "email" => $this->email->value()
+        ];
     }
     public function update(UserName $name, UserDirection $direction, UserEmail $email, UserPassword $password, UserPhone $phone)
     {

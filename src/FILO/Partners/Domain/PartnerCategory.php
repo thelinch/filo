@@ -2,10 +2,9 @@
 
 namespace Filo\Partners\Domain;
 
+use JsonSerializable;
 
-
-
-class PartnerCategory
+class PartnerCategory implements JsonSerializable
 {
 
     private string $id;
@@ -23,6 +22,13 @@ class PartnerCategory
     public function name()
     {
         return $this->name;
+    }
+    function jsonSerialize()
+    {
+        return [
+            "id" => $this->id,
+            "name" => $this->name
+        ];
     }
     public function changeCategory(string $newId, string $newName): self
     {

@@ -21,6 +21,7 @@ class TransactionStateTransitionOnMyWay
     {
         $transaction = $this->finder->__invoke($id);
         if ($transaction->state()->isAllowedTransitionToOnMyWay()) {
+            $transaction->transitonStateToOnMyWay();
             $this->repository->onMyWay($transaction);
         }
     }

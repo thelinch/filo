@@ -24,6 +24,8 @@ use Filo\Users\Application\Create\UserCreator;
 use Filo\Users\Application\Delete\UserDelete;
 use Filo\Users\Application\Find\UserFinder;
 use Filo\Users\Application\Update\UserUpdated;
+use Filo\Users\Domain\JwtAuth;
+use Filo\Users\Infraestructure\PassportAuth;
 use Illuminate\Support\ServiceProvider;
 use src\Shared\Domain\Bus\Event\EventBus;
 use src\Shared\Domain\CodeGenerator;
@@ -41,6 +43,10 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         //
+        $this->app->bind(
+            JwtAuth::class,
+            PassportAuth::class
+        );
         $this->app->bind(
             PartnerRepositoryI::class,
             EloquentPartnerRepository::class
