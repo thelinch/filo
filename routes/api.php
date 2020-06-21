@@ -47,3 +47,6 @@ Route::group(["prefix" => "transactions"], function () {
     Route::get("{transactionId}/onMyWay", "Transaction\TransactionStateOnMyWayController@__invoke");
     Route::get("{transactionId}/attended", "Transaction\TransactionStateAttendedController@__invoke");
 });
+Route::group(["prefix" => "categories"], function () {
+    Route::get("all", "Category\CategoryGetController@__invoke");
+});

@@ -12,6 +12,7 @@ use Filo\Partners\Domain\PartnerDishes;
 use Filo\Partners\Domain\PartnerId;
 use Filo\Partners\Domain\PartnerName;
 use Filo\Partners\Domain\PartnerPhone;
+use Filo\Partners\Domain\PartnerPhoto;
 use Filo\Users\Domain\UserId;
 use Illuminate\Support\Collection;
 use src\Shared\Domain\Pagination\NextPage;
@@ -50,9 +51,10 @@ final class PaginationPartner extends Pagination
                     new PartnerDishes($partnerModel->counterdishes),
                     new PartnerCategory($partnerModel->category->id, $partnerModel->category->name),
                     new PartnerAddress($partnerModel->direction),
-                    new PartnerPhone("wdwdw"),
+                    new PartnerPhone($partnerModel->phone),
                     new UserId($partnerModel->user_id),
                     new PartnerCity($partnerModel->city->id, $partnerModel->city->name),
+                    new PartnerPhoto($partnerModel->photo),
                     ...$partnerWorkDays->toArray()
                 )
             );

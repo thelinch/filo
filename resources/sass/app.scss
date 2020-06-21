@@ -1,8 +1,8 @@
-// Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
-
-// Variables
-@import 'variables';
-
-// Bootstrap
-@import '~bootstrap/scss/bootstrap';
+@import "settings/variables";
+@import "settings/mixins";
+@import "variables";
+@import "generic/normalize";
+@import "generic/box-sizing";
+@import "base/reset";
+@import "component/categories";
+@import "component/partner";

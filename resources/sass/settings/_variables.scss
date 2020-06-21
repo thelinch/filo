@@ -8,7 +8,7 @@ $tablet-landscape: 1024px;
 
 // Colors
 $blue: #3490dc;
-$blue-hover: darken($blue, 10%) ;
+$blue-hover: darken($blue, 10%);
 $indigo: #6574cd;
 $purple: #9561e2;
 $pink: #f66d9b;
@@ -23,9 +23,8 @@ $white: #ffffff;
 // Body
 $body-bg: #f8fafc;
 
-
 // Typography
-$font-family-sans-serif: 'Nunito', sans-serif;
+$font-family-sans-serif: "Nunito", sans-serif;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
 
@@ -33,18 +32,18 @@ $line-height-base: 1.6;
 $color-blue: #004889;
 $color-blue-hover: darken($color-blue, 10%);
 $color-border: #eff1f5;
-$color-text: #646777;
+$color-text: black;
 $color-label: #5b626b;
 $color-background: #f5f5f5;
-$color-link-background: #F3F5FF;
+$color-link-background: #f3f5ff;
 $color-header: #0fa396;
 
 $primary-red: #e20001;
-$primary-red-hover: darken($primary-red, 10%) ;
+$primary-red-hover: darken($primary-red, 10%);
 $primary-black: #101010;
-$primary-black-hover: darken($primary-black, 10%) ;
+$primary-black-hover: darken($primary-black, 10%);
 $secondary-black: #222222;
-$secondary-black-hover: darken($secondary-black, 10%) ;
+$secondary-black-hover: darken($secondary-black, 10%);
 $color-input-text: #545454;
 // $color-input-text: #495057;
 $color-input-border: #d9d9d9;
@@ -54,10 +53,10 @@ $color-input-background: #f5f5f5;
 $color-input-text-placeholder: #999999;
 // #646777
 $color-button: #e7e2e2;
-$color-button-hover: darken($color-button, 10%) ;
+$color-button-hover: darken($color-button, 10%);
 
 $color-hover: #fafbfe;
-$color-disabled : rgba(0, 0, 0, 0.26);
+$color-disabled: rgba(0, 0, 0, 0.26);
 
 $color-primary: $primary-red;
 $color-primary-hover: darken($color-primary, 10%);
@@ -76,3 +75,4 @@ $color-danger-hover: darken($color-danger, 10%);
 
 $color-info: $blue;
 $color-info-hover: darken($color-info, 10%);
+$color-primary: #f7681c;

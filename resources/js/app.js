@@ -1,3 +1,7 @@
+const React = require("react");
+const ReactDOM = require("react-dom");
+import InitPage from "./Pages/User/InitPage";
+
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes React and other helpers. It's a great starting point while
@@ -11,5 +15,17 @@ require('./bootstrap');
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+import { Router, Link } from "@reach/router";
+import Layout from "./Pages/User/Layout";
 
-require('./components/Example');
+class App extends React.Component {
+    render() {
+
+        return (
+            <Router>
+                <Layout path="/*" />
+            </Router>
+        )
+    }
+}
+ReactDOM.render(<App />, document.getElementById("app"));

@@ -2,8 +2,8 @@
 
 namespace Filo\Partners\Infraestructure;
 
-use backoffice\Categories\Infraestructure\CategoryModel;
 use Carbon\Carbon;
+use Filo\Categories\Infraestructure\CategoryModel;
 use Filo\Menus\Infraestructure\MenuModel;
 use Filo\Users\Domain\User;
 use Filo\Users\Infraestructure\UserModel;

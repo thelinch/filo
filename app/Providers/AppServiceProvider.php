@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use Filo\Categories\Domain\CategoryRepository;
+use Filo\Categories\Infraestructure\EloquentCategory;
 use Filo\Menus\Application\Create\MenuCreator;
 use Filo\Menus\Application\Delete\MenuDelete;
 use Filo\Menus\Application\Find\MenuFinder;
@@ -55,7 +57,10 @@ class AppServiceProvider extends ServiceProvider
             PartnerCounterDishesRepository::class,
             EloquentCounterDishesRepository::class
         );
-
+        $this->app->bind(
+            CategoryRepository::class,
+            EloquentCategory::class
+        );
         $this->app->bind(
             TransactionStateRepository::class,
             EloquentTransactionState::class

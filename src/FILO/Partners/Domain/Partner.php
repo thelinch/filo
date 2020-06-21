@@ -19,6 +19,7 @@ final class Partner extends AggregateRoot
     private UserId $userId;
     private array $daysWork;
     private PartnerCity $city;
+    private PartnerPhoto $photo;
     public function __construct(
         PartnerId $id,
         PartnerDescription $description,
@@ -29,6 +30,7 @@ final class Partner extends AggregateRoot
         PartnerPhone $phone,
         UserId $userId,
         PartnerCity $city,
+        PartnerPhoto $photo,
         PartnerDayWork  ...$dayswork
     ) {
         $this->name = $name;
@@ -40,6 +42,7 @@ final class Partner extends AggregateRoot
         $this->phone = $phone;
         $this->userId = $userId;
         $this->city = $city;
+        $this->photo = $photo;
         $this->daysWork = $dayswork;
     }
 
@@ -60,6 +63,10 @@ final class Partner extends AggregateRoot
             }
         }
         return $isAvailableForAttention;
+    }
+    public function photo(): PartnerPhoto
+    {
+        return $this->photo;
     }
     public function city()
     {

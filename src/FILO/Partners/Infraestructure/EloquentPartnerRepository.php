@@ -13,6 +13,7 @@ use Filo\Partners\Domain\PartnerDishes;
 use Filo\Partners\Domain\PartnerId;
 use Filo\Partners\Domain\PartnerName;
 use Filo\Partners\Domain\PartnerPhone;
+use Filo\Partners\Domain\PartnerPhoto;
 use Filo\Partners\Domain\PartnerRepositoryI;
 use Filo\Users\Domain\UserId;
 use Illuminate\Support\Facades\DB;
@@ -77,23 +78,24 @@ class EloquentPartnerRepository implements PartnerRepositoryI
     }
     public function search(PartnerId $id): ?Partner
     {
-        $partner = $this->model->with(["category", "workdays", "city"])->find($id->value());
-        if ($partner == null) {
+        $partnerModel = $this->model->with(["category", "workdays", "city"])->find($id->value());
+        if ($partnerModel == null) {
             return null;
         }
-        $partnerWorkDays = collect($partner->workdays)->map(function ($dayWork) {
+        $partnerWorkDays = collect($partnerModel->workdays)->map(function ($dayWork) {
             return new PartnerDayWork($dayWork->pivot->starttime, $dayWork->pivot->endtime, $dayWork->day, $dayWork->id, $dayWork->pivot->id);
         });
         $partnerDomain = new Partner(
-            new PartnerId($partner->id),
-            new PartnerDescription($partner->description),
-            new PartnerName($partner->name),
-            new PartnerDishes($partner->counterdishes),
-            new PartnerCategory($partner->category->id, $partner->category->name),
-            new PartnerAddress($partner->direction),
-            new PartnerPhone("9847545"),
-            new UserId($partner->user_id),
-            new PartnerCity($partner->city->id, $partner->city->name),
+            new PartnerId($partnerModel->id),
+            new PartnerDescription($partnerModel->description),
+            new PartnerName($partnerModel->name),
+            new PartnerDishes($partnerModel->counterdishes),
+            new PartnerCategory($partnerModel->category->id, $partnerModel->category->name),
+            new PartnerAddress($partnerModel->direction),
+            new PartnerPhone($partnerModel->phone),
+            new UserId($partnerModel->user_id),
+            new PartnerCity($partnerModel->city->id, $partnerModel->city->name),
+            new PartnerPhoto($partnerModel->photo),
             ...$partnerWorkDays->toArray()
 
         );
