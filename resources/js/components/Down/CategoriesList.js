@@ -20,14 +20,12 @@ const CategoriesList = ({ categories, handleClick }) => {
 
             </Skeleton>
         ));
-    return (<div className="container">
+    return (
         <div className="items">
             {
                 categories.length == 0 ? skeletonCategories : categoriesRender
             }
         </div>
-    </div>
-
     )
 }
 CategoriesList.propTypes = {

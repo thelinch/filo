@@ -1,0 +1,15 @@
+.search {
+    padding: 2rem;
+    .title {
+        color: rgba(255, 175, 112, 0.8);
+    }
+    .categories {
+        .items {
+            color: black;
+            justify-content: flex-start;
+            .category {
+                margin-right: 18px;
+            }
+        }
+    }
+}

@@ -1,0 +1,25 @@
+.text-center {
+    text-align: center;
+}
+.no-margin {
+    margin: 0;
+}
+.no-padding {
+    padding: 0;
+}
+.circle {
+    border-radius: 50%;
+}
+.full-width {
+    width: 100%;
+}
+.flex {
+    display: flex;
+    &.align-space-beetwen {
+        justify-content: space-between;
+    }
+}
+.main {
+    overflow: hidden;
+    padding-bottom: 0.4rem;
+}
