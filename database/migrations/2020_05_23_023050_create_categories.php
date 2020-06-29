@@ -17,6 +17,8 @@ class CreateCategories extends Migration
             $table->uuid("id")->primary();
             $table->string("name");
             $table->string("state")->default("1");
+            $table->string("url");
+
             $table->timestamps();
         });
     }

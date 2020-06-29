@@ -1,0 +1,33 @@
+.text-center {
+    text-align: center;
+}
+.no-margin {
+    margin: 0;
+}
+.no-padding {
+    padding: 0;
+}
+.circle {
+    border-radius: 50%;
+}
+.full-width {
+    width: 100%;
+}
+.flex {
+    display: flex;
+    &.center {
+        justify-content: center;
+    }
+    &.align-space-beetwen {
+        justify-content: space-between;
+    }
+}
+.text {
+    &.decoration-none {
+        text-decoration: none;
+    }
+}
+.main {
+    overflow: hidden;
+    padding-bottom: 0.4rem;
+}

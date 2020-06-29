@@ -10,6 +10,13 @@ const mix = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
+mix.babelConfig({
+    plugins: ['@babel/plugin-syntax-dynamic-import'],
+})
+mix.react('resources/js/app.js', 'public/js')
+    .sass('resources/sass/app.scss', 'public/css')
+    .copyDirectory('resources/img', 'public/img');
+if (mix.inProduction()) {
+    mix.version()
 
-mix.js('resources/js/app.js', 'public/js')
-    .sass('resources/sass/app.scss', 'public/css');
+}

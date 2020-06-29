@@ -18,6 +18,7 @@ class CreateTablePartner extends Migration
             $table->string("name", 191);
             $table->string("description", 191);
             $table->string("direction", 191);
+            $table->string("phone", 191);
             $table->integer("counterdishes");
             $table->integer("petitions");
             $table->uuid("user_id");

@@ -2,6 +2,7 @@
 
 namespace Filo\Partners\Domain;
 
+use RuntimeException;
 use src\Shared\Domain\DomainError;
 
 class PartnerNotExist extends DomainError

@@ -2,9 +2,13 @@
 
 namespace App\Providers;
 
+use Filo\Categories\Domain\CategoryRepository;
+use Filo\Categories\Infraestructure\EloquentCategory;
 use Filo\Menus\Application\Create\MenuCreator;
 use Filo\Menus\Application\Delete\MenuDelete;
 use Filo\Menus\Application\Find\MenuFinder;
+use Filo\Menus\Domain\MenuRepositoryI;
+use Filo\Menus\Infraestructure\EloquentMenuRepository;
 use Filo\PartnerCounterDishes\Domain\PartnerCounterDishesRepository;
 use Filo\PartnerCounterDishes\Infraestructure\EloquentCounterDishesRepository;
 use Filo\Partners\Application\All\PartnerList;
@@ -24,6 +28,8 @@ use Filo\Users\Application\Create\UserCreator;
 use Filo\Users\Application\Delete\UserDelete;
 use Filo\Users\Application\Find\UserFinder;
 use Filo\Users\Application\Update\UserUpdated;
+use Filo\Users\Domain\JwtAuth;
+use Filo\Users\Infraestructure\PassportAuth;
 use Illuminate\Support\ServiceProvider;
 use src\Shared\Domain\Bus\Event\EventBus;
 use src\Shared\Domain\CodeGenerator;
@@ -42,14 +48,25 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         $this->app->bind(
+            JwtAuth::class,
+            PassportAuth::class
+        );
+        $this->app->bind(
             PartnerRepositoryI::class,
             EloquentPartnerRepository::class
+        );
+        $this->app->bind(
+            MenuRepositoryI::class,
+            EloquentMenuRepository::class
         );
         $this->app->bind(
             PartnerCounterDishesRepository::class,
             EloquentCounterDishesRepository::class
         );
-
+        $this->app->bind(
+            CategoryRepository::class,
+            EloquentCategory::class
+        );
         $this->app->bind(
             TransactionStateRepository::class,
             EloquentTransactionState::class

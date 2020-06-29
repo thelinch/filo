@@ -1,0 +1,40 @@
+.product {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    & > .product-photo {
+        width: 250px;
+        height: 250px;
+        position: relative;
+        img {
+            height: 100%;
+        }
+        .labels {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    }
+    & > .product-content {
+        .title {
+            font-family: "Montserrat", sans-serif;
+            font-size: 1.3rem;
+        }
+    }
+    & > button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .shoppin-icon {
+            color: white;
+        }
+        .price {
+            display: inline-block;
+            margin-left: 10px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: black;
+        }
+    }
+}

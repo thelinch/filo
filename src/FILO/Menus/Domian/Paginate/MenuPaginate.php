@@ -3,8 +3,10 @@
 namespace Filo\Menus\Domain\Paginate;
 
 use Filo\Menus\Domain\Menu;
+use Filo\Menus\Domain\MenuDescription;
 use Filo\Menus\Domain\MenuId;
 use Filo\Menus\Domain\MenuName;
+use Filo\Menus\Domain\MenuPhoto;
 use Filo\Menus\Domain\MenuPrice;
 use Filo\Menus\Domain\MenuVotes;
 use Filo\Partners\Domain\PartnerId;
@@ -32,7 +34,9 @@ class MenuPaginate extends Pagination
                 new PartnerId($menuModel->partner_id),
                 new MenuPrice($menuModel->price),
                 new MenuVotes($menuModel->votes),
-                new MenuName($menuModel->name)
+                new MenuName($menuModel->name),
+                new MenuPhoto($menuModel->photo),
+                new MenuDescription($menuModel->description)
             );
         })->toArray();
         return $menus;

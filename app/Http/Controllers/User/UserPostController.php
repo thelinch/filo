@@ -9,6 +9,7 @@ use Filo\Users\Domain\UserId;
 use Filo\Users\Domain\UserName;
 use Filo\Users\Domain\UserPassword;
 use Filo\Users\Domain\UserPhone;
+use Filo\Users\Domain\UserRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use src\Shared\Infraestructure\Eloquent\ApiController;
@@ -28,14 +29,16 @@ class UserPostController extends ApiController
 
     public function __invoke(Request $request)
     {
-        $userParameters = $request->only(["id", "name", "phone", "email", "password", "direction"]);
+        $userParameters = $request->only(["id", "name", "phone", "email", "password", "direction", "roles"]);
+        $rolesUser = collect($userParameters["roles"])->map(fn ($role) => new UserRole($role))->toArray();
         $this->userCreator->__invoke(
             new UserId($userParameters["id"]),
             new UserName($userParameters["name"]),
             new UserPassword($userParameters["password"]),
             new UserEmail($userParameters["email"]),
             new  UserPhone($userParameters["phone"]),
-            new UserDirection($userParameters["direction"])
+            new UserDirection($userParameters["direction"]),
+            ...$rolesUser
         );
     }
 }

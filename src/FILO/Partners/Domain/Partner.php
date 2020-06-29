@@ -2,6 +2,8 @@
 
 namespace Filo\Partners\Domain;
 
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use src\Shared\Domain\Aggregate\AggregateRoot;
 use Filo\Users\Domain\UserId;
 
@@ -16,6 +18,8 @@ final class Partner extends AggregateRoot
     private PartnerPhone $phone;
     private UserId $userId;
     private array $daysWork;
+    private PartnerCity $city;
+    private PartnerPhoto $photo;
     public function __construct(
         PartnerId $id,
         PartnerDescription $description,
@@ -25,7 +29,9 @@ final class Partner extends AggregateRoot
         PartnerAddress $address,
         PartnerPhone $phone,
         UserId $userId,
-        array $dayswork
+        PartnerCity $city,
+        PartnerPhoto $photo,
+        PartnerDayWork  ...$dayswork
     ) {
         $this->name = $name;
         $this->id = $id;
@@ -35,7 +41,34 @@ final class Partner extends AggregateRoot
         $this->address = $address;
         $this->phone = $phone;
         $this->userId = $userId;
+        $this->city = $city;
+        $this->photo = $photo;
         $this->daysWork = $dayswork;
+    }
+
+    public function isAvailableForAttention(): bool
+    {
+        $isAvailableForAttention = false;
+        $today = Carbon::now()->setTimezone("America/Lima")->locale("es_ES");
+        $todayInDay = ucfirst($today->dayName);
+        //Buscamos  de los dias que estan registrados si existe el dia de hoy
+        $dayWork = collect($this->daysWork)->first(function (PartnerDayWork $dayWork) use ($todayInDay) {
+            return  $dayWork->day() == $todayInDay;
+        });
+        if ($dayWork) {
+            $startTime = Carbon::createFromTimeString($dayWork->startTime(), "America/Lima");
+            $endTime = Carbon::createFromTimeString($dayWork->endTime(), "America/Lima");
+            $isAvailableForAttention = $today->isBetween($startTime, $endTime);
+        }
+        return $isAvailableForAttention;
+    }
+    public function photo(): PartnerPhoto
+    {
+        return $this->photo;
+    }
+    public function city()
+    {
+        return $this->city;
     }
     public static function create(
         PartnerId $id,
@@ -46,6 +79,7 @@ final class Partner extends AggregateRoot
         PartnerAddress $address,
         PartnerPhone $phone,
         UserId $userId,
+        PartnerCity $city,
         array $daysWork
     ): self {
         $partner = new self(
@@ -57,7 +91,8 @@ final class Partner extends AggregateRoot
             $address,
             $phone,
             $userId,
-            $daysWork
+            $city,
+            ...$daysWork
         );
         $partner->record(new PartnerCreatedDomianEvent($id->value(), $name->value()));
         return $partner;

@@ -2,7 +2,9 @@
 
 namespace Filo\Transactions\Application\Create;
 
+use Filo\Partners\Application\Find\PartnerFinder;
 use Filo\Partners\Domain\PartnerId;
+use Filo\Partners\Domain\PartnerNotAvailableForAttetion;
 use Filo\Transactions\Domain\Transaction;
 use Filo\Transactions\Domain\TransactionCode;
 use Filo\Transactions\Domain\TransactionId;
@@ -19,11 +21,13 @@ class TransactionCreator
     private TransactionRepository $repository;
     private CodeGenerator $codeGenerator;
     private EventBus $eventBus;
+    private PartnerFinder $partnerFinder;
     public function __construct(TransactionRepository $repository, EventBus $bus)
     {
         $this->repository = $repository;
         $this->eventBus = $bus;
         $this->codeGenerator = App::make(NativeCodeGenerator::class);
+        $this->partnerFinder = App::make(PartnerFinder::class);
     }
     public function __invoke(
         UserId $userId,
@@ -32,6 +36,11 @@ class TransactionCreator
         PartnerId $partnerId,
         array $details
     ) {
+        $partner = $this->partnerFinder->__invoke($partnerId);
+        if (!$partner->isAvailableForAttention()) {
+            throw new PartnerNotAvailableForAttetion($partnerId);
+        }
+
         $transaction = Transaction::create($userId, $id, $total, $partnerId, $details, new TransactionCode($this->codeGenerator->generate()));
         $this->repository->create($transaction);
         //Mando a ejecutar un efecto secundario la cual lenvira un mensaje al wassap la cual sera asincrono

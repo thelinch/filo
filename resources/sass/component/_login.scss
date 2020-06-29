@@ -1,0 +1,43 @@
+.middle-box {
+    max-width: 400px;
+    z-index: 100;
+    margin: 0 auto;
+    padding-top: 40px;
+    &.loginscreen{
+        width: 300px;
+    }
+    .logo-login{
+        width: 100%;
+        img{
+            width: 100%;
+        }
+    }
+    h3{
+        color: $secondary-black;
+        font-size: 16px;
+        margin-top: 5px;
+        font-weight: 600;
+        text-align: center;
+    }
+    form{
+        p{
+            margin: 15px 0 10px;
+            text-align: center;
+            small{
+                font-size: 85%;
+            }
+        }
+    }
+}
+.full-width {
+    width: 100%!important;
+}
+.text-center {
+    text-align: center;
+}
+.m-t{
+    margin-top: 15px;
+}
+.p-rel{
+    position: relative;
+}

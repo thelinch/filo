@@ -1,0 +1,44 @@
+.partner {
+    position: relative;
+    .category {
+        position: absolute;
+        right: 20px;
+        background-color: $color-primary;
+        top: 10px;
+        color: white;
+    }
+    & > .partner-content {
+        .partner-title {
+            font-family: $title-partner;
+            font-size: 30px;
+            margin: 0;
+            text-align: center;
+        }
+        .partner-description {
+            margin: 0.9rem;
+        }
+    }
+}
+
+.partner-one {
+    background-color: $color-primary;
+    padding: 0.5rem;
+    & .img {
+        display: block;
+        width: 100%;
+    }
+    & .content {
+        & .title {
+            font-family: $title-partner;
+            font-size: 30px;
+            margin: 0;
+            text-align: center;
+        }
+        & .description {
+            margin: 0.9rem;
+        }
+    }
+    & .phone {
+        margin: 0.4rem;
+    }
+}

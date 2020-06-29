@@ -3,6 +3,7 @@
 namespace Filo\Transactions\Domain;
 
 use Filo\Partners\Domain\PartnerId;
+use Filo\Transactions\Application\OnMyWayState\TransactionStateTransitionOnMyWay;
 use Filo\Users\Domain\UserId;
 use JsonSerializable;
 use src\Shared\Domain\Aggregate\AggregateRoot;
@@ -36,7 +37,17 @@ class Transaction extends AggregateRoot implements JsonSerializable
     public function transitonStateToDelete(): void
     {
         $this->state = TransactionState::cancelled();
-        $this->record(new TransactionStateTransitionToDeleteDomainEvent($this->id()->value()));
+        $this->record(new TransactionStateTransitionToDeleteDomainEvent($this->id()->value(), $this->code->value()));
+    }
+    public function transitonStateToOnMyWay(): void
+    {
+        $this->state = TransactionState::OnMyWay();
+        $this->record(new TransactionStateTransitionToOnMyWayDomainEvent($this->id()->value(), $this->code->value()));
+    }
+    public function transitonStateToAttended(): void
+    {
+        $this->state = TransactionState::attended();
+        $this->record(new TransactionStateTransitionToAttendedDomainEvent($this->id()->value(), $this->code->value()));
     }
     public function jsonSerialize()
     {

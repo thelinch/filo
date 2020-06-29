@@ -2,9 +2,10 @@
 
 namespace Filo\Users\Domain;
 
+use JsonSerializable;
 use src\Shared\Domain\Aggregate\AggregateRoot;
 
-class User extends AggregateRoot
+class User extends AggregateRoot  implements JsonSerializable
 {
 
     private UserId $id;
@@ -13,13 +14,15 @@ class User extends AggregateRoot
     private UserPhone $phone;
     private UserPassword $password;
     private UserEmail $email;
+    private array $roles;
     public function __construct(
         UserId $id,
         UserDirection $direction,
         UserName $name,
         UserPhone $phone,
         UserPassword $password,
-        UserEmail $email
+        UserEmail $email,
+        UserRole ...$roles
     ) {
         $this->id = $id;
         $this->direction = $direction;
@@ -27,11 +30,25 @@ class User extends AggregateRoot
         $this->phone = $phone;
         $this->password = $password;
         $this->email = $email;
+        $this->roles = $roles;
     }
-    public static function create(UserId $id, UserName $name, UserDirection $direction, UserEmail $email, UserPassword $password, UserPhone $phone): self
+    public static function create(UserId $id, UserName $name, UserDirection $direction, UserEmail $email, UserPassword $password, UserPhone $phone, UserRole ...$roles): self
     {
 
-        return new self($id, $direction, $name, $phone, $password, $email);
+        return new self($id, $direction, $name, $phone, $password, $email, ...$roles);
+    }
+    public function roles(): array
+    {
+        return $this->roles;
+    }
+    public function jsonSerialize()
+    {
+        return [
+            "id" => $this->id->value(),
+            "name" => $this->name()->value(),
+            "phone" => $this->phone()->value(),
+            "email" => $this->email->value()
+        ];
     }
     public function update(UserName $name, UserDirection $direction, UserEmail $email, UserPassword $password, UserPhone $phone)
     {

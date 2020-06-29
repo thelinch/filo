@@ -10,6 +10,7 @@ use Filo\Users\Domain\UserName;
 use Filo\Users\Domain\UserPassword;
 use Filo\Users\Domain\UserPhone;
 use Filo\Users\Domain\UserRepositoryI;
+use Filo\Users\Domain\UserRole;
 use Illuminate\Support\Facades\Hash;
 
 class EloquentUserRepository implements UserRepositoryI
@@ -25,21 +26,25 @@ class EloquentUserRepository implements UserRepositoryI
             "phone" => $user->phone()->value(),
             "direction" => $user->direction()->value()
         ]);
+        $rolesMap = collect($user->roles())->map(fn (UserRole $role) => [$role->value()])->toArray();
+        $userModel->assignRole($rolesMap);
         $userModel->save();
     }
     function findById(UserId $id): ?User
     {
-        $userModel = UserModel::where("state", "<>", "0")->find($id->value());
+        $userModel = UserModel::where("state", "<>", "0")->with("roles")->find($id->value());
         if ($userModel == null) {
             return null;
         }
+        $userRoles = collect($userModel->roles)->map(fn ($role) => new UserRole($role->name))->toArray();
         return new User(
             new UserId($userModel->id),
             new UserDirection($userModel->direction),
             new UserName($userModel->name),
             new UserPhone($userModel->phone),
             new UserPassword($userModel->password),
-            new UserEmail($userModel->email)
+            new UserEmail($userModel->email),
+            ...$userRoles
         );
     }
     function update(User $user): void

@@ -1,0 +1,25 @@
+/* @media (min-width: 30em) {
+    .filepond--item {
+        width: 100%;
+    }
+} */
+@include media(xs) {
+    .filepond--item {
+        width: 100%;
+    }
+}
+@include media(sm) {
+    .filepond--item {
+        width: calc(50% - 0.5em);
+    }
+}
+@include media(md) {
+    .filepond--item {
+        width: calc(50% - 0.5em);
+    }
+}
+@include media(lg) {
+    .filepond--item {
+        width: calc(50% - 0.5em);
+    }
+}

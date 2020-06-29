@@ -31,7 +31,7 @@ class TransactionState extends StringValueObject
     }
     public function isAllowedTransitionToAttended()
     {
-        if ($this->value() == "Atendido" || $this->value() == "Cancelado") {
+        if ($this->value() == "Atendido" || $this->value() == "Cancelado" || $this->value() == "Recibido") {
             //Error
             throw new TransitionNotAllowed();
         }

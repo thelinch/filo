@@ -5,6 +5,7 @@ namespace  Filo\Partners\Application\Create;
 use Filo\Partners\Domain\Partner;
 use Filo\Partners\Domain\PartnerAddress;
 use Filo\Partners\Domain\PartnerCategory;
+use Filo\Partners\Domain\PartnerCity;
 use Filo\Partners\Domain\PartnerDayWork;
 use Filo\Partners\Domain\PartnerDescription;
 use Filo\Partners\Domain\PartnerDishes;
@@ -34,9 +35,10 @@ final class PartnerCreator
         PartnerName $name,
         PartnerDescription $description,
         PartnerDishes $dishes,
+        PartnerCity $city,
         array $daysWork
     ) {
-        $partner = Partner::create($partnerId, $description, $name, $dishes, $category, $address, $phone, $userId, $daysWork);
+        $partner = Partner::create($partnerId, $description, $name, $dishes, $category, $address, $phone, $userId, $city, $daysWork);
         $this->repository->create($partner);
         //$this->bus->publish(...$partner->pullDomainEvents());
     }

@@ -1,0 +1,21 @@
+.fieldset{
+    background-color: $white;
+    border: 1px solid $color-label;
+    margin: 10px 0 15px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+.fieldset-body{
+    padding: 15px;
+    position: relative;
+    .legend{
+        font-size: 14px;
+        line-height: 14px;
+        color: $color-label;
+        background: $white none repeat scroll 0 0;
+        height: auto;
+        padding: 3px 5px;
+        margin: 0;
+        position: absolute;
+        top: -10px;
+    }
+}

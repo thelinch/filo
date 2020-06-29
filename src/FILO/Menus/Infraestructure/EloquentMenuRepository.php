@@ -3,8 +3,10 @@
 namespace Filo\Menus\Infraestructure;
 
 use Filo\Menus\Domain\Menu;
+use Filo\Menus\Domain\MenuDescription;
 use Filo\Menus\Domain\MenuId;
 use Filo\Menus\Domain\MenuName;
+use Filo\Menus\Domain\MenuPhoto;
 use Filo\Menus\Domain\MenuPrice;
 use Filo\Menus\Domain\MenuRepositoryI;
 use Filo\Menus\Domain\MenuVotes;
@@ -30,7 +32,7 @@ class EloquentMenuRepository implements MenuRepositoryI
     }
     function all(NextPage $nextPage, NumberPerPage $numberPerPage, PartnerId $partnerId): MenuPaginate
     {
-        $menus = PartnerModel::find($partnerId->value())->menus()->paginate($numberPerPage->value())->get();
+        $menus = PartnerModel::find($partnerId->value())->menus()->paginate($numberPerPage->value());
         $menusPaginate = MenuPaginate::create(
             new NextPage(3),
             new PreviusPage(3),
@@ -47,7 +49,7 @@ class EloquentMenuRepository implements MenuRepositoryI
             return null;
         }
 
-        return  new Menu(new MenuId($menuModel->id), new PartnerId($menuModel->partner_id), new MenuPrice($menuModel->price), new MenuVotes($menuModel->votes), new MenuName($menuModel->name));
+        return  new Menu(new MenuId($menuModel->id), new PartnerId($menuModel->partner_id), new MenuPrice($menuModel->price), new MenuVotes($menuModel->votes), new MenuName($menuModel->name), new MenuPhoto($menuModel->photo), new MenuDescription($menuModel->description));
     }
     function delete(Menu $menu): void
     {

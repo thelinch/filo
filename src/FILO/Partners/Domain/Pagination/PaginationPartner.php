@@ -5,12 +5,14 @@ namespace Filo\Partners\Domain\Pagination;
 use Filo\Partners\Domain\Partner;
 use Filo\Partners\Domain\PartnerAddress;
 use Filo\Partners\Domain\PartnerCategory;
+use Filo\Partners\Domain\PartnerCity;
 use Filo\Partners\Domain\PartnerDayWork;
 use Filo\Partners\Domain\PartnerDescription;
 use Filo\Partners\Domain\PartnerDishes;
 use Filo\Partners\Domain\PartnerId;
 use Filo\Partners\Domain\PartnerName;
 use Filo\Partners\Domain\PartnerPhone;
+use Filo\Partners\Domain\PartnerPhoto;
 use Filo\Users\Domain\UserId;
 use Illuminate\Support\Collection;
 use src\Shared\Domain\Pagination\NextPage;
@@ -30,7 +32,7 @@ final class PaginationPartner extends Pagination
     }
     public function arrayToJson(\Illuminate\Support\Collection $data): array
     {
-        $partners = collect([]);
+        /*     $partners = collect([]);
         $data->each(function ($partnerModel) use ($partners) {
             $partnerWorkDays = collect($partnerModel->workdays)->map(function ($dayWork) {
                 return new PartnerDayWork(
@@ -49,12 +51,14 @@ final class PaginationPartner extends Pagination
                     new PartnerDishes($partnerModel->counterdishes),
                     new PartnerCategory($partnerModel->category->id, $partnerModel->category->name),
                     new PartnerAddress($partnerModel->direction),
-                    new PartnerPhone("wdwdw"),
+                    new PartnerPhone($partnerModel->phone),
                     new UserId($partnerModel->user_id),
-                    $partnerWorkDays->toArray()
+                    new PartnerCity($partnerModel->city->id, $partnerModel->city->name),
+                    new PartnerPhoto($partnerModel->photo),
+                    ...$partnerWorkDays->toArray()
                 )
             );
-        });
-        return $partners->toArray();
+        }); */
+        return $data->toArray();
     }
 }

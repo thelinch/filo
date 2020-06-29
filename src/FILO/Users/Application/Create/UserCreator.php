@@ -10,6 +10,7 @@ use Filo\Users\Domain\UserName;
 use Filo\Users\Domain\UserPassword;
 use Filo\Users\Domain\UserPhone;
 use Filo\Users\Domain\UserRepositoryI;
+use Filo\Users\Domain\UserRole;
 
 class UserCreator
 {
@@ -21,9 +22,9 @@ class UserCreator
         $this->repository = $repository;
     }
 
-    public function __invoke(UserId $id, UserName $name, UserPassword $password, UserEmail $email, UserPhone $phone, UserDirection $direction)
+    public function __invoke(UserId $id, UserName $name, UserPassword $password, UserEmail $email, UserPhone $phone, UserDirection $direction, UserRole ...$roles)
     {
-        $user =   User::create($id, $name, $direction, $email, $password, $phone);
+        $user =   User::create($id, $name, $direction, $email, $password, $phone, ...$roles);
         $this->repository->create($user);
     }
 }
