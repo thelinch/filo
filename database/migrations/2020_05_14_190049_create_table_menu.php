@@ -19,6 +19,8 @@ class CreateTableMenu extends Migration
             $table->float("price");
             $table->integer("votes");
             $table->uuid("partner_id");
+            $table->string("photo", 191);
+            $table->text("description");
             $table->integer("state");
             $table->foreign("partner_id")->references("id")->on("partners");
             $table->timestamps();

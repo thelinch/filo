@@ -19,8 +19,8 @@ const PartnerList = ({ partners, handleClick }) => {
 
     ));
     const partnersMap = partners.map((partner) => (
-        <Grid item xs={12} md={4}>
-            <Card className="partner" key={partner.id} onClick={handleClick(partner.id)}>
+        <Grid item xs={12} md={4} >
+            <Card className="partner" key={partner.id} onClick={handleClick(partner)}>
                 <CardActionArea>
                     <CardMedia >
                         <Chip label={partner.category.name} className="category" />
@@ -36,10 +36,9 @@ const PartnerList = ({ partners, handleClick }) => {
                         {partner.description}
                         {
                             !partner.isAvailableForAttend && (
-
                                 <p className="text-center">
                                     <strong>
-                                        Actualmente se encuentra cerrado
+                                        {partner.textAlternativeForAttend()}
                                     </strong>
                                 </p>)
                         }

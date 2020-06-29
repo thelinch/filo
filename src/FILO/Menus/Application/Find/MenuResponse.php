@@ -12,14 +12,16 @@ class MenuResponse implements Response, JsonSerializable
     private int $votes;
     private string $id;
     private float $price;
-
-
+    private string $photo;
+    private string $description;
     public function __construct(Menu $menu)
     {
         $this->id = $menu->id()->value();
         $this->votes = $menu->votes()->value();
         $this->price = $menu->price()->value();
         $this->name = $menu->name()->value();
+        $this->photo = $menu->photo()->value();
+        $this->description = $menu->description()->value();
     }
 
     public function jsonSerialize()
@@ -29,7 +31,9 @@ class MenuResponse implements Response, JsonSerializable
                 'id'   => $this->id,
                 'name' => $this->name,
                 "votes" => $this->votes,
-                "price" => $this->price
+                "price" => $this->price,
+                "photo" => $this->photo,
+                "description" => $this->description
             ];
     }
 }

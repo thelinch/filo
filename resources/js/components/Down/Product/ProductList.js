@@ -3,7 +3,7 @@ import { Grid, Typography, Box } from "@material-ui/core"
 import Skeleton from "@material-ui/lab/Skeleton";
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
-import FavoriteIcon from '@material-ui/icons/Favorite';
+import ProductFavorite from "../../Product/ProductFavorite";
 const ProductList = ({ products, handleClick }) => {
     const skeletonProduct = [1, 2, 3, 4].map(() => (
         <Grid item xs={12} md={4}>
@@ -15,12 +15,11 @@ const ProductList = ({ products, handleClick }) => {
     ));
     const ProductsMap = products.map((product) => (
         <Grid item xs={12} md={3}>
-            <div className="product">
+            <div className="product" key={product.id}>
                 <div className="product-photo circle" >
                     <img src={product.photo} className="circle" />
-                    <div className="heart">
-                        <strong>{product.votes}</strong>
-                        <FavoriteIcon className="icon" />
+                    <div className="labels">
+                        <ProductFavorite product={product} />
                     </div>
                 </div>
                 <div className="product-content">

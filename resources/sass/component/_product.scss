@@ -10,16 +10,10 @@
         img {
             height: 100%;
         }
-        .heart {
+        .labels {
             position: absolute;
             top: 10px;
             right: 10px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            .icon {
-                color: $color-button;
-            }
         }
     }
     & > .product-content {

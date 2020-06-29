@@ -19,17 +19,21 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::group(["prefix" => "partners"], function () {
     Route::get("list", "PartnerListController@__invoke");
+    Route::get("{categoryName}/list", "PartnerFindCategoryController@__invoke");
+
     Route::get("{idPartner}/find", "PartnerGetController@__invoke");
     Route::get("{idPartner}/transactions", "Transaction\TransactionFindByPartnerController@__invoke");
+    Route::get("{partnerId}/products", "Menu\MenuListController@__invoke");
 
     Route::get("{idPartner}/delete", "PartnerDeleteController@__invoke");
     Route::post("save", "PartnerPostController@__invoke");
     Route::post("update", "PartnerUpdateController@__invoke");
 });
 
-Route::group(["prefix" => "menus"], function () {
+Route::group(["prefix" => "products"], function () {
     Route::post("save", "Menu\MenuPostController@__invoke");
     Route::get("{idMenu}/find", "Menu\MenuGetController@__invoke");
+
     Route::get("{idMenu}/delete", "Menu\MenuDeleteController@__invoke");
 });
 

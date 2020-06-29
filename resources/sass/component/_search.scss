@@ -1,15 +1,21 @@
 .search {
     padding: 2rem;
-    .title {
-        color: rgba(255, 175, 112, 0.8);
-    }
     .categories {
         .items {
             color: black;
             justify-content: flex-start;
+            width: 100%;
             .category {
                 margin-right: 18px;
             }
+        }
+        .title {
+            color: rgba(255, 175, 112, 0.8);
+        }
+    }
+    .favorites {
+        .title {
+            color: rgba(255, 175, 112, 0.8);
         }
     }
 }

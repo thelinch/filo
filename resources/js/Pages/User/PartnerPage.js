@@ -2,8 +2,12 @@ import React from "react";
 import PartnerOne from "../../components/Down/Partner/PartnerOne";
 import { Grid } from "@material-ui/core";
 import ProductList from "../../components/Down/Product/ProductList";
-
+import { SearchContext } from "../../Contexts/SearchContext";
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import { ProductService } from "../../Services/ProductService"
+import Product from "../../Domain/Product";
 class PartnerPage extends React.Component {
+    static contextType = SearchContext
 
     constructor(props) {
         console.log(props)
@@ -16,16 +20,42 @@ class PartnerPage extends React.Component {
 
     }
     async componentDidMount() {
+        this.context.setFavorites([]);
+        this.context.setCategories([<strong>No hay categorias</strong>]);
+        let productsData = (await ProductService.getAllFindPartner(this.state.partner.id)).data
+        let products = productsData.data;
+        products = products.map((product) => new Product(product.id, product.name, product.votes, product.description, product.photo, product.price))
+        this.setState({ products })
+        let productsView = [<strong>Actualmente no existe productos populares</strong>];
+        let productsRank = products.sort((a, b) => {
+            let result = 0;
+            result = a.votes > b.votes ? -1 : 1;
+            return result;
+        }).filter((product) => product.votes > 0);
 
-        setTimeout(() => {
-            let { products } = this.state
-            products.push({ id: 1, name: "Wdwdw", price: 12, description: "efefefef efe efef", votes: 2, photo: "/img/polleria.jpg" })
-            products.push({ id: 2, name: "Wdwdw", price: 12, description: "efefefef efe efef", votes: 2, photo: "/img/polleria.jpg" })
-            products.push({ id: 3, name: "Wdwdw", price: 12, description: "efefefef efe efef", votes: 2, photo: "/img/polleria.jpg" })
-            products.push({ id: 4, name: "Wdwdw", price: 12, description: "efefefef efe efef", votes: 2, photo: "/img/polleria.jpg" })
-            products.push({ id: 5, name: "Wdwdw", price: 12, description: "efefefef efe efef", votes: 2, photo: "/img/polleria.jpg" })
-            this.setState({ products })
-        }, 3000)
+        if (productsRank.length > 0) {
+            productsView = productsRank.slice(0, 3).map((product) => (
+                <div className="favorites-product">
+                    <div className="photo">
+                        <img src={product.photo} />
+                    </div>
+                    <div className="content">
+                        <h6 className="title">{product.name}</h6>
+                        <p className="description">{product.description}</p>
+
+                    </div>
+                    <button className="button primary" onClick={this.handleClickProduct(product.id)}>
+                        <ShoppingCartIcon className="shoppin-icon" fontSize="small" />
+                        <span className="price">
+                            S./ {product.price}
+                        </span>
+                    </button>
+                </div>
+
+            ));
+        }
+        this.context.setFavorites(productsView);
+
     }
 
     handleClickProduct = (productId) => () => {

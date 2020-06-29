@@ -58,9 +58,7 @@ final class Partner extends AggregateRoot
         if ($dayWork) {
             $startTime = Carbon::createFromTimeString($dayWork->startTime(), "America/Lima");
             $endTime = Carbon::createFromTimeString($dayWork->endTime(), "America/Lima");
-            if ($today->isBetween($startTime, $endTime)) {
-                $isAvailableForAttention = true;
-            }
+            $isAvailableForAttention = $today->isBetween($startTime, $endTime);
         }
         return $isAvailableForAttention;
     }

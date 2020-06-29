@@ -6,6 +6,8 @@ use Filo\Partners\Domain\Pagination\PaginationPartner;
 use Filo\Partners\Domain\PartnerRepositoryI;
 use src\Shared\Domain\Pagination\NextPage;
 use src\Shared\Domain\Pagination\NumberPerPage;
+use src\Shared\Domain\Pagination\PreviusPage;
+use src\Shared\Domain\Pagination\Total;
 
 class PartnerList
 {
@@ -17,6 +19,8 @@ class PartnerList
     }
     public function __invoke(NextPage $nextPartnerPage, NumberPerPage $numberPartnerPerPage): PaginationPartner
     {
-        return $this->repository->all($nextPartnerPage, $numberPartnerPerPage);
+        $partners = collect($this->repository->all($nextPartnerPage, $numberPartnerPerPage));
+        $paginationPartner = PaginationPartner::create(new NextPage(3), new PreviusPage(3), $numberPartnerPerPage, new Total($partners->count()), $partners);
+        return $paginationPartner;
     }
 }

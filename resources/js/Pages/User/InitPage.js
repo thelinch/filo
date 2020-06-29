@@ -2,10 +2,16 @@ import React from "react";
 import CategoriesList from "../../components/Down/CategoriesList";
 import { CategoryService } from "../../Services/CategoryService";
 import PartnerList from "../../components/Down/PartnerList";
-import { navigate } from "@reach/router"
+import { navigate, Link } from "@reach/router"
 import { PartnerService } from "../../Services/ParterService";
 import { getObjectFindId } from "../../Util/Util"
 import { SearchContext } from "../../Contexts/SearchContext";
+import Chip from "@material-ui/core/Chip";
+import NightsStayIcon from '@material-ui/icons/NightsStay';
+import PartnerDomain from "../../Domain/PartnerDomain";
+import Snackbar from '@material-ui/core/Snackbar';
+import TablePagination from "@material-ui/core/TablePagination";
+
 class InitPage extends React.Component {
     static contextType = SearchContext
 
@@ -13,17 +19,55 @@ class InitPage extends React.Component {
         super(props);
         this.state = {
             categories: [],
-            partners: []
+            partners: [],
+            openSnackBar: false,
+            page: 0,
+            itemsPerPage: 2
         }
+
+    }
+    handleChangePage = (event, newPage) => {
+        this.setState({ page: newPage })
+    }
+    handleChangeItemsPerPage = (event) => {
+        this.setState({ itemsPerPage: +event.target.value, page: 0 })
+    }
+    handleOpenSnackBar = () => {
+        this.setState({ openSnackBar: true })
+    }
+    handleCloseSnackBar = () => {
+        this.setState({ openSnackBar: false })
+
     }
     async componentDidMount() {
+        this.context.setFavorites([]);
+        this.context.setCategories([]);
         const [categoriesPromise, partnersPromise] = (await Promise.all([CategoryService.getAll(), PartnerService.getAll()]))
         let categories = categoriesPromise.data
         let partners = partnersPromise.data.data
+        partners = partners.map((partner) =>
+            Object.freeze(new PartnerDomain(partner.id, partner.description, partner.name, partner.dishes, partner.category, partner.address, partner.phone, partner.workdays, partner.city, partner.photo)))
         this.setState({ partners, categories })
         this.context.setCategories(categories);
         let partnerMap = partners.map((partner) => (
-            <p>{partner.name}</p>
+            <div className="favorites-partner" key={partner.id} onClick={this.handleClickPartner(partner)}>
+                <div className="photo">
+                    <img src={partner.photo} />
+                </div>
+                <div className="content">
+                    <h6 className="title">{partner.name}</h6>
+                    <p className="direction">{partner.address}</p>
+                    {
+                        !partner.isAvailableForAttend && <strong>{partner.textAlternativeForAttend()}</strong>
+                    }
+                </div>
+                <div className="labels">
+                    {
+                        !partner.isAvailableForAttend && <NightsStayIcon />
+                    }
+                    <Chip label={partner.category.name} className="items category" />
+                </div>
+            </div>
         ));
         this.context.setFavorites(partnerMap);
 
@@ -32,23 +76,40 @@ class InitPage extends React.Component {
         console.log(category);
 
     }
-    handleClickPartner = (partnerId) => () => {
-        console.log(partnerId)
-        const { partners } = this.state
-        const partner = getObjectFindId(partners, partnerId);
-        if (partner.isAvailableForAttend) {
-            navigate(`/partner/${partnerId}`, { state: { partner: partner } })
+    handleClickPartner = (partner) => () => {
+        console.log(partner)
+        if (!partner.isAvailableForAttend) {
+            this.handleOpenSnackBar()
+            return;
         }
 
+        navigate(`/partner/${partner.id}`, { state: { partner: partner } })
     }
     render() {
-        const { categories, partners } = this.state
+        const { categories, partners, openSnackBar, itemsPerPage, page } = this.state
+        const partnerPaginate = partners.slice(page * itemsPerPage, page * itemsPerPage + itemsPerPage);
         return (<React.Fragment>
             <div className="container categories">
                 <CategoriesList categories={categories} handleClick={this.handleClickCategory} />
             </div>
-
-            <PartnerList partners={partners} handleClick={this.handleClickPartner} />
+            <PartnerList partners={partnerPaginate} handleClick={this.handleClickPartner} />
+            <TablePagination
+                rowsPerPageOptions={[2, 10, 20]}
+                component="div"
+                count={partners.length}
+                rowsPerPage={itemsPerPage}
+                page={page}
+                onChangePage={this.handleChangePage}
+                onChangeRowsPerPage={this.handleChangeItemsPerPage}
+            />
+            <Snackbar
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                open={openSnackBar}
+                onClose={this.handleCloseSnackBar}
+                message="La empresa actualmente no recibe pedidos"
+                autoHideDuration={3000}
+                key="dedffefe-22w"
+            />
         </React.Fragment>)
     }
 }

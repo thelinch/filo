@@ -1,0 +1,13 @@
+.heart {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    .icon {
+        color: $color-button;
+        cursor: pointer;
+        transition: all 0.4s;
+        &:hover {
+            font-size: 1.9rem;
+        }
+    }
+}

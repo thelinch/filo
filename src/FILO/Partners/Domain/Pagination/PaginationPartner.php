@@ -32,7 +32,7 @@ final class PaginationPartner extends Pagination
     }
     public function arrayToJson(\Illuminate\Support\Collection $data): array
     {
-        $partners = collect([]);
+        /*     $partners = collect([]);
         $data->each(function ($partnerModel) use ($partners) {
             $partnerWorkDays = collect($partnerModel->workdays)->map(function ($dayWork) {
                 return new PartnerDayWork(
@@ -58,7 +58,7 @@ final class PaginationPartner extends Pagination
                     ...$partnerWorkDays->toArray()
                 )
             );
-        });
-        return $partners->toArray();
+        }); */
+        return $data->toArray();
     }
 }

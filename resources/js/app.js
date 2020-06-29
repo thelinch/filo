@@ -1,6 +1,5 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
-import InitPage from "./Pages/User/InitPage";
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -17,6 +16,7 @@ require('./bootstrap');
  */
 import { Router, Link } from "@reach/router";
 import Layout from "./Pages/User/Layout";
+import LayoutAdmin from "./Pages/Admin/LayoutAdmin";
 
 class App extends React.Component {
     render() {
@@ -24,6 +24,7 @@ class App extends React.Component {
         return (
             <Router>
                 <Layout path="/*" />
+                <LayoutAdmin path="/admin/*" />
             </Router>
         )
     }

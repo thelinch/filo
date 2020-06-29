@@ -70,11 +70,14 @@ class EloquentPartnerRepository implements PartnerRepositoryI
         $partnerModel->state = "0";
         $partnerModel->save();
     }
-    public function all(NextPage $nextPage, NumberPerPage $numberPartnerPerPage): PaginationPartner
+    public function all(NextPage $nextPage, NumberPerPage $numberPartnerPerPage): array
     {
         $partnersModel = PartnerModel::where("state", "<>", 0)->paginate($numberPartnerPerPage->value());
-        $paginationPartner = PaginationPartner::create(new NextPage(3), new PreviusPage(3), new NumberPerPage($partnersModel->perPage()), new Total($partnersModel->total()), collect($partnersModel->items()));
-        return $paginationPartner;
+        /* $paginationPartner = PaginationPartner::create(new NextPage(3), new PreviusPage(3), new NumberPerPage($partnersModel->perPage()), new Total($partnersModel->total()), collect($partnersModel->items())); */
+        $partners = collect($partnersModel->items())->map(function ($partnerModel) {
+            return $this->transformPartnerModelToPartner($partnerModel);
+        })->toArray();
+        return $partners;
     }
     public function search(PartnerId $id): ?Partner
     {
@@ -82,6 +85,10 @@ class EloquentPartnerRepository implements PartnerRepositoryI
         if ($partnerModel == null) {
             return null;
         }
+        return $this->transformPartnerModelToPartner($partnerModel);
+    }
+    private function transformPartnerModelToPartner(PartnerModel $partnerModel): Partner
+    {
         $partnerWorkDays = collect($partnerModel->workdays)->map(function ($dayWork) {
             return new PartnerDayWork($dayWork->pivot->starttime, $dayWork->pivot->endtime, $dayWork->day, $dayWork->id, $dayWork->pivot->id);
         });

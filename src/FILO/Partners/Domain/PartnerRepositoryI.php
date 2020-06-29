@@ -12,5 +12,5 @@ interface PartnerRepositoryI
     function search(PartnerId $id): ?Partner;
     public function update(Partner $partner): void;
     public function delete(PartnerId $id): void;
-    public function all(NextPage $nextPage, NumberPerPage $numberPartnerPerPage): PaginationPartner;
+    public function all(NextPage $nextPage, NumberPerPage $numberPartnerPerPage): array;
 }

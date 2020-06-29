@@ -7,6 +7,8 @@ use Filo\Categories\Infraestructure\EloquentCategory;
 use Filo\Menus\Application\Create\MenuCreator;
 use Filo\Menus\Application\Delete\MenuDelete;
 use Filo\Menus\Application\Find\MenuFinder;
+use Filo\Menus\Domain\MenuRepositoryI;
+use Filo\Menus\Infraestructure\EloquentMenuRepository;
 use Filo\PartnerCounterDishes\Domain\PartnerCounterDishesRepository;
 use Filo\PartnerCounterDishes\Infraestructure\EloquentCounterDishesRepository;
 use Filo\Partners\Application\All\PartnerList;
@@ -52,6 +54,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             PartnerRepositoryI::class,
             EloquentPartnerRepository::class
+        );
+        $this->app->bind(
+            MenuRepositoryI::class,
+            EloquentMenuRepository::class
         );
         $this->app->bind(
             PartnerCounterDishesRepository::class,

@@ -15,8 +15,16 @@
 }
 .flex {
     display: flex;
+    &.center {
+        justify-content: center;
+    }
     &.align-space-beetwen {
         justify-content: space-between;
+    }
+}
+.text {
+    &.decoration-none {
+        text-decoration: none;
     }
 }
 .main {

@@ -9,9 +9,8 @@ const Search = () => {
     const handleClickCategory = (categoryId) => {
         console.log(categoryId)
     }
-    const handleClickFavorite = (favoriteId) => () => {
-        console.log(favoriteId)
-    }
+
+
     return (
         <div className="search container">
             <div className="categories">
@@ -19,6 +18,7 @@ const Search = () => {
                     Explora nuestras categorias
                 </Typography>
                 <Divider />
+
                 <CategoriesList categories={categories} handleClick={handleClickCategory} />
 
             </div>
@@ -28,7 +28,7 @@ const Search = () => {
                 </Typography>
                 <Divider />
                 <Grid container spacing={3}>
-                    <FavoriteList favorites={favorites} hanldeClick={handleClickFavorite} />
+                    <FavoriteList favorites={favorites} />
                 </Grid>
 
             </div>
