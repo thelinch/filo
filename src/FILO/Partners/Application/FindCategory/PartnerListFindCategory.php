@@ -18,9 +18,9 @@ class PartnerListFindCategory
     {
         $this->repository = $repository;
     }
-    public function __invoke(NextPage $nextPartnerPage, NumberPerPage $numberPartnerPerPage, string $categoryName): PaginationPartner
+    public function __invoke(NextPage $nextPartnerPage, NumberPerPage $numberPartnerPerPage, int $categoryId): PaginationPartner
     {
-        $this->categoryCriteria = new CategoryCriteria($categoryName);
+        $this->categoryCriteria = new CategoryCriteria($categoryId);
         $partners = $this->repository->all($nextPartnerPage, $numberPartnerPerPage);
         $partnerFilterByCategory = collect($this->categoryCriteria->meetCriteria(...$partners));
         $partnerPaginator = PaginationPartner::create($nextPartnerPage, new PreviusPage(2), $numberPartnerPerPage, new Total($partnerFilterByCategory->count()), $partnerFilterByCategory);

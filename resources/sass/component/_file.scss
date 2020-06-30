@@ -3,6 +3,9 @@
         width: 100%;
     }
 } */
+.filepond--action-process-item {
+    display: none !important;
+}
 @include media(xs) {
     .filepond--item {
         width: 100%;

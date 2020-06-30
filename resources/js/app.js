@@ -17,7 +17,7 @@ require('./bootstrap');
 import { Router, Link } from "@reach/router";
 import Layout from "./Pages/User/Layout";
 import LayoutAdmin from "./Pages/Admin/LayoutAdmin";
-
+import moment from "moment"
 class App extends React.Component {
     render() {
 

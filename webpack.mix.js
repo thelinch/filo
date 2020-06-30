@@ -10,6 +10,7 @@ const mix = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
+mix.browserSync("http://127.0.0.1:8000/");
 mix.babelConfig({
     plugins: ['@babel/plugin-syntax-dynamic-import'],
 })
@@ -18,5 +19,5 @@ mix.react('resources/js/app.js', 'public/js')
     .copyDirectory('resources/img', 'public/img');
 if (mix.inProduction()) {
     mix.version()
-
+    mix.disableNotifications();
 }

@@ -7,15 +7,22 @@ import Grid from "@material-ui/core/Grid";
 import Input from "@material-ui/core/Input";
 
 import Spinner from "../Spinner/Spinner";
+import productUtil from "../../Util/Product/Util";
 const ProductForm = ({ productSelect }) => {
+    const productSelectMap = productSelect ? { ...productSelect, photo: [productUtil.transformPhotoSaved(productSelect.photo)] } : { id: 0, name: "", price: "", photo: { source: "polleria.jpg", options: { type: "local" } } }
 
+    const onSubmit = (values) => {
+        console.log(values)
 
-
-    return <Formik initialValues={{ id: 0, name: "", price: "", photos: [] }}>
+    }
+    return <Formik initialValues={productSelectMap} enableReinitialize={true} onSubmit={onSubmit} mapPropsToValues={() => {
+        return productSelectMap;
+    }}>
         {
             ({ values, handleChange, errors, touched, isSubmitting, setFieldValue, initialValues, resetForm }) => (
                 <Form className="form">
                     <Grid spacing={2} container={true}>
+                        <p>wdwd</p>
                         <Input name="id" type="hidden" value={values.id} />
                         <Grid item xs={12}>
                             <div className="form-group-horizontal">
@@ -44,8 +51,8 @@ const ProductForm = ({ productSelect }) => {
                                 <span className="form-group-label">Miniatura</span>
                                 <div className="form-group-field">
                                     <div className="form-group-input-wrap">
-                                        <Field name="photos" component={FileForm} className={`field ${errors.category && touched.category ? "is-invalid" : ""}`} />
-                                        <ErrorMessage name="photos" component="div" className="form-group-error" />
+                                        <Field name="photo" component={FileForm} filesParameter={[values.photo]} directory="images" className={`field ${errors.category && touched.category ? "is-invalid" : ""}`} />
+                                        <ErrorMessage name="photo" component="div" className="form-group-error" />
                                     </div>
                                 </div>
                             </div>
