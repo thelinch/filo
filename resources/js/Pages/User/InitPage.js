@@ -21,6 +21,7 @@ class InitPage extends React.Component {
             categories: [],
             partners: [],
             openSnackBar: false,
+            isLoadingPartners: true,
             page: 0,
             itemsPerPage: 2
         }
@@ -47,7 +48,7 @@ class InitPage extends React.Component {
         let partners = partnersPromise.data.data
         partners = partners.map((partner) =>
             Object.freeze(new PartnerDomain(partner.id, partner.description, partner.name, partner.dishes, partner.category, partner.address, partner.phone, partner.workdays, partner.city, partner.photo)))
-        this.setState({ partners, categories })
+        this.setState({ partners, categories, isLoadingPartners: false })
         this.context.setCategories(categories);
         let partnerMap = partners.map((partner) => (
             <div className="favorites-partner" key={partner.id} onClick={this.handleClickPartner(partner)}>
@@ -77,22 +78,21 @@ class InitPage extends React.Component {
 
     }
     handleClickPartner = (partner) => () => {
-        console.log(partner)
         if (!partner.isAvailableForAttend) {
             this.handleOpenSnackBar()
             return;
         }
 
-        navigate(`/partner/${partner.id}`, { state: { partner: partner } })
+        navigate(`/partner/${partner.id}`, { state: { partner: Object.seal(partner) } })
     }
     render() {
-        const { categories, partners, openSnackBar, itemsPerPage, page } = this.state
+        const { categories, partners, openSnackBar, itemsPerPage, page, isLoadingPartners } = this.state
         const partnerPaginate = partners.slice(page * itemsPerPage, page * itemsPerPage + itemsPerPage);
         return (<React.Fragment>
             <div className="container categories">
                 <CategoriesList categories={categories} handleClick={this.handleClickCategory} />
             </div>
-            <PartnerList partners={partnerPaginate} handleClick={this.handleClickPartner} />
+            <PartnerList partners={partnerPaginate} isLoading={isLoadingPartners} handleClick={this.handleClickPartner} />
             <TablePagination
                 rowsPerPageOptions={[2, 10, 20]}
                 component="div"

@@ -17,9 +17,18 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::group(["prefix" => "files"], function () {
+    Route::get("/find", "File\FileGetController@__invoke");
+    Route::get("/delete", "File\FileDeleteController@__invoke");
+    Route::get("/save", "File\FileSaveController@__invoke");
+
+
+    /* Route::post("/save"); */
+});
 Route::group(["prefix" => "partners"], function () {
     Route::get("list", "PartnerListController@__invoke");
-    Route::get("{categoryName}/list", "PartnerFindCategoryController@__invoke");
+    Route::get("{categoryId}/list", "PartnerFindCategoryController@__invoke");
 
     Route::get("{idPartner}/find", "PartnerGetController@__invoke");
     Route::get("{idPartner}/transactions", "Transaction\TransactionFindByPartnerController@__invoke");

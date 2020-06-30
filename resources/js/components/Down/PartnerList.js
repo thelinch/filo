@@ -7,8 +7,10 @@ import LocationOnIcon from '@material-ui/icons/LocationOn';
 import PhoneIcon from '@material-ui/icons/Phone';
 import Chip from '@material-ui/core/Chip';
 
-const PartnerList = ({ partners, handleClick }) => {
-
+const PartnerList = ({ partners, handleClick, isLoading }) => {
+    const notPartner = (<div width="100%" className="not-items" display="flex" justifyContent="center">
+        <strong className="message">No hay empresas registradas</strong>
+    </div>);
     const skeletonParnertList = [1, 2, 3, 4, 5, 6].map((e) => (
         <Grid item xs={12} md={4}>
             <Box width="100%" height={150}>
@@ -58,7 +60,7 @@ const PartnerList = ({ partners, handleClick }) => {
     ))
     return (
         <Grid container spacing={2}>{
-            partners.length == 0 ? skeletonParnertList : partnersMap}
+            isLoading ? skeletonParnertList : partners.length == 0 ? notPartner : partnersMap}
         </Grid>
     );
 }

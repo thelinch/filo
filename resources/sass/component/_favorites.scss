@@ -9,15 +9,30 @@
     cursor: pointer;
     .photo {
         width: 20%;
+        @include media(xs) {
+            & {
+                width: 30%;
+            }
+        }
     }
     .content {
         width: 80%;
         padding: 0.4rem;
+        @include media(xs) {
+            & {
+                width: 70%;
+            }
+        }
         .title {
             font-family: $title-partner;
             color: black;
             margin: 0;
             font-size: 2rem;
+            @include media(xs) {
+                & {
+                    font-size: 1.3rem;
+                }
+            }
         }
         .direction {
             margin: 0;
@@ -49,12 +64,28 @@
     background-color: rgba(255, 175, 112, 0.8);
     margin: 0.4rem;
     position: relative;
+
+    @include media(xs) {
+        & {
+            flex-wrap: wrap;
+        }
+    }
     .photo {
         width: 20%;
+        @include media(xs) {
+            & {
+                width: 35%;
+            }
+        }
     }
     .content {
         width: 80%;
         margin-left: 10px;
+        @include media(xs) {
+            & {
+                width: 60%;
+            }
+        }
         .title {
             font-size: 18px;
             color: black;
@@ -66,5 +97,13 @@
         right: 10px;
         bottom: 10px;
         margin: 0;
+        @include media(xs) {
+            & {
+                width: 100%;
+                position: relative;
+                right: 0;
+                bottom: 0;
+            }
+        }
     }
 }

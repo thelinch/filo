@@ -30,9 +30,9 @@ class PartnerFindCategoryController extends ApiController
         $this->partnerFinder = App::make(PartnerListFindCategory::class);
     }
 
-    public function __invoke(string $categoryName)
+    public function __invoke(int $categoryId)
     {
-        $partnerListResponse = new PartnerListResponse($this->partnerFinder->__invoke(new NextPage(3), new NumberPerPage(5), $categoryName));
+        $partnerListResponse = new PartnerListResponse($this->partnerFinder->__invoke(new NextPage(3), new NumberPerPage(5), $categoryId));
         return $partnerListResponse;
     }
 }
