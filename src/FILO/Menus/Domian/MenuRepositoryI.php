@@ -14,4 +14,5 @@ interface MenuRepositoryI
     public function update(Menu $menu): void;
     function delete(Menu $menu): void;
     function all(NextPage $nextPage, NumberPerPage $numberPerPage, PartnerId $partnerId): MenuPaginate;
+    function updateVotes(Menu $menu): void;
 }

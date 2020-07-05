@@ -43,6 +43,11 @@ class Menu extends AggregateRoot
     {
         return $this->name;
     }
+    public function incrementVotes()
+    {
+
+        $this->votes = $this->votes->increment();
+    }
     public function photo(): MenuPhoto
     {
         return $this->photo;

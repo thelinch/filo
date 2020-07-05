@@ -14,9 +14,16 @@ function save(product) {
         url: `${ProductDomain}/save`
     })
 }
+function incrementCounterFavoriteFindProduct(productId) {
+    return request({
+        method: "get",
+        url: `${ProductDomain}/${productId}/incrementVotes`
+    })
+}
 export const ProductService = {
     getAllFindPartner,
-    save
+    save,
+    incrementCounterFavoriteFindProduct
 }
 
 

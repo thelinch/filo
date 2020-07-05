@@ -44,6 +44,7 @@ Route::group(["prefix" => "products"], function () {
     Route::get("{idMenu}/find", "Menu\MenuGetController@__invoke");
 
     Route::get("{idMenu}/delete", "Menu\MenuDeleteController@__invoke");
+    Route::get("{idMenu}/incrementVotes", "Menu\MenuUpdateVotesController@__invoke");
 });
 
 Route::group(["prefix" => "users"], function () {
