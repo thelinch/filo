@@ -57,6 +57,12 @@ class EloquentMenuRepository implements MenuRepositoryI
         $menuModel->state = "0";
         $menuModel->save();
     }
+    function updateVotes(Menu $menu): void
+    {
+        $menuModel = MenuModel::find($menu->id()->value());
+        $menuModel->votes = $menu->votes()->value();
+        $menuModel->save();
+    }
     public function update(Menu $menu): void
     {
         $menuModel = MenuModel::find($menu->id()->value());

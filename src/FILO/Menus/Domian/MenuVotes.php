@@ -10,4 +10,10 @@ class MenuVotes extends IntValueObject
     {
         parent::__construct($value);
     }
+
+    public function increment(): self
+    {
+        $increment = $this->value + 1;
+        return new self($increment);
+    }
 }
