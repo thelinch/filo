@@ -9,7 +9,8 @@ use src\Shared\Domain\Bus\Event\DomainEvent;
 final class PartnerCreatedDomianEvent extends DomainEvent
 {
     private string $name;
-    public function __construct(string $id, string $name, string $eventId = null, string $ocurredOn = null)
+    private string $userId;
+    public function __construct(string $id, string $name, string $userId, string $eventId = null, string $ocurredOn = null)
     {
         $this->name = $name;
         parent::__construct($id, $eventId, $ocurredOn);
@@ -25,6 +26,10 @@ final class PartnerCreatedDomianEvent extends DomainEvent
             "name" => $this->name,
 
         ];
+    }
+    public function userId(): string
+    {
+        return $this->userId;
     }
     public function name(): string
     {

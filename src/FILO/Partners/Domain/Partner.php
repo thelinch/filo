@@ -20,6 +20,7 @@ final class Partner extends AggregateRoot
     private array $daysWork;
     private PartnerCity $city;
     private PartnerPhoto $photo;
+    private PartnerAmountDelivery $amountDelivery;
     public function __construct(
         PartnerId $id,
         PartnerDescription $description,
@@ -31,6 +32,7 @@ final class Partner extends AggregateRoot
         UserId $userId,
         PartnerCity $city,
         PartnerPhoto $photo,
+        PartnerAmountDelivery $amountDelivery,
         PartnerDayWork  ...$dayswork
     ) {
         $this->name = $name;
@@ -43,9 +45,13 @@ final class Partner extends AggregateRoot
         $this->userId = $userId;
         $this->city = $city;
         $this->photo = $photo;
+        $this->amountDelivery = $amountDelivery;
         $this->daysWork = $dayswork;
     }
-
+    public function amountDelivery(): PartnerAmountDelivery
+    {
+        return $this->amountDelivery;
+    }
     public function isAvailableForAttention(): bool
     {
         $isAvailableForAttention = false;
@@ -80,6 +86,8 @@ final class Partner extends AggregateRoot
         PartnerPhone $phone,
         UserId $userId,
         PartnerCity $city,
+        PartnerPhoto $photo,
+        PartnerAmountDelivery $amountDelivery,
         array $daysWork
     ): self {
         $partner = new self(
@@ -92,14 +100,20 @@ final class Partner extends AggregateRoot
             $phone,
             $userId,
             $city,
+            $photo,
+            $amountDelivery,
             ...$daysWork
         );
-        $partner->record(new PartnerCreatedDomianEvent($id->value(), $name->value()));
+        $partner->record(new PartnerCreatedDomianEvent($id->value(), $name->value(), $userId->value()));
         return $partner;
     }
     public function rename(string $newName)
     {
         $this->name = $this->name->newName($newName);
+    }
+    public function updateAmountDelivery(float  $newAmount)
+    {
+        $this->amountDelivery = $this->amountDelivery->updateAmountDelivery($newAmount);
     }
     public function updateDescription(string $newDescription)
     {

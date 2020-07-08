@@ -11,6 +11,7 @@ use Filo\Users\Domain\UserName;
 use Filo\Users\Domain\UserNotExist;
 use Filo\Users\Domain\UserPassword;
 use Filo\Users\Domain\UserPhone;
+use Filo\Users\Domain\UserRole;
 use Filo\Users\Domain\UserUnauthorized;
 use Illuminate\Support\Facades\Auth;
 
@@ -37,13 +38,17 @@ class PassportAuth implements JwtAuth
     public function me(): User
     {
         $userModel = Auth::user();
+        $userRoles = $userModel->getRoleNames()->map(function ($role) {
+            return new UserRole($role);
+        })->toArray();
         return new User(
             new UserId($userModel->id),
             new UserDirection($userModel->direction),
             new UserName($userModel->name),
             new UserPhone($userModel->phone),
             new UserPassword($userModel->password),
-            new UserEmail($userModel->email)
+            new UserEmail($userModel->email),
+            ...$userRoles
         );
     }
 }

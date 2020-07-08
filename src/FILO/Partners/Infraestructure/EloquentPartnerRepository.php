@@ -5,6 +5,7 @@ namespace Filo\Partners\Infraestructure;
 use Filo\Partners\Domain\Pagination\PaginationPartner;
 use Filo\Partners\Domain\Partner;
 use Filo\Partners\Domain\PartnerAddress;
+use Filo\Partners\Domain\PartnerAmountDelivery;
 use Filo\Partners\Domain\PartnerCategory;
 use Filo\Partners\Domain\PartnerCity;
 use Filo\Partners\Domain\PartnerDayWork;
@@ -41,6 +42,8 @@ class EloquentPartnerRepository implements PartnerRepositoryI
         $partnerModel->counterdishes = $partner->dishes()->value();
         $partnerModel->direction = $partner->address()->value();
         $partnerModel->user_id = $partner->userId()->value();
+        $partnerModel->phone = $partner->phone()->value();
+        $partnerModel->amountdelivery = $partner->amountDelivery()->value();
         $partnerModel->petitions = 0;
         $partnerModel->city()->associate($partner->city()->id());
         $partnerModel->category()->associate($partner->category()->id());
@@ -62,6 +65,7 @@ class EloquentPartnerRepository implements PartnerRepositoryI
         $partnerModel->name = $partner->name()->value();
         $partnerModel->description = $partner->description()->value();
         $partnerModel->direction = $partner->address()->value();
+        $partnerModel->amountdelivery = $partner->amountDelivery()->value();
         $partnerModel->save();
     }
     public function delete(PartnerId $id): void
@@ -103,6 +107,7 @@ class EloquentPartnerRepository implements PartnerRepositoryI
             new UserId($partnerModel->user_id),
             new PartnerCity($partnerModel->city->id, $partnerModel->city->name),
             new PartnerPhoto($partnerModel->photo),
+            new PartnerAmountDelivery($partnerModel->amountdelivery),
             ...$partnerWorkDays->toArray()
 
         );

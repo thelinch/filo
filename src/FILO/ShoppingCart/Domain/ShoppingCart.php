@@ -22,6 +22,15 @@ class ShoppingCart
     {
         return $this->items;
     }
+    public function discountTotal(): float
+    {
+        $discount = 0;
+        foreach ($this->items as $item) {
+            $discount += $item->discount();
+        }
+        return $discount;
+    }
+
     public function calculateTotal(): float
     {
         $sum = 0;
@@ -29,5 +38,10 @@ class ShoppingCart
             $sum += $item->price() * $item->quantity();
         }
         return $sum;
+    }
+    public function pay(paymentInterface $paymentMethod)
+    {
+        $amount = $this->calculateTotal();
+        return  $paymentMethod->pay($amount, $this->discountTotal(), ...$this->items);
     }
 }
