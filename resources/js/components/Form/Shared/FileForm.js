@@ -9,26 +9,18 @@ import { load } from "react-cookies";
 import { FileService } from "../../../Services/FileService";
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
-const pathName = window.location.origin
-console.log(window.location)
-const FileForm = ({ filesParameter, isMultiple, messageUser, form, field, directory }) => {
-    const [files, setFiles] = useState(filesParameter);
+const FileForm = ({ filesParameter, isMultiple, messageUser, form, field, directory, onRemoveFileObject }) => {
+    const [files, setFiles] = useState(isMultiple ? filesParameter : Object.keys(filesParameter[0]).length == 0 ? [] : [filesParameter[0]]);
     const handleUpdateFiles = (files) => {
-        /*         const filesMap = files.map((fileItem) => fileItem.file);
-         */
-
         let fileNotSave = files.filter((file) => file.serverId == null).map((fileFilter) => fileFilter.file)
         let fileOrFiles = fileNotSave;
         if (!isMultiple) {
             fileOrFiles = fileNotSave[0];
         }
-        console.log(fileNotSave, "fileOr", fileOrFiles)
         if (Array.isArray(fileOrFiles)) {
             form.setFieldValue(field.name, { files: fileOrFiles })
-
         } else {
             form.setFieldValue(field.name, { file: fileOrFiles || {} })
-
         }
         setFiles(files)
     }
@@ -37,7 +29,6 @@ const FileForm = ({ filesParameter, isMultiple, messageUser, form, field, direct
 
     }
     const onLoadFile = async (source, load, error, progress, abort, headers) => {
-        /* fetch(`/api/files/find?load=${source}`).then(res => res.blob()).then(load) */
         let file = (await FileService.findId(source, directory)).data
         load(file)
     }
@@ -45,6 +36,7 @@ const FileForm = ({ filesParameter, isMultiple, messageUser, form, field, direct
         console.log("se removio", source)
         error("no se pudo borrar :/");
         load();
+        onRemoveFileObject(form.values.id);
     }
     return (
         <FilePond files={files} instantUpload={false} iconProcess="" onaddfile={onAddFile} server={{ load: onLoadFile, remove: onRemoveFile }} allowMultiple={isMultiple} onupdatefiles={handleUpdateFiles} labelIdle={messageUser} />
@@ -53,6 +45,7 @@ const FileForm = ({ filesParameter, isMultiple, messageUser, form, field, direct
 
 }
 FileForm.propTypes = {
+    onRemoveFile: PropTypes.func.isRequired,
     filesParameter: PropTypes.array,
     isMultiple: PropTypes.bool,
     messageUser: PropTypes.string,

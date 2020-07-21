@@ -18,6 +18,11 @@ class ItemShoppingCart
     {
         return $this->quantity;
     }
+    public function discount(): float
+    {
+        return 0;
+    }
+
     public function id()
     {
         return $this->id;

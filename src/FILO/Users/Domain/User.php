@@ -47,7 +47,8 @@ class User extends AggregateRoot  implements JsonSerializable
             "id" => $this->id->value(),
             "name" => $this->name()->value(),
             "phone" => $this->phone()->value(),
-            "email" => $this->email->value()
+            "email" => $this->email->value(),
+            "roles" => collect($this->roles)->map(fn (UserRole $role) => $role->value())
         ];
     }
     public function update(UserName $name, UserDirection $direction, UserEmail $email, UserPassword $password, UserPhone $phone)

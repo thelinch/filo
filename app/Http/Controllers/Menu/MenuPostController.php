@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Menu;
 
 use Filo\Menus\Application\Create\MenuCreator;
+use Filo\Menus\Domain\MenuDescription;
 use Filo\Menus\Domain\MenuId;
 use Filo\Menus\Domain\MenuName;
+use Filo\Menus\Domain\MenuPhoto;
 use Filo\Menus\Domain\MenuPrice;
 use Filo\Menus\Domain\MenuVotes;
 use Filo\Partners\Domain\PartnerId;
@@ -26,13 +28,15 @@ class MenuPostController extends ApiController
     }
     public function __invoke(Request $request)
     {
-        $menuParameter = $request->only(["id", "name", "price", "partnerId"]);
+        $menuParameter = $request->only(["id", "name", "price", "partnerId", "photo", "description"]);
         $this->menuCreator->__invoke(
             new MenuId($menuParameter["id"]),
             new MenuName($menuParameter["name"]),
             new MenuPrice($menuParameter["price"]),
             new MenuVotes(0),
-            new PartnerId($menuParameter["partnerId"])
+            new PartnerId($menuParameter["partnerId"]),
+            new MenuPhoto($menuParameter["photo"]),
+            new MenuDescription($menuParameter["description"])
         );
     }
 }

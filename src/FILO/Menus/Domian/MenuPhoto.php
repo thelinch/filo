@@ -10,4 +10,8 @@ class MenuPhoto extends StringValueObject
     {
         parent::__construct($value);
     }
+    public function delete(): self
+    {
+        return new self("");
+    }
 }

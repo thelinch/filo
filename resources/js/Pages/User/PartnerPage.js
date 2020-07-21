@@ -5,8 +5,11 @@ import ProductList from "../../components/Down/Product/ProductList";
 import { SearchContext } from "../../Contexts/SearchContext";
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { ProductService } from "../../Services/ProductService"
-import Product from "../../Domain/Product";
+import Product from "../../Domain/ProductDomain";
 import PartnerDomain from "../../Domain/PartnerDomain";
+import ProductDomain from "../../Domain/ProductDomain";
+import { CartContext } from "../../Contexts/CartContext";
+
 class PartnerPage extends React.Component {
     static contextType = SearchContext
 
@@ -31,11 +34,13 @@ class PartnerPage extends React.Component {
         this.setState({ itemsPerPage: +event.target.value, page: 0 })
     }
     async componentDidMount() {
+        console.log(this.props)
+
         this.context.setFavorites([]);
         this.context.setCategories([<strong>No hay categorias</strong>]);
         let productsData = (await ProductService.getAllFindPartner(this.state.partner.id)).data
         let products = productsData.data;
-        products = products.map((product) => new Product(product.id, product.name, product.votes, product.description, product.photo, product.price))
+        products = products.map((product) => new ProductDomain(product.id, product.name, product.votes, product.description, product.photo, product.price))
         this.setState({ products, isLoadingProducts: false })
         let productsView = [<strong>Actualmente no existe productos populares</strong>];
         let productsRank = products.sort((a, b) => {

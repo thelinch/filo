@@ -1,5 +1,5 @@
 
-class Product {
+class ProductDomain {
     constructor(id, name, votes, description, photo, price) {
         this._id = id;
         this._name = name;
@@ -30,4 +30,4 @@ class Product {
         return this._price;
     }
 }
-export default Product;
+export default ProductDomain;

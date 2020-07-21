@@ -23,7 +23,7 @@ class InitPage extends React.Component {
             openSnackBar: false,
             isLoadingPartners: true,
             page: 0,
-            itemsPerPage: 2
+            itemsPerPage: 10
         }
 
     }
@@ -78,11 +78,11 @@ class InitPage extends React.Component {
 
     }
     handleClickPartner = (partner) => () => {
-        /*  if (!partner.isAvailableForAttend) {
-             this.handleOpenSnackBar()
-             return;
-         }
-  */
+        /*       if (!partner.isAvailableForAttend) {
+                  this.handleOpenSnackBar()
+                  return;
+              }
+       */
         navigate(`/partner/${partner.id}`, { state: { partner: Object.seal(partner) } })
     }
     render() {
@@ -94,7 +94,7 @@ class InitPage extends React.Component {
             </div>
             <PartnerList partners={partnerPaginate} isLoading={isLoadingPartners} handleClick={this.handleClickPartner} />
             <TablePagination
-                rowsPerPageOptions={[2, 10, 20]}
+                rowsPerPageOptions={[10, 20, 100]}
                 component="div"
                 count={partners.length}
                 rowsPerPage={itemsPerPage}

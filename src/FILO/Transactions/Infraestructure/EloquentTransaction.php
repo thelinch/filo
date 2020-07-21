@@ -3,8 +3,10 @@
 namespace Filo\Transactions\Infraestructure;
 
 use Filo\Menus\Domain\Menu;
+use Filo\Menus\Domain\MenuDescription;
 use Filo\Menus\Domain\MenuId;
 use Filo\Menus\Domain\MenuName;
+use Filo\Menus\Domain\MenuPhoto;
 use Filo\Menus\Domain\MenuPrice;
 use Filo\Menus\Domain\MenuVotes;
 use Filo\Partners\Domain\PartnerId;
@@ -69,7 +71,9 @@ class EloquentTransaction implements TransactionRepository
                 new PartnerId($transactionModel->partner_id),
                 new MenuPrice($detail->menu->price),
                 new MenuVotes($detail->menu->votes),
-                new MenuName($detail->menu->name)
+                new MenuName($detail->menu->name),
+                new MenuPhoto($detail->menu->photo),
+                new MenuDescription($detail->menu->description)
             ), $detail->quantity);
         })->toArray();
         return new Transaction(

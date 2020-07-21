@@ -8,11 +8,11 @@ function findId(id, directory) {
         responseType: "blob"
     })
 }
-function save(file, directory) {
+function save(files, directory) {
     return request({
         method: "post",
         url: `${FileDomain}save?directory=${directory}`,
-        data: file
+        data: files,
     })
 }
 function deletefindId(id, directory) {

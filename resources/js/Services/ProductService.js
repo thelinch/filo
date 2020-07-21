@@ -14,16 +14,29 @@ function save(product) {
         url: `${ProductDomain}/save`
     })
 }
+function update(product) {
+
+}
 function incrementCounterFavoriteFindProduct(productId) {
     return request({
         method: "get",
         url: `${ProductDomain}/${productId}/incrementVotes`
     })
 }
+function deletePhotoById(productId) {
+    return request(
+        {
+            method: "get",
+            url: `${ProductDomain}/${productId}/deletePhoto`
+        }
+    );
+}
 export const ProductService = {
     getAllFindPartner,
     save,
-    incrementCounterFavoriteFindProduct
+    incrementCounterFavoriteFindProduct,
+    update,
+    deletePhotoById
 }
 
 

@@ -31,6 +31,10 @@ class Menu extends AggregateRoot
         $menu->record(new MenuCreateDomainEvent($id->value(),  $name->value(), $partnerId->value()));
         return $menu;
     }
+    public function deletePhoto()
+    {
+        $this->photo = $this->photo->delete();
+    }
     public function delete()
     {
         $this->record(new MenuDeleteDomainEvent($this->id()->value(), $this->name()->value(), $this->partnerId()->value()));

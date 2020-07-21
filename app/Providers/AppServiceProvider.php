@@ -22,7 +22,9 @@ use Filo\Transactions\Application\Create\TransactionCreator;
 use Filo\Transactions\Application\Delete\TransactionDeleter;
 use Filo\Transactions\Application\FindByPartner\TransactionFindByPartner;
 use Filo\Transactions\Domain\Services\TransactionFinder;
+use Filo\Transactions\Domain\TransactionRepository;
 use Filo\Transactions\Domain\TransactionStateRepository;
+use Filo\Transactions\Infraestructure\EloquentTransaction;
 use Filo\Transactions\Infraestructure\EloquentTransactionState;
 use Filo\Users\Application\Create\UserCreator;
 use Filo\Users\Application\Delete\UserDelete;
@@ -33,9 +35,11 @@ use Filo\Users\Infraestructure\PassportAuth;
 use Illuminate\Support\ServiceProvider;
 use src\Shared\Domain\Bus\Event\EventBus;
 use src\Shared\Domain\CodeGenerator;
+use src\Shared\Domain\UuidGenerator;
 use src\Shared\Infraestructure\Bus\Event\LaravelEventBus;
 use src\Shared\Infraestructure\Bus\Event\ProophEventBus;
 use src\Shared\Infraestructure\NativeCodeGenerator;
+use src\Shared\Infraestructure\RamseyUuidGenerator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -50,6 +54,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             JwtAuth::class,
             PassportAuth::class
+        );
+        $this->app->bind(
+            TransactionRepository::class,
+            EloquentTransaction::class
+
         );
         $this->app->bind(
             PartnerRepositoryI::class,
@@ -76,6 +85,7 @@ class AppServiceProvider extends ServiceProvider
             EventBus::class,
             LaravelEventBus::class
         );
+        $this->app->bind(UuidGenerator::class, RamseyUuidGenerator::class);
         $this->app->bind(
             CodeGenerator::class,
             NativeCodeGenerator::class
@@ -85,9 +95,6 @@ class AppServiceProvider extends ServiceProvider
         });
         $this->app->bind("partnerList", function ($app) {
             return new PartnerList($app->make("Filo\Partners\Infraestructure\EloquentPartnerRepository"));
-        });
-        $this->app->bind("partnerCreator", function ($app) {
-            return new PartnerCreator($app->make("Filo\Partners\Infraestructure\EloquentPartnerRepository"));
         });
 
 
@@ -123,9 +130,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         //Transaction
-        $this->app->bind("transactionCreator", function ($app) {
-            return new TransactionCreator($app->make("Filo\Transactions\Infraestructure\EloquentTransaction"), $app->make("src\Shared\Infraestructure\Bus\Event\LaravelEventBus"));
-        });
+
 
         $this->app->bind("transactionFindByPartner", function ($app) {
             return new TransactionFindByPartner($app->make("Filo\Transactions\Infraestructure\EloquentTransaction"));

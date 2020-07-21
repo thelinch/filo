@@ -40,10 +40,11 @@ class TransactionCreator
         if (!$partner->isAvailableForAttention()) {
             throw new PartnerNotAvailableForAttetion($partnerId);
         }
-
-        $transaction = Transaction::create($userId, $id, $total, $partnerId, $details, new TransactionCode($this->codeGenerator->generate()));
+        $transactionCode = new TransactionCode($this->codeGenerator->generate());
+        $transaction = Transaction::create($userId, $id, $total, $partnerId, $details, $transactionCode);
         $this->repository->create($transaction);
         //Mando a ejecutar un efecto secundario la cual lenvira un mensaje al wassap la cual sera asincrono
         $this->eventBus->publish(...$transaction->pullDomainEvents());
+        return $transactionCode;
     }
 }

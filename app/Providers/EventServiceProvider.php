@@ -6,6 +6,8 @@ use Filo\Menus\Domain\MenuCreateDomainEvent;
 use Filo\Menus\Domain\MenuDeleteDomainEvent;
 use Filo\PartnerCounterDishes\Application\Decrement\PartnerCounterDishesDecrement;
 use Filo\PartnerCounterDishes\Application\Increment\PartnerCounterDishesIncrement;
+use Filo\Partners\Domain\PartnerCreatedDomianEvent;
+use Filo\Users\Application\AsyncRoles\UserRolesAsync;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -23,7 +25,8 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         MenuCreateDomainEvent::class => [PartnerCounterDishesIncrement::class],
-        MenuDeleteDomainEvent::class => [PartnerCounterDishesDecrement::class]
+        MenuDeleteDomainEvent::class => [PartnerCounterDishesDecrement::class],
+        PartnerCreatedDomianEvent::class => [UserRolesAsync::class]
     ];
 
     /**

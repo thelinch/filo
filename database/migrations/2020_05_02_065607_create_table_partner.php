@@ -21,6 +21,7 @@ class CreateTablePartner extends Migration
             $table->string("phone", 191);
             $table->integer("counterdishes");
             $table->integer("petitions");
+            $table->float("amountdelivery");
             $table->uuid("user_id");
             $table->foreign("user_id")->references("id")->on("users");
             $table->string("state");

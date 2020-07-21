@@ -29,8 +29,8 @@ class UserPostController extends ApiController
 
     public function __invoke(Request $request)
     {
-        $userParameters = $request->only(["id", "name", "phone", "email", "password", "direction", "roles"]);
-        $rolesUser = collect($userParameters["roles"])->map(fn ($role) => new UserRole($role))->toArray();
+        $userParameters = $request->only(["id", "name", "phone", "email", "password", "direction"]);
+        $rolesUser = collect(["diner"])->map(fn ($role) => new UserRole($role))->toArray();
         $this->userCreator->__invoke(
             new UserId($userParameters["id"]),
             new UserName($userParameters["name"]),
