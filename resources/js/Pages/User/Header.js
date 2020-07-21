@@ -6,7 +6,8 @@ import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import IconButton from '@material-ui/core/IconButton';
 import Search from "../../components/Search/Search";
-
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -67,9 +68,9 @@ const Header = (props) => {
         <React.Fragment>
             <AppBar position="static">
                 <Toolbar className="flex  align-space-beetwen">
-                    <Typography>
+                    {/*    <Typography>
                         DREBU
-            </Typography>
+            </Typography> */}
                     <div className={classes.search}>
                         <div className={classes.searchIcon}>
                             <SearchIcon />
@@ -83,6 +84,8 @@ const Header = (props) => {
                             inputProps={{ 'aria-label': 'search' }}
                         />
                     </div>
+                    <ShoppingCartIcon />
+                    <AccountCircleIcon />
                 </Toolbar>
             </AppBar>
             <Search />

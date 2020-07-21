@@ -19,7 +19,7 @@ const ProductList = ({ products, handleClick, isLoading }) => {
 
     ));
     const ProductsMap = products.map((product) => (
-        <Grid item xs={12} md={3}>
+        <Grid item xs={12} md={3} key={product.id + 1000}>
             <div className="product" key={product.id}>
                 <div className="product-photo circle" >
                     <img src={product.photo} className="circle" />

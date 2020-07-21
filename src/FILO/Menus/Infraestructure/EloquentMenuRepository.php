@@ -27,6 +27,8 @@ class EloquentMenuRepository implements MenuRepositoryI
         $menuModel->name = $menu->name()->value();
         $menuModel->votes = $menu->votes()->value();
         $menuModel->price = $menu->price()->value();
+        $menuModel->description = $menu->description()->value();
+        $menuModel->photo = $menu->photo()->value();
         $menuModel->partner_id = $menu->partnerId()->value();
         $menuModel->save();
     }
@@ -68,6 +70,8 @@ class EloquentMenuRepository implements MenuRepositoryI
         $menuModel = MenuModel::find($menu->id()->value());
         $menuModel->name = $menu->name()->value();
         $menuModel->price = $menu->price()->value();
+        $menuModel->photo = $menu->photo()->value();
+        $menuModel->description = $menu->description()->value();
         $menuModel->save();
     }
 }

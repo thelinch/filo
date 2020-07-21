@@ -35,9 +35,11 @@ use Filo\Users\Infraestructure\PassportAuth;
 use Illuminate\Support\ServiceProvider;
 use src\Shared\Domain\Bus\Event\EventBus;
 use src\Shared\Domain\CodeGenerator;
+use src\Shared\Domain\UuidGenerator;
 use src\Shared\Infraestructure\Bus\Event\LaravelEventBus;
 use src\Shared\Infraestructure\Bus\Event\ProophEventBus;
 use src\Shared\Infraestructure\NativeCodeGenerator;
+use src\Shared\Infraestructure\RamseyUuidGenerator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -83,6 +85,7 @@ class AppServiceProvider extends ServiceProvider
             EventBus::class,
             LaravelEventBus::class
         );
+        $this->app->bind(UuidGenerator::class, RamseyUuidGenerator::class);
         $this->app->bind(
             CodeGenerator::class,
             NativeCodeGenerator::class

@@ -21,7 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(["prefix" => "files"], function () {
     Route::get("/find", "File\FileGetController@__invoke");
     Route::get("/delete", "File\FileDeleteController@__invoke");
-    Route::get("/save", "File\FileSaveController@__invoke");
+    Route::post("/save", "File\FileSaveController@__invoke");
 
 
     /* Route::post("/save"); */
@@ -42,7 +42,7 @@ Route::group(["prefix" => "partners"], function () {
 Route::group(["prefix" => "products"], function () {
     Route::post("save", "Menu\MenuPostController@__invoke");
     Route::get("{idMenu}/find", "Menu\MenuGetController@__invoke");
-
+    Route::get("{idMenu}/deletePhoto", "Menu\MenuDeletePhotoController@__invoke");
     Route::get("{idMenu}/delete", "Menu\MenuDeleteController@__invoke");
     Route::get("{idMenu}/incrementVotes", "Menu\MenuUpdateVotesController@__invoke");
 });
