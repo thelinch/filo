@@ -7,6 +7,8 @@ $mobile-landscape: 480px;
 $tablet-landscape: 1024px;
 
 // Colors
+$color-icon: #dddddd;
+
 $blue: #3490dc;
 $blue-hover: darken($blue, 10%);
 $indigo: #6574cd;
@@ -19,12 +21,14 @@ $green: #38c172;
 $teal: #4dc0b5;
 $cyan: #6cb2eb;
 $white: #ffffff;
+$color-additional: #999999;
+$color-white: #ffffff;
 
 // Body
 $body-bg: #f8fafc;
 
 // Typography
-$font-family-sans-serif: "Nunito", sans-serif;
+$font-family-sans-serif: 'Nunito', sans-serif;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
 

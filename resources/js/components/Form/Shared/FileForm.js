@@ -45,7 +45,7 @@ const FileForm = ({ filesParameter, isMultiple, messageUser, form, field, direct
 
 }
 FileForm.propTypes = {
-    onRemoveFile: PropTypes.func.isRequired,
+    onRemoveFileObject: PropTypes.func.isRequired,
     filesParameter: PropTypes.array,
     isMultiple: PropTypes.bool,
     messageUser: PropTypes.string,

@@ -13,8 +13,9 @@ import { ProductService } from "../../Services/ProductService"
 import { FileService } from "../../Services/FileService";
 const ProductForm = ({ productSelect }) => {
     const productSelectMap = productSelect ? { ...productSelect, photo: [productUtil.transformPhotoSaved(productSelect.photo)] } : {
-        id: 0, name: "", price: "", description: "", photo: { source: "polleria.jpg", options: { type: "local" } }
+        id: 0, name: "", price: "", description: "", photo: {}
     }
+    console.log(productSelectMap)
     /*  {
          id: 0, name: "", price: "", description: "", photo: { source: "polleria.jpg", options: { type: "local" } }
      } */
@@ -99,7 +100,7 @@ const ProductForm = ({ productSelect }) => {
 
                                     type="submit"
                                 >
-                                    {values.id > 0 ? "Editar" : "Guardar"}
+                                    {values.id != 0 ? "Editar" : "Guardar"}
                                     {isSubmitting && <Spinner type="Circles" />}
                                 </button>
                                 <button
