@@ -1,6 +1,11 @@
 import { request } from "../Util/requestObject";
 import { PartnerDomain, ProductDomain } from "../env";
-
+function deleteProduct(productId) {
+    return request({
+        method: "get",
+        url: `${ProductDomain}/${productId}/delete`
+    })
+}
 function getAllFindPartner(partnerId) {
     return request({
         method: "GET",
@@ -36,7 +41,8 @@ export const ProductService = {
     save,
     incrementCounterFavoriteFindProduct,
     update,
-    deletePhotoById
+    deletePhotoById,
+    deleteProduct
 }
 
 

@@ -6,7 +6,8 @@ import DataTable from "../../components/DataTable"
 import { ProductService } from "../../Services/ProductService";
 import Delete from '@material-ui/icons/Delete';
 import Edit from '@material-ui/icons/Edit';
-import Modal from '@material-ui/core/Modal';
+import Modal from "../../components/Modal/Modal";
+import { removeObjectOfArray } from "../../Util/Util";
 
 class ProductPage extends React.Component {
     static contextType = SearchContext
@@ -38,8 +39,9 @@ class ProductPage extends React.Component {
         }
 
     }
-    handelRemoveProduct = (product) => () => {
-
+    handelRemoveProduct = (product) => async () => {
+        (await ProductService.deleteProduct(product.id))
+        this.setState({ products: removeObjectOfArray(this.state.products, product) })
     }
     handleEditProduct = (product) => () => {
         this.setState({ productSelect: product, formProductModal: true })
@@ -51,7 +53,7 @@ class ProductPage extends React.Component {
         let productsData = (await ProductService.getAllFindPartner("dddw")).data
         this.setState({ products: productsData.data })
     }
-    handleClose = () => {
+    handleCloseModal = () => {
         this.setState({ formProductModal: false })
     }
     handleNewProduct = () => {
@@ -69,12 +71,7 @@ class ProductPage extends React.Component {
             <Grid item xs={12}>
                 <DataTable responsive={false} exportToCSV={true} data={products} columns={this.columns} />
             </Grid>
-            <Modal
-                open={formProductModal}
-                onClose={this.handleClose}
-                aria-labelledby="simple-modal-title"
-                aria-describedby="simple-modal-description"
-            >
+            <Modal color="primary" title="Formulario de producto" header show={formProductModal} onClose={this.handleCloseModal}>
                 <ProductForm productSelect={productSelect} />
             </Modal>
         </Grid>)
