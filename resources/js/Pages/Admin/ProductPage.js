@@ -67,9 +67,7 @@ class ProductPage extends React.Component {
         } else {
             updateObjetToArray(productsCopy, product)
         }
-        console.log(productsCopy)
         this.setState({ products: productsCopy })
-        console.log(this.state.products)
         this.handleCloseModal();
     }
     render() {

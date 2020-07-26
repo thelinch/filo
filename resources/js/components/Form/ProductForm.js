@@ -17,7 +17,6 @@ const ProductForm = ({ productSelect, onSubmitSuccess }) => {
     }
     const onSubmit = async (values) => {
         let url = "";
-        console.log("values", values)
         if (Object.keys(values.photo[0]).length > 0 && values.photo[0].lastModified) {
             let formData = new FormData();
             formData.append("files[]", values.photo[0]);
@@ -31,7 +30,6 @@ const ProductForm = ({ productSelect, onSubmitSuccess }) => {
             if (url == "") {
                 values.photo = productSelectMap.photo[0].source;
             }
-            console.log("entro al else", values)
             await ProductService.update(values)
         }
         onSubmitSuccess(values)

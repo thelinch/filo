@@ -42,9 +42,7 @@ class DataTable extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { data } = this.props;
-    console.log("state", this.state.rows, "props", data)
     if (this.state.rows !== data) {
-      console.log("prev props", data)
       this.setState({
         filteredRows: data,
         rows: data,
