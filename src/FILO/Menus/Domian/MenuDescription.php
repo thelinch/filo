@@ -10,4 +10,9 @@ class MenuDescription extends StringValueObject
     {
         parent::__construct($value);
     }
+
+    public function update(string $newDescription): self
+    {
+        return new self($newDescription);
+    }
 }

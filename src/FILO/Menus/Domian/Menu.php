@@ -43,6 +43,14 @@ class Menu extends AggregateRoot
     {
         return $this->description;
     }
+
+    public function update(string $newName, string $newPhoto, float $newPrice, string $newDescription)
+    {
+        $this->photo = $this->photo->update($newPhoto);
+        $this->name = $this->name->update($newName);
+        $this->description = $this->description->update($newDescription);
+        $this->price = $this->price->update($newPrice);
+    }
     public function name(): MenuName
     {
         return $this->name;

@@ -14,4 +14,8 @@ class MenuPhoto extends StringValueObject
     {
         return new self("");
     }
+    public function update(string $newPhoto): self
+    {
+        return new self($newPhoto);
+    }
 }

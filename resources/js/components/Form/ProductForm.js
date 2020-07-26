@@ -5,39 +5,38 @@ import {
 import FileForm from "./Shared/FileForm"
 import Grid from "@material-ui/core/Grid";
 import Input from "@material-ui/core/Input";
-
+import PropTypes from 'prop-types';
 import Spinner from "../Spinner/Spinner";
 import productUtil from "../../Util/Product/Util";
 import { generateUuid } from "../../Util/Util";
 import { ProductService } from "../../Services/ProductService"
 import { FileService } from "../../Services/FileService";
-const ProductForm = ({ productSelect }) => {
+const ProductForm = ({ productSelect, onSubmitSuccess }) => {
     const productSelectMap = productSelect ? { ...productSelect, photo: [productUtil.transformPhotoSaved(productSelect.photo)] } : {
-        id: 0, name: "", price: "", description: "", photo: {}
+        id: 0, name: "", price: "", description: "", photo: [{}]
     }
-    console.log(productSelectMap)
-    /*  {
-         id: 0, name: "", price: "", description: "", photo: { source: "polleria.jpg", options: { type: "local" } }
-     } */
     const onSubmit = async (values) => {
         let url = "";
-        if (Object.keys(values.photo.file).length > 0 && values.photo.file.lastModified) {
-            console.log("Enviando el archivo al servidor")
+        console.log("values", values)
+        if (Object.keys(values.photo[0]).length > 0 && values.photo[0].lastModified) {
             let formData = new FormData();
-            formData.append("files[]", values.photo.file);
+            formData.append("files[]", values.photo[0]);
             url = ((await FileService.save(formData, "images")).data)[0].url;
-        } []
-        if (values.id == 0) {
-            values = { ...values, id: generateUuid(), partnerId: "dddw", photo: url };
-            ProductService.save(values)
-        } else {
-            ProductService.update(values)
+            values.photo = url;
         }
-
+        if (values.id == 0) {
+            values = { ...values, id: generateUuid(), partnerId: "dddw" };
+            (await ProductService.save(values))
+        } else {
+            console.log("entro al else", values)
+            await ProductService.update(values)
+        }
+        onSubmitSuccess(values)
     }
     const onRemoveFile = (productId) => {
-        console.log(productId)
-        ProductService.deletePhotoById(productId);
+        if (productId != 0) {
+            ProductService.deletePhotoById(productId);
+        }
     }
     return <Formik initialValues={productSelectMap} enableReinitialize={true} onSubmit={onSubmit} mapPropsToValues={() => {
         return productSelectMap;
@@ -87,7 +86,7 @@ const ProductForm = ({ productSelect }) => {
                                 <span className="form-group-label">Miniatura</span>
                                 <div className="form-group-field">
                                     <div className="form-group-input-wrap">
-                                        <Field name="photo" component={FileForm} onRemoveFileObject={onRemoveFile} filesParameter={[values.photo]} directory="images" className={`field ${errors.category && touched.category ? "is-invalid" : ""}`} />
+                                        <Field name="photo" component={FileForm} onRemoveFileObject={onRemoveFile} filesParameter={values.photo} directory="images" className={`field ${errors.category && touched.category ? "is-invalid" : ""}`} />
                                         <ErrorMessage name="photo" component="div" className="form-group-error" />
                                     </div>
                                 </div>
@@ -96,7 +95,7 @@ const ProductForm = ({ productSelect }) => {
                         <Grid item xs={12}>
                             <div className="button-toolbar form-button-toolbar">
                                 <button
-                                    className="button flex-center"
+                                    className="button flex-center button-primary"
 
                                     type="submit"
                                 >
@@ -104,7 +103,7 @@ const ProductForm = ({ productSelect }) => {
                                     {isSubmitting && <Spinner type="Circles" />}
                                 </button>
                                 <button
-                                    className="button"
+                                    className="button button-primary"
                                     type="button"
                                 >
                                     Cancelar
@@ -119,5 +118,11 @@ const ProductForm = ({ productSelect }) => {
 
 }
 
-
+ProductForm.propTypes = {
+    onSubmitSuccess: PropTypes.func.isRequired,
+    productSelect: PropTypes.object
+}
+ProductForm.defaultProps = {
+    productSelect: null
+}
 export default ProductForm;

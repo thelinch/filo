@@ -42,14 +42,19 @@ class DataTable extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { data } = this.props;
-    if (prevProps.data !== data) {
+    console.log("state", this.state.rows, "props", data)
+    if (this.state.rows !== data) {
+      console.log("prev props", data)
       this.setState({
         filteredRows: data,
         rows: data,
-      }, () => this.paginateRows());
+      }, () => {
+        this.paginateRows()
+        this.filterRows();
+      });
       // }, () => this.filterRows());
-      this.filterRows();
     }
+
   }
   setUnsearchable = columns => {
     const unsearchable = [];

@@ -64,7 +64,7 @@ class DataTablePagination extends Component {
     const { activePage, changeActivePage, pages, pagesTotal } = this.props;
     // console.log(activePage);
     return (
-      <Grid md={7} sm={12}>
+      <Grid item md={7} sm={12}>
         <div className="dataTables_paginate">
           <div className="pagination">
             <div

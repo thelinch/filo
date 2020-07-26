@@ -20,7 +20,11 @@ function save(product) {
     })
 }
 function update(product) {
-
+    return request({
+        method: "Post",
+        data: product,
+        url: `${ProductDomain}/${product.id}/update`
+    })
 }
 function incrementCounterFavoriteFindProduct(productId) {
     return request({

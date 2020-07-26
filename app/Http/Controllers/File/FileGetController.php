@@ -19,9 +19,9 @@ class FileGetController extends ApiController
 
     public function __invoke(Request $request)
     {
-        $fileName = $request->query("file");
+        $fileUrl = $request->query("file");
         $directory = $request->query("directory");
-        $file = Storage::download($directory . "/" . $fileName);
+        $file = Storage::download("/" . $directory . "/" . $fileUrl);
         return $file;
     }
 }

@@ -5,11 +5,9 @@ import {
 import FileForm from "./Shared/FileForm"
 import Grid from "@material-ui/core/Grid";
 import Input from "@material-ui/core/Input";
-
 import Spinner from "../Spinner/Spinner";
-import productUtil from "../../Util/Product/Util";
 const BusinessForm = ({ BusinessSelect }) => {
-    const BusinessSelectMap = BusinessSelect ? BusinessSelect : { id: 0, name: "", price: "", photo: { source: "polleria.jpg", options: { type: "local" } } }
+    const BusinessSelectMap = BusinessSelect ? BusinessSelect : { id: 0, name: "", price: "", photo: [{ source: "polleria.jpg", options: { type: "local" } }] }
     const onSubmit = (values) => {
         console.log(values)
 
@@ -38,7 +36,7 @@ const BusinessForm = ({ BusinessSelect }) => {
                                 <span className="form-group-label">Descripcion</span>
                                 <div className="form-group-field">
                                     <div className="form-group-input-wrap">
-                                        <Field name="price" type="text" className={`field ${errors.price && touched.price ? "is-invalid" : ""}`} placeholder="Precio del producto" />
+                                        <Field name="price" type="text" as="textarea" className={`field ${errors.price && touched.price ? "is-invalid" : ""}`} placeholder="Cosas que vendas,dedicacion,etc" />
                                         <ErrorMessage name="price" component="div" className="form-group-error" />
                                     </div>
                                 </div>
@@ -49,7 +47,7 @@ const BusinessForm = ({ BusinessSelect }) => {
                                 <span className="form-group-label">Miniatura</span>
                                 <div className="form-group-field">
                                     <div className="form-group-input-wrap">
-                                        <Field name="photo" component={FileForm} filesParameter={[values.photo]} directory="images" className={`field ${errors.category && touched.category ? "is-invalid" : ""}`} />
+                                        <Field name="photo" component={FileForm} messageUser="Foto de tu empresa" filesParameter={values.photo} directory="images" className={`field ${errors.category && touched.category ? "is-invalid" : ""}`} />
                                         <ErrorMessage name="photo" component="div" className="form-group-error" />
                                     </div>
                                 </div>
