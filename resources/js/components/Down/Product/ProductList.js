@@ -6,6 +6,7 @@ import Box from "@material-ui/core/Box"
 import Skeleton from "@material-ui/lab/Skeleton";
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import ProductFavorite from "../../Product/ProductFavorite";
+import ImgPreview from "../../Img/ImgPreview";
 const ProductList = ({ products, handleClick, isLoading }) => {
     const notProducts = (<div width="100%" className="not-items" display="flex" justifyContent="center">
         <strong className="message">Sin productos</strong>
@@ -22,7 +23,7 @@ const ProductList = ({ products, handleClick, isLoading }) => {
         <Grid item xs={12} md={3} key={product.id + 1000}>
             <div className="product" key={product.id}>
                 <div className="product-photo circle" >
-                    <img src={product.photo} className="circle" />
+                    <ImgPreview fileName={product.photo} directory={"images"} className="circle" />
                     <div className="labels">
                         <ProductFavorite product={product} />
                     </div>

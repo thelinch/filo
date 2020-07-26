@@ -5,7 +5,8 @@ import PartnerPage from "./PartnerPage"
 import { SearchProvider } from "../../Contexts/SearchContext";
 import Header from "./Header";
 import { CartProvider } from "../../Contexts/CartContext";
-import ProductPage from "../Admin/ProductPage";
+import ProductPage from "../Admin/ProductPage copy";
+import BusinessPage from "../Admin/BusinessPage";
 
 class Layout extends React.Component {
 
@@ -28,6 +29,7 @@ class Layout extends React.Component {
                                 <InitPage path="/" />
                                 <PartnerPage path="/partner/:partnerId" />
                                 <ProductPage path="/products" />
+                                <BusinessPage path="/business" />
                             </Router>
                         </div>
                     </SearchProvider>

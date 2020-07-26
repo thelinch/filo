@@ -10,4 +10,8 @@ class MenuPrice extends FloatValueObject
     {
         parent::__construct($value);
     }
+    public function update(float $newPrice): self
+    {
+        return new self($newPrice);
+    }
 }

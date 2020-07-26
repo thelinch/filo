@@ -42,6 +42,7 @@ Route::group(["prefix" => "partners"], function () {
 Route::group(["prefix" => "products"], function () {
     Route::post("save", "Menu\MenuPostController@__invoke");
     Route::get("{idMenu}/find", "Menu\MenuGetController@__invoke");
+    Route::post("{idMenu}/update", "Menu\MenuUpdateController@__invoke");
     Route::get("{idMenu}/deletePhoto", "Menu\MenuDeletePhotoController@__invoke");
     Route::get("{idMenu}/delete", "Menu\MenuDeleteController@__invoke");
     Route::get("{idMenu}/incrementVotes", "Menu\MenuUpdateVotesController@__invoke");

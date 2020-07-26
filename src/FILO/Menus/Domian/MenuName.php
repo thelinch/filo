@@ -10,4 +10,8 @@ class MenuName extends StringValueObject
     {
         parent::__construct($value);
     }
+    public function update(string $newName): self
+    {
+        return new self($newName);
+    }
 }

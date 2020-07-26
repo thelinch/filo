@@ -3,8 +3,8 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import { ProductService } from "../../Services/ProductService";
 const ProductFavorite = ({ product }) => {
     const [counterdishes, setCounterdishes] = useState(product.votes)
-    const handleClickHeart = async () => {
-        await ProductService.incrementCounterFavoriteFindProduct(product.id)
+    const handleClickHeart = () => {
+        ProductService.incrementCounterFavoriteFindProduct(product.id)
         setCounterdishes(counterdishes + 1)
         product.votes = counterdishes + 1
     }

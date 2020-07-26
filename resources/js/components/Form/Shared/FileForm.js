@@ -5,30 +5,27 @@ import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orien
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css'
 import PropTypes from 'prop-types';
-import { load } from "react-cookies";
 import { FileService } from "../../../Services/FileService";
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
 const FileForm = ({ filesParameter, isMultiple, messageUser, form, field, directory, onRemoveFileObject }) => {
+    console.log("files", filesParameter)
     const [files, setFiles] = useState(isMultiple ? filesParameter : Object.keys(filesParameter[0]).length == 0 ? [] : [filesParameter[0]]);
+    /* const [files, setFiles] = useState([{ source: "polleria.jpg", options: { type: "local" } }]); */
     const handleUpdateFiles = (files) => {
-        let fileNotSave = files.filter((file) => file.serverId == null).map((fileFilter) => fileFilter.file)
-        let fileOrFiles = fileNotSave;
-        if (!isMultiple) {
-            fileOrFiles = fileNotSave[0];
-        }
+        let fileNotSave = files.filter((file) => file.origin == 1 || file.origin == 3).map((fileFilter) => fileFilter.file)
+        console.log("file not saved", fileNotSave)
+        let fileOrFiles = !isMultiple ? fileNotSave[0] : fileNotSave;
+
         if (Array.isArray(fileOrFiles)) {
-            form.setFieldValue(field.name, { files: fileOrFiles })
+            form.setFieldValue(field.name, fileOrFiles)
         } else {
-            form.setFieldValue(field.name, { file: fileOrFiles || {} })
+            form.setFieldValue(field.name, [fileOrFiles || {}])
         }
         setFiles(files)
     }
-    const onAddFile = (error, file) => {
-        console.log(file, error, "id", form.values.id)
-
-    }
-    const onLoadFile = async (source, load, error, progress, abort, headers) => {
+    const onLoadFile = async (source, load, error, progress, abort) => {
+        console.log("fileForm", source, "directory" + directory)
         let file = (await FileService.findId(source, directory)).data
         load(file)
     }
@@ -39,14 +36,13 @@ const FileForm = ({ filesParameter, isMultiple, messageUser, form, field, direct
         onRemoveFileObject(form.values.id);
     }
     return (
-        <FilePond files={files} instantUpload={false} iconProcess="" onaddfile={onAddFile} server={{ load: onLoadFile, remove: onRemoveFile }} allowMultiple={isMultiple} onupdatefiles={handleUpdateFiles} labelIdle={messageUser} />
+        <FilePond files={files} instantUpload={false} server={{ url: "./", load: onLoadFile, remove: onRemoveFile }} onupdatefiles={handleUpdateFiles} allowMultiple={isMultiple} labelIdle={messageUser} />
 
     )
 
 }
 FileForm.propTypes = {
-    onRemoveFile: PropTypes.func.isRequired,
-    filesParameter: PropTypes.array,
+    onRemoveFileObject: PropTypes.func.isRequired,
     isMultiple: PropTypes.bool,
     messageUser: PropTypes.string,
     directory: PropTypes.string.isRequired

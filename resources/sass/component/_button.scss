@@ -1,47 +1,47 @@
 .button {
-    &.flex-center {
-        display: flex;
-        justify-content: center;
-    }
-    cursor: pointer;
-    border-radius: 6px;
-    padding: 9px 25px;
-    margin-bottom: 20px;
-    margin-right: 15px;
-    transition: all 0.4s;
-    font-size: 14px;
-    position: relative;
-    overflow: hidden;
-    z-index: 0;
-    color: $color-input-text;
-    border: 1px solid $color-input-border;
-    background-color: $color-button;
-    &:last-child {
-        margin-right: 0;
-    }
+  &.flex-center {
+    display: flex;
+    justify-content: center;
+  }
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 9px 25px;
+  margin-bottom: 20px;
+  margin-right: 15px;
+  transition: all 0.4s;
+  font-size: 14px;
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
+  color: $color-input-text;
+  border: 1px solid $color-input-border;
+  background-color: $color-button;
+  &:last-child {
+    margin-right: 0;
+  }
 
-    &:before {
-        position: absolute;
-        height: 0;
-        width: 0;
-        border-radius: 50%;
-        background-color: $color-button-hover;
-        transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
-        transform: translate(-50%, -50%);
-        z-index: -1;
-        content: "";
-        top: 0;
-        left: 0;
-    }
+  &:before {
+    position: absolute;
+    height: 0;
+    width: 0;
+    border-radius: 50%;
+    background-color: $color-button-hover;
+    transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    content: '';
+    top: 0;
+    left: 0;
+  }
 
-    p {
-        display: flex;
-        transition: all 0.3s;
-        font-weight: 500;
-        color: #444444;
-    }
+  p {
+    display: flex;
+    transition: all 0.3s;
+    font-weight: 500;
+    color: #444444;
+  }
 
-    /*   svg {
+  /*   svg {
         height: 14px;
         width: 14px;
         // margin: 2px 5px 0 0;
@@ -49,464 +49,466 @@
         fill: #444444;
     } */
 
+  &:hover,
+  &:focus,
+  &:active,
+  &:active:focus {
+    outline: none;
+    box-shadow: none !important;
+
+    &:before {
+      height: 500%;
+      width: 225%;
+    }
+  }
+
+  &:focus,
+  &:active,
+  &:active:focus {
+    &:before {
+      transition: all 0s;
+    }
+  }
+
+  &.square {
+    border-radius: 0;
+  }
+
+  &.rounded {
+    border-radius: 30px !important;
+  }
+
+  &.icon {
+    padding: 10px 15px;
+
+    &:hover {
+      p {
+        color: #646777;
+      }
+
+      svg {
+        fill: #646777;
+      }
+    }
+
+    &.icon--right {
+      svg {
+        margin: 2px 0 0 5px;
+      }
+    }
+  }
+
+  &.button-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+  }
+
+  &.button-lg {
+    padding: 12px 25px;
+    font-size: 14px;
+  }
+
+  &.button-secondary {
+    background-color: $color-secondary;
+    border-color: $color-secondary;
+    color: $white;
+
+    &:before {
+      background-color: $color-secondary-hover;
+    }
+
     &:hover,
     &:focus,
     &:active,
     &:active:focus {
-        outline: none;
-        box-shadow: none !important;
-
-        &:before {
-            height: 500%;
-            width: 225%;
-        }
+      border-color: $color-secondary-hover;
+      // color: #646777;
     }
 
+    &:not([disabled]):not(.disabled):active,
+    &:not([disabled]):not(.disabled).active {
+      background-color: #dddddd;
+      border-color: #dddddd;
+    }
+  }
+
+  &.button-outline-secondary {
+    border-color: $color-secondary;
+
+    &,
+    p {
+      color: $color-secondary;
+    }
+
+    svg {
+      fill: $color-secondary;
+    }
+
+    &:before {
+      background-color: $color-secondary;
+    }
+
+    // &:hover, &:focus, &:active, &:active:focus {
+    //     background: transparent;
+    //     border-color: $color-secondary;
+    //     color: #444444;
+
+    //     p {
+    //         color: #444444;
+    //     }
+
+    //     svg {
+    //         fill: #444444;
+    //     }
+    // }
+  }
+
+  &.button-primary {
+    background-color: $color-primary;
+    border-color: $color-primary;
+    color: $white;
+
+    &:before {
+      background-color: $color-primary-hover;
+    }
+
+    &:hover,
     &:focus,
     &:active,
     &:active:focus {
-        &:before {
-            transition: all 0s;
-        }
+      border-color: $color-primary-hover;
+    }
+  }
+
+  &.button-outline-primary {
+    color: $color-primary;
+    border-color: $color-primary;
+
+    p {
+      color: $color-primary;
     }
 
-    &.square {
-        border-radius: 0;
+    svg {
+      fill: $color-primary;
     }
 
-    &.rounded {
-        border-radius: 30px !important;
+    &:before {
+      background-color: $color-primary;
+    }
+  }
+
+  &.button-success {
+    background-color: $color-success;
+    border-color: $color-success;
+    color: $white;
+
+    &:before {
+      background-color: $color-success-hover;
     }
 
-    &.icon {
-        padding: 10px 15px;
+    &:hover,
+    &:focus,
+    &:active,
+    &:active:focus {
+      border-color: $color-success-hover;
+    }
+  }
 
-        &:hover {
-            p {
-                color: #646777;
-            }
+  &.button-outline-success {
+    color: $color-success;
+    border-color: $color-success;
 
-            svg {
-                fill: #646777;
-            }
-        }
-
-        &.icon--right {
-            svg {
-                margin: 2px 0 0 5px;
-            }
-        }
+    p {
+      color: $color-success;
     }
 
-    &.button-sm {
-        padding: 0.25rem 0.5rem;
-        font-size: 0.875rem;
-        line-height: 1.5;
-        border-radius: 0.2rem;
+    svg {
+      fill: $color-success;
     }
 
-    &.button-lg {
-        padding: 12px 25px;
-        font-size: 14px;
+    &:before {
+      background-color: $color-success;
+    }
+  }
+
+  &.button-warning {
+    background-color: $color-warning;
+    border-color: $color-warning;
+    color: $white;
+
+    &:before {
+      background-color: $color-warning-hover;
     }
 
-    &.button-secondary {
-        background-color: $color-secondary;
-        border-color: $color-secondary;
-        color: $white;
+    &:hover,
+    &:focus,
+    &:active,
+    &:active:focus {
+      border-color: $color-warning-hover;
+    }
+  }
 
-        &:before {
-            background-color: $color-secondary-hover;
-        }
+  &.button-outline-warning {
+    color: $color-warning;
+    border-color: $color-warning;
 
-        &:hover,
-        &:focus,
-        &:active,
-        &:active:focus {
-            border-color: $color-secondary-hover;
-            // color: #646777;
-        }
-
-        &:not([disabled]):not(.disabled):active,
-        &:not([disabled]):not(.disabled).active {
-            background-color: #dddddd;
-            border-color: #dddddd;
-        }
+    p {
+      color: $color-warning;
     }
 
-    &.button-outline-secondary {
-        border-color: $color-secondary;
-
-        &,
-        p {
-            color: $color-secondary;
-        }
-
-        svg {
-            fill: $color-secondary;
-        }
-
-        &:before {
-            background-color: $color-secondary;
-        }
-
-        // &:hover, &:focus, &:active, &:active:focus {
-        //     background: transparent;
-        //     border-color: $color-secondary;
-        //     color: #444444;
-
-        //     p {
-        //         color: #444444;
-        //     }
-
-        //     svg {
-        //         fill: #444444;
-        //     }
-        // }
+    svg {
+      fill: $color-warning;
     }
 
-    &.button-primary {
-        background-color: $color-primary;
-        border-color: $color-primary;
-        color: $white;
+    &:before {
+      background-color: $color-warning;
+    }
+  }
 
-        &:before {
-            background-color: $color-primary-hover;
-        }
+  &.button-danger {
+    background-color: $color-danger;
+    border-color: $color-danger;
+    color: $white;
 
-        &:hover,
-        &:focus,
-        &:active,
-        &:active:focus {
-            border-color: $color-primary-hover;
-        }
+    &:before {
+      background-color: $color-danger-hover;
     }
 
-    &.button-outline-primary {
-        color: $color-primary;
-        border-color: $color-primary;
+    &:hover,
+    &:focus,
+    &:active,
+    &:active:focus {
+      border-color: $color-danger-hover;
+    }
+  }
 
-        p {
-            color: $color-primary;
-        }
+  &.button-outline-danger {
+    color: $color-danger;
+    border-color: $color-danger;
 
-        svg {
-            fill: $color-primary;
-        }
-
-        &:before {
-            background-color: $color-primary;
-        }
+    p {
+      color: $color-danger;
     }
 
-    &.button-success {
-        background-color: $color-success;
-        border-color: $color-success;
-        color: $white;
-
-        &:before {
-            background-color: $color-success-hover;
-        }
-
-        &:hover,
-        &:focus,
-        &:active,
-        &:active:focus {
-            border-color: $color-success-hover;
-        }
+    svg {
+      fill: $color-danger;
     }
 
-    &.button-outline-success {
-        color: $color-success;
-        border-color: $color-success;
+    &:before {
+      background-color: $color-danger;
+    }
+  }
+  &.button-info {
+    background-color: $color-info;
+    border-color: $color-info;
+    color: $white;
 
-        p {
-            color: $color-success;
-        }
-
-        svg {
-            fill: $color-success;
-        }
-
-        &:before {
-            background-color: $color-success;
-        }
+    &:before {
+      background-color: $color-info-hover;
     }
 
-    &.button-warning {
-        background-color: $color-warning;
-        border-color: $color-warning;
-        color: $white;
+    &:hover,
+    &:focus,
+    &:active,
+    &:active:focus {
+      border-color: $color-info-hover;
+    }
+  }
 
-        &:before {
-            background-color: $color-warning-hover;
-        }
+  &.button-outline-info {
+    color: $color-info;
+    border-color: $color-info;
 
-        &:hover,
-        &:focus,
-        &:active,
-        &:active:focus {
-            border-color: $color-warning-hover;
-        }
+    p {
+      color: $color-info;
     }
 
-    &.button-outline-warning {
-        color: $color-warning;
-        border-color: $color-warning;
-
-        p {
-            color: $color-warning;
-        }
-
-        svg {
-            fill: $color-warning;
-        }
-
-        &:before {
-            background-color: $color-warning;
-        }
+    svg {
+      fill: $color-info;
     }
 
-    &.button-danger {
-        background-color: $color-danger;
-        border-color: $color-danger;
-        color: $white;
+    &:before {
+      background-color: $color-info;
+    }
+  }
 
-        &:before {
-            background-color: $color-danger-hover;
-        }
+  &,
+  &.button-primary,
+  &.button-danger,
+  &.button-warning,
+  &.button-success,
+  &.button-info,
+  &.button-outline-secondary,
+  &.button-secondary,
+  &.button-outline-primary,
+  &.button-outline-danger,
+  &.button-outline-warning,
+  &.button-outline-success,
+  &.button-outline-info,
+  &.icon,
+  &.icon.button-secondary {
+    &.disabled {
+      background-color: #f2f4f7;
+      border-color: #f2f4f7;
+      color: #dddddd;
+      pointer-events: none;
 
-        &:hover,
-        &:focus,
-        &:active,
-        &:active:focus {
-            border-color: $color-danger-hover;
-        }
+      p {
+        color: #dddddd;
+      }
+
+      svg {
+        fill: #dddddd;
+      }
+    }
+  }
+
+  &.button-primary,
+  &.button-danger,
+  &.button-warning,
+  &.button-success,
+  &.button-secondary,
+  &.button-info {
+    p {
+      color: #ffffff;
     }
 
-    &.button-outline-danger {
-        color: $color-danger;
-        border-color: $color-danger;
-
-        p {
-            color: $color-danger;
-        }
-
-        svg {
-            fill: $color-danger;
-        }
-
-        &:before {
-            background-color: $color-danger;
-        }
+    svg {
+      fill: #ffffff;
     }
-    &.button-info {
-        background-color: $color-info;
-        border-color: $color-info;
-        color: $white;
+  }
 
-        &:before {
-            background-color: $color-info-hover;
-        }
-
-        &:hover,
-        &:focus,
-        &:active,
-        &:active:focus {
-            border-color: $color-info-hover;
-        }
+  &.button-outline-primary,
+  &.button-outline-danger,
+  &.button-outline-warning,
+  &.button-outline-success,
+  &.button-outline-secondary,
+  &.button-outline-info {
+    &:hover,
+    &:focus,
+    &:active,
+    &:active:focus {
+      color: #ffffff;
+      background: transparent;
     }
+  }
 
-    &.button-outline-info {
-        color: $color-info;
-        border-color: $color-info;
+  &.button-primary,
+  &.button-danger,
+  &.button-warning,
+  &.button-success,
+  &.button-secondary,
+  &.button-info,
+  &.button-outline-primary,
+  &.button-outline-danger,
+  &.button-outline-warning,
+  &.button-outline-success,
+  &.button-outline-secondary,
+  &.button-outline-info {
+    &:hover,
+    &:focus,
+    &:active,
+    &:active:focus {
+      p {
+        color: #ffffff;
+      }
 
-        p {
-            color: $color-info;
-        }
-
-        svg {
-            fill: $color-info;
-        }
-
-        &:before {
-            background-color: $color-info;
-        }
+      svg {
+        fill: #ffffff;
+      }
     }
+  }
 
-    &,
-    &.button-primary,
-    &.button-danger,
-    &.button-warning,
-    &.button-success,
-    &.button-info,
-    &.button-outline-secondary,
-    &.button-secondary,
-    &.button-outline-primary,
-    &.button-outline-danger,
-    &.button-outline-warning,
-    &.button-outline-success,
-    &.button-outline-info,
-    &.icon,
-    &.icon.button-secondary {
-        &.disabled {
-            background-color: #f2f4f7;
-            border-color: #f2f4f7;
-            color: #dddddd;
-            pointer-events: none;
-
-            p {
-                color: #dddddd;
-            }
-
-            svg {
-                fill: #dddddd;
-            }
-        }
+  &.expand {
+    svg {
+      width: 0;
+      transition: all 0.3s;
     }
 
-    &.button-primary,
-    &.button-danger,
-    &.button-warning,
-    &.button-success,
-    &.button-secondary,
-    &.button-info {
-        p {
-            color: #ffffff;
+    &.expand--load {
+      @keyframes rotating {
+        from {
+          transform: rotate(0deg);
         }
-
-        svg {
-            fill: #ffffff;
+        to {
+          transform: rotate(360deg);
         }
+      }
+      svg {
+        width: 14px;
+        animation: rotating 2s linear infinite;
+      }
     }
-
-    &.button-outline-primary,
-    &.button-outline-danger,
-    &.button-outline-warning,
-    &.button-outline-success,
-    &.button-outline-secondary,
-    &.button-outline-info {
-        &:hover,
-        &:focus,
-        &:active,
-        &:active:focus {
-            color: #ffffff;
-            background: transparent;
-        }
-    }
-
-    &.button-primary,
-    &.button-danger,
-    &.button-warning,
-    &.button-success,
-    &.button-secondary,
-    &.button-info,
-    &.button-outline-primary,
-    &.button-outline-danger,
-    &.button-outline-warning,
-    &.button-outline-success,
-    &.button-outline-secondary,
-    &.button-outline-info {
-        &:hover,
-        &:focus,
-        &:active,
-        &:active:focus {
-            p {
-                color: #ffffff;
-            }
-
-            svg {
-                fill: #ffffff;
-            }
-        }
-    }
-
-    &.expand {
-        svg {
-            width: 0;
-            transition: all 0.3s;
-        }
-
-        &.expand--load {
-            @keyframes rotating {
-                from {
-                    transform: rotate(0deg);
-                }
-                to {
-                    transform: rotate(360deg);
-                }
-            }
-            svg {
-                width: 14px;
-                animation: rotating 2s linear infinite;
-            }
-        }
-    }
+  }
 }
 
 .button-toolbar {
-    margin-top: 15px;
-    margin-bottom: 10px;
+  margin-top: 15px;
+  margin-bottom: 10px;
 
-    & > * {
-        margin-right: 15px;
-
-        &:last-child {
-            margin-right: 0;
-        }
-    }
-
-    &:first-child {
-        margin-top: 0;
-    }
+  & > * {
+    margin-right: 15px;
 
     &:last-child {
-        margin-bottom: -10px;
+      margin-right: 0;
     }
+  }
 
-    &.button-toolbar--center {
-        & > * {
-            margin-right: auto;
-            margin-left: auto;
-        }
+  &:first-child {
+    margin-top: 0;
+  }
+
+  &:last-child {
+    margin-bottom: -10px;
+  }
+
+  &.button-toolbar--center {
+    & > * {
+      margin-right: auto;
+      margin-left: auto;
     }
+  }
 }
 
 .button-group {
-    border-radius: 5px;
-    margin-bottom: -10px;
+  border-radius: 5px;
+  margin-bottom: -10px;
+
+  .button {
+    margin-right: 0;
+    padding: 10px 15px;
+    font-weight: 500;
+  }
+
+  &.button-group--justified {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 
     .button {
-        margin-right: 0;
-        padding: 10px 15px;
-        font-weight: 500;
+      width: 100%;
     }
+  }
 
-    &.button-group--justified {
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-
-        .button {
-            width: 100%;
-        }
+  &.button-group--icons {
+    .button {
+      padding: 7px 8px;
+      line-height: 14px;
+      width: 40px;
+      height: 40px;
     }
+  }
 
-    &.button-group--icons {
-        .button {
-            padding: 7px 8px;
-            line-height: 14px;
-        }
-    }
-
-    &.open .dropdown-toggle {
-        box-shadow: none;
-    }
+  &.open .dropdown-toggle {
+    box-shadow: none;
+  }
 }
 
 button:focus,
 button:active {
-    outline: none;
+  outline: none;
 }
 
 .open > .dropdown-toggle.button-default,
@@ -514,36 +516,36 @@ button:active {
 .button-default:active:focus,
 .button-default.focus,
 .button-default:focus {
-    background-color: $color-background;
+  background-color: $color-background;
 }
 
 .button-toolbar {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    // margin-top: 15px;
-    // margin-bottom: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  // margin-top: 15px;
+  // margin-bottom: 10px;
 
-    & > * {
-        margin-right: 15px;
-
-        &:last-child {
-            margin-right: 0;
-        }
-    }
-
-    &:first-child {
-        margin-top: 0;
-    }
+  & > * {
+    margin-right: 15px;
 
     &:last-child {
-        margin-bottom: -10px;
+      margin-right: 0;
     }
+  }
 
-    &.button-toolbar--center {
-        & > * {
-            margin-right: auto;
-            margin-left: auto;
-        }
+  &:first-child {
+    margin-top: 0;
+  }
+
+  &:last-child {
+    margin-bottom: -10px;
+  }
+
+  &.button-toolbar--center {
+    & > * {
+      margin-right: auto;
+      margin-left: auto;
     }
+  }
 }
