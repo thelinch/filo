@@ -13,7 +13,7 @@ const FileForm = ({ filesParameter, isMultiple, messageUser, form, field, direct
     const [files, setFiles] = useState(isMultiple ? filesParameter : Object.keys(filesParameter[0]).length == 0 ? [] : [filesParameter[0]]);
     /* const [files, setFiles] = useState([{ source: "polleria.jpg", options: { type: "local" } }]); */
     const handleUpdateFiles = (files) => {
-        let fileNotSave = files.filter((file) => file.origin == 1).map((fileFilter) => fileFilter.file)
+        let fileNotSave = files.filter((file) => file.origin == 1 || file.origin == 3).map((fileFilter) => fileFilter.file)
         console.log("file not saved", fileNotSave)
         let fileOrFiles = !isMultiple ? fileNotSave[0] : fileNotSave;
 

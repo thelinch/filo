@@ -28,6 +28,9 @@ const ProductForm = ({ productSelect, onSubmitSuccess }) => {
             values = { ...values, id: generateUuid(), partnerId: "dddw" };
             (await ProductService.save(values))
         } else {
+            if (url == "") {
+                values.photo = productSelectMap.photo[0].source;
+            }
             console.log("entro al else", values)
             await ProductService.update(values)
         }
