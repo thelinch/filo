@@ -18,7 +18,7 @@ class EloquentCategory implements CategoryRepository
     }
     function all(): array
     {
-        $categoriesModel = collect($this->model->where("state", "<>", "0")->get())
+        $categoriesModel = collect($this->model->where("state", "<>", "0")->select("id", "name", "url")->get())
             ->map(fn ($categoryModel) => new Category(
                 new CategoryId($categoryModel->id),
                 new CategoryName($categoryModel->name),

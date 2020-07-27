@@ -36,7 +36,7 @@ class EloquentMenuRepository implements MenuRepositoryI
     {
         /*         $menus = PartnerModel::find($partnerId->value())->menus()->paginate($numberPerPage->value());
  */
-        $menus = PartnerModel::find($partnerId->value())->menus()->get();
+        $menus = PartnerModel::find($partnerId->value())->menus()->get(["id", "price", "name", "description", "votes", "partner_id", "photo"]);
         $menusPaginate = MenuPaginate::create(
             new NextPage(3),
             new PreviusPage(3),
@@ -48,7 +48,7 @@ class EloquentMenuRepository implements MenuRepositoryI
     }
     function search(MenuId $id): ?Menu
     {
-        $menuModel = MenuModel::where("state", "<>", "0")->find($id->value());
+        $menuModel = MenuModel::where("state", "<>", "0")->find($id->value(), ["id", "name", "price", "photo", "description", "partner_id", "votes"]);
         if (null == $menuModel) {
             return null;
         }
@@ -57,19 +57,19 @@ class EloquentMenuRepository implements MenuRepositoryI
     }
     function delete(Menu $menu): void
     {
-        $menuModel = MenuModel::find($menu->id()->value());
+        $menuModel = MenuModel::find($menu->id()->value(), ["id", "state"]);
         $menuModel->state = "0";
         $menuModel->save();
     }
     function updateVotes(Menu $menu): void
     {
-        $menuModel = MenuModel::find($menu->id()->value());
+        $menuModel = MenuModel::find($menu->id()->value(), ["id", "votes"]);
         $menuModel->votes = $menu->votes()->value();
         $menuModel->save();
     }
     public function update(Menu $menu): void
     {
-        $menuModel = MenuModel::find($menu->id()->value());
+        $menuModel = MenuModel::find($menu->id()->value(), ["id", "name", "price", "photo", "description"])->sel;
         $menuModel->name = $menu->name()->value();
         $menuModel->price = $menu->price()->value();
         $menuModel->photo = $menu->photo()->value();

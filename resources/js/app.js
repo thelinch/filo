@@ -18,14 +18,19 @@ import { Router, Link } from "@reach/router";
 import Layout from "./Pages/User/Layout";
 import LayoutAdmin from "./Pages/Admin/LayoutAdmin";
 import moment from "moment"
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+
 class App extends React.Component {
     render() {
 
         return (
-            <Router>
-                <Layout path="/*" />
-                <LayoutAdmin path="/admin/*" />
-            </Router>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <Router>
+                    <Layout path="/*" />
+                    <LayoutAdmin path="/admin/*" />
+                </Router>
+            </MuiPickersUtilsProvider>
         )
     }
 }
