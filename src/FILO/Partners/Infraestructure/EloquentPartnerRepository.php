@@ -61,7 +61,7 @@ class EloquentPartnerRepository implements PartnerRepositoryI
     }
     public function update(Partner $partner): void
     {
-        $partnerModel = PartnerModel::find($partner->id()->value());
+        $partnerModel = PartnerModel::find($partner->id()->value(), ["id", "name", "description", "direction",  "phone", "amountdelivery"]);
         $partnerModel->name = $partner->name()->value();
         $partnerModel->description = $partner->description()->value();
         $partnerModel->direction = $partner->address()->value();
@@ -70,22 +70,31 @@ class EloquentPartnerRepository implements PartnerRepositoryI
     }
     public function delete(PartnerId $id): void
     {
-        $partnerModel = PartnerModel::find($id->value());
+        $partnerModel = PartnerModel::find($id->value(), ["id", "state"]);
         $partnerModel->state = "0";
         $partnerModel->save();
     }
     public function all(NextPage $nextPage, NumberPerPage $numberPartnerPerPage): array
     {
-        $partnersModel = PartnerModel::where("state", "<>", 0)->paginate($numberPartnerPerPage->value());
+        $partnersModels = PartnerModel::where("state", "<>", 0)
+            ->with(["category" => function ($q) {
+                $q->select("id", "name");
+            }, "workdays", "city" => function ($q) {
+                $q->select("id", "name");
+            }])->get();
         /* $paginationPartner = PaginationPartner::create(new NextPage(3), new PreviusPage(3), new NumberPerPage($partnersModel->perPage()), new Total($partnersModel->total()), collect($partnersModel->items())); */
-        $partners = collect($partnersModel->items())->map(function ($partnerModel) {
+        $partners = $partnersModels->map(function ($partnerModel) {
             return $this->transformPartnerModelToPartner($partnerModel);
         })->toArray();
         return $partners;
     }
     public function search(PartnerId $id): ?Partner
     {
-        $partnerModel = $this->model->with(["category", "workdays", "city"])->find($id->value());
+        $partnerModel = $this->model->with(["category" => function ($q) {
+            $q->select("id", "name");
+        }, "workdays", "city" => function ($q) {
+            $q->select("id", "name");
+        }])->find($id->value());
         if ($partnerModel == null) {
             return null;
         }
