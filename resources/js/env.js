@@ -4,3 +4,4 @@ export const PartnerDomain = "/api/partners";
 
 export const FileDomain = "/api/files/";
 export const ProductDomain = "/api/products"
+export const BusinessDomain = "/api/partners"

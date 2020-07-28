@@ -3,7 +3,7 @@
   // height: 36px;
   font-size: 14px;
 }
-  
+
 .react-select__control {
   // height: 36px;
   border-radius: 6px !important;
@@ -11,24 +11,27 @@
   min-height: 36px !important;
   border: 1px solid $color-input-border !important;
   // background-color: $color-input-background !important;
-  .react-select__value-container{
+  .react-select__value-container {
     // height: 36px;
     .react-select__single-value {
       color: $color-input-text !important;
     }
   }
-  &.react-select__control--is-focused, &:hover {
+  &.react-select__control--is-focused,
+  &:hover {
     border-color: $color-secondary !important;
     box-shadow: none;
+    z-index: 10000;
     background: transparent;
-    .react-select__dropdown-indicator, .react-select__clear-indicator {
+    .react-select__dropdown-indicator,
+    .react-select__clear-indicator {
       color: $color-secondary !important;
     }
   }
   &.react-select__control--is-disabled {
-    border-color: hsl(0,0%,90%) !important;
+    border-color: hsl(0, 0%, 90%) !important;
     box-shadow: none;
-    background: hsl(0,0%,95%) !important;
+    background: hsl(0, 0%, 95%) !important;
   }
 }
 
@@ -42,7 +45,8 @@
   display: none;
 }
 
-.react-select__dropdown-indicator, .react-select__clear-indicator {
+.react-select__dropdown-indicator,
+.react-select__clear-indicator {
   cursor: pointer;
   color: $color-input-border !important;
   // margin-top: -2px;
@@ -74,14 +78,12 @@
 //   background: $color-input-background;
 // }
 
-
-
 .react-select__menu {
   position: relative;
   box-shadow: none !important;
   margin-top: 6px;
   margin-bottom: 6px;
-  z-index: 2 !important;
+  z-index: 1000 !important;
 }
 
 .react-select__menu-list {
@@ -98,10 +100,10 @@
 
 @keyframes open {
   0% {
-    max-height: 0
+    max-height: 0;
   }
   100% {
-    max-height: 200px
+    max-height: 200px;
   }
 }
 
@@ -134,7 +136,7 @@
   cursor: pointer;
   color: $color-input-text;
   height: 36px;
-  padding: .25rem;
+  padding: 0.25rem;
   font-size: 14px;
   line-height: 1.5;
   // -webkit-appearance: none;
@@ -147,15 +149,13 @@
   // background-repeat: no-repeat;
   // background-position-x: 100%;
   // background-position-y: 5px;
-  
-  &:hover, &:focus, &:active{
-    border-color: $color-secondary;;
+
+  &:hover,
+  &:focus,
+  &:active {
+    border-color: $color-secondary;
   }
   &:focus {
     outline: none;
-  }
-
-  option {
-      // background-color: $color-background;
   }
 }
