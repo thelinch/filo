@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import {
     Formik, Form, Field, ErrorMessage
 } from 'formik';
@@ -7,10 +7,27 @@ import Grid from "@material-ui/core/Grid";
 import Input from "@material-ui/core/Input";
 import Spinner from "../Spinner/Spinner";
 import WeekCalendar from "../Calendar/WeekCalendar"
+import { transformDataWeekDayToLinealObject, hasContentObject, insertObjectToArray, updateObjetToArray } from "../../Util/Util";
+import Chip from "@material-ui/core/Chip";
+import { Box } from "@material-ui/core";
 const BusinessForm = ({ BusinessSelect }) => {
     const BusinessSelectMap = BusinessSelect ? BusinessSelect : { id: 0, name: "", price: "", photo: [{}] }
+    const [selectdays, setSelectdays] = useState([])
     const onSubmit = (values) => {
         console.log(values)
+
+    }
+    const onSelectinterval = (values) => {
+        let arrayMapValues = transformDataWeekDayToLinealObject(values);
+        for (let i = 0; i < arrayMapValues.length; i++) {
+            if (hasContentObject(selectdays, arrayMapValues[i])) {
+                updateObjetToArray(selectdays, arrayMapValues[i])
+            } else {
+                selectdays.push(arrayMapValues[i])
+            }
+        }
+        setSelectdays(cur => [...selectdays])
+
 
     }
     return <Formik initialValues={BusinessSelectMap} enableReinitialize={true} onSubmit={onSubmit} mapPropsToValues={() => {
@@ -78,15 +95,35 @@ const BusinessForm = ({ BusinessSelect }) => {
                             </div>
                         </Grid>
                         <Grid item xs={12}>
-                            <div className="form-group-horizontal">
-                                <span className="form-group-label">Dias de atencion</span>
-                                <div className="form-group-field">
-                                    <div className="form-group-input-wrap">
-                                        <Field name="price" component={WeekCalendar} className={`field ${errors.price && touched.price ? "is-invalid" : ""}`} placeholder="Cosas que vendas,dedicacion,etc" />
-                                        <ErrorMessage name="price" component="div" className="form-group-error" />
+                            <Grid container>
+                                <Grid item xs={12}>
+                                    {
+                                        selectdays.length > 0 && <Box display="flex" alignItems="center" width="100%" justifyContent="center" >
+                                            {selectdays.map(selectday => (
+                                                <Chip label={
+                                                    <React.Fragment key={selectday.id}>
+                                                        <span>{selectday.day}</span>
+                                                        <strong>{selectday.inithour}-{selectday.endhour}</strong>
+                                                    </React.Fragment>
+                                                } style={{ margin: ".5em" }} />
+                                            ))}
+                                        </Box>
+                                    }
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <div className="form-group-horizontal">
+                                        <span className="form-group-label">Dias de atencion</span>
+
+                                        <div className="form-group-field">
+                                            <div className="form-group-input-wrap">
+                                                <Field name="price" component={WeekCalendar} onIntervalSelect={onSelectinterval} weekdays={[{ id: "1", day: "Lunes" }, { id: "2", day: "Martes" }, { id: "3", day: "Miercoles" }, { id: "4", day: "Jueves" }, { id: "5", day: "Viernes" }, { id: "6", day: "Sabado" }, { id: "7", day: "Domingo" }]} className={`field ${errors.price && touched.price ? "is-invalid" : ""}`} placeholder="Cosas que vendas,dedicacion,etc" />
+                                                <ErrorMessage name="price" component="div" className="form-group-error" />
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
+
+                                </Grid>
+                            </Grid>
                         </Grid>
                         <Grid item xs={12}>
                             <div className="form-group-horizontal">

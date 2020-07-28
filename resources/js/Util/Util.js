@@ -14,6 +14,11 @@ export function hasContentObject(array, object) {
 
     return array.find(e => e.id == object.id) != null;
 }
+export function transformDataWeekDayToLinealObject(object) {
+    let objectMap = object.days.map(dayObject => ({ inithour: object.inithour, endhour: object.endhour, ...dayObject }));
+    return objectMap;
+
+}
 export function insertObjectToArray(array, object) {
     array.push(object)
     return array;
