@@ -26,7 +26,7 @@ class PartnerPostController extends ApiController
     public function __construct()
     {
         $this->parnertCreator = App::make(CreatePartnerCreator::class);
-        $this->middleware("auth:api");
+        /*  $this->middleware("auth:api"); */
     }
     public function exceptions(): array
     {
@@ -35,7 +35,7 @@ class PartnerPostController extends ApiController
 
     public function __invoke(Request $request)
     {
-        $partnerParameter = $request->only(["id", "address", "name", "amountdelivery", "category", "daysworks", "phone", "description", "user", "city"]);
+        $partnerParameter = $request->only(["id", "address", "name", "amountdelivery", "category", "daysworks", "phone", "photo", "description", "user", "city"]);
         $daysWorks = collect($partnerParameter["daysworks"])->map(function ($daywork) {
             return new PartnerDayWork($daywork["startime"], $daywork["endtime"], $daywork["day"]["name"], $daywork["day"]["id"], $daywork["id"]);
         });
@@ -43,13 +43,13 @@ class PartnerPostController extends ApiController
             new PartnerId($partnerParameter["id"]),
             new PartnerCategory($partnerParameter["category"]["id"], $partnerParameter["category"]["name"]),
             new PartnerAddress($partnerParameter["address"]),
-            new UserId($partnerParameter["user"]["id"]),
+            new UserId("wdwdwd1dwdwd-wdwd12"),
             new PartnerPhone($partnerParameter["phone"]),
             new PartnerName($partnerParameter["name"]),
             new PartnerDescription($partnerParameter["description"]),
             new PartnerDishes(0),
             new PartnerCity($partnerParameter["city"]["id"], $partnerParameter["city"]["name"]),
-            new PartnerPhoto("dd"),
+            new PartnerPhoto($partnerParameter["photo"]),
             new PartnerAmountDelivery($partnerParameter["amountdelivery"]),
             $daysWorks->toArray()
         );

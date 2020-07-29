@@ -6,6 +6,7 @@ import Box from '@material-ui/core/Box';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import PhoneIcon from '@material-ui/icons/Phone';
 import Chip from '@material-ui/core/Chip';
+import ImgPreview from "../Img/ImgPreview";
 
 const PartnerList = ({ partners, handleClick, isLoading }) => {
     const notPartner = (<div width="100%" className="not-items" display="flex" justifyContent="center">
@@ -26,7 +27,7 @@ const PartnerList = ({ partners, handleClick, isLoading }) => {
                 <CardActionArea>
                     <CardMedia >
                         <Chip label={partner.category.name} className="category" />
-                        <img src={partner.photo} />
+                        <ImgPreview fileName={partner.photo} directory="images" />
                     </CardMedia>
 
                 </CardActionArea>

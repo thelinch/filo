@@ -30,7 +30,7 @@ export function hasContentDayToArray(array, object) {
     return array.find(e => e.day.id == object.day.id) != null
 }
 export function transformDataWeekDayToLinealObject(object) {
-    let objectMap = object.days.map(dayObject => ({ startime: object.inithour, endtime: object.endhour, day: { ...dayObject } }));
+    let objectMap = object.days.map(dayObject => ({ startime: object.inithour, endtime: object.endhour, day: { name: dayObject.day, id: dayObject.id } }));
     return objectMap;
 
 }

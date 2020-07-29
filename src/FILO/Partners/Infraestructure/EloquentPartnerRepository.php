@@ -44,6 +44,7 @@ class EloquentPartnerRepository implements PartnerRepositoryI
         $partnerModel->user_id = $partner->userId()->value();
         $partnerModel->phone = $partner->phone()->value();
         $partnerModel->amountdelivery = $partner->amountDelivery()->value();
+        $partnerModel->photo = $partner->photo()->value();
         $partnerModel->petitions = 0;
         $partnerModel->city()->associate($partner->city()->id());
         $partnerModel->category()->associate($partner->category()->id());

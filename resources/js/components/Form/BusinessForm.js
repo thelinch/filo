@@ -15,28 +15,34 @@ import { CategoryService } from "../../Services/CategoryService"
 import { FileService } from "../../Services/FileService";
 import { BusinessService } from "../../Services/BusinessService"
 const BusinessForm = ({ BusinessSelect }) => {
-    const BusinessSelectMap = BusinessSelect ? BusinessSelect : { id: 0, name: "", description: "", email: "", category: {}, city: {}, direction: "", phone: "", amountdelivery: "", photo: [{}], workdays: [] }
+    const BusinessSelectMap = BusinessSelect ? BusinessSelect : { id: 0, name: "", description: "", email: "", category: {}, city: {}, address: "", phone: "", amountdelivery: "", photo: [{}], daysworks: [] }
     const [selectdays, setSelectdays] = useState([])
     const [categories, setCategories] = useState([])
-    const [cities, setCities] = useState([{ label: "Yanahuanca", value: 2 }, { label: "Tingo Maria", value: 1 }])
+    const [cities, setCities] = useState([{ label: "Yanahuanca", value: { id: 2, name: "Yanahuanca" } }, { label: "Tingo Maria", value: { id: 1, name: "Tingo Maria" } }])
     const onSubmit = async (values) => {
+        console.log("values", values)
         let url = ""
-/*         if (hasSendFileToServer(values.photo[0])) {
+        if (hasSendFileToServer(values.photo[0])) {
             let formData = new FormData();
             formData.append("files[]", values.photo[0]);
             url = ((await FileService.save(formData, "images")).data)[0].url;
             values.photo = url;
         }
- */        if (values.id == 0) {
+        if (values.id == 0) {
             values.id = generateUuid();
-            values.workdays = values.workdays.map(worday => ({ id: generateUuid(), ...worday }))
+            values.daysworks = values.daysworks.map(worday => ({ id: generateUuid(), ...worday }))
             console.log("values map", values)
+                (await BusinessService.save(values))
+        } else {
+            if (url == "") {
+                values.photo = productSelectMap.photo[0].source;
+            }
         }
     }
     useEffect(() => {
         async function fetchCategoriesApi() {
             let dataCategories = (await CategoryService.getAll()).data
-            dataCategories = dataCategories.map(category => ({ value: category.id, label: category.name }))
+            dataCategories = dataCategories.map(category => ({ value: category, label: category.name }))
             setCategories(dataCategories)
         }
         fetchCategoriesApi();
@@ -45,19 +51,7 @@ const BusinessForm = ({ BusinessSelect }) => {
     const handleDeleteHour = (hour) => () => {
         console.log(hour)
     }
-    const onSelectinterval = (values) => {
-        let arrayMapValues = transformDataWeekDayToLinealObject(values);
-        for (let i = 0; i < arrayMapValues.length; i++) {
-            if (hasContentDayToArray(selectdays, arrayMapValues[i])) {
-                updateDayToArray(selectdays, arrayMapValues[i])
-            } else {
-                selectdays.push(arrayMapValues[i])
-            }
-        }
-        setSelectdays(cur => [...selectdays])
 
-
-    }
     return <Formik initialValues={BusinessSelectMap} enableReinitialize={true} onSubmit={onSubmit} mapPropsToValues={() => {
         return BusinessSelectMap;
     }}>
@@ -105,8 +99,8 @@ const BusinessForm = ({ BusinessSelect }) => {
                                 <span className="form-group-label">Direccion:</span>
                                 <div className="form-group-field">
                                     <div className="form-group-input-wrap">
-                                        <Field name="direction" type="text" placeholder="Direccion" className={`field ${errors.price && touched.price ? "is-invalid" : ""}`} />
-                                        <ErrorMessage name="direction" component="div" className="form-group-error" />
+                                        <Field name="address" type="text" placeholder="Direccion" className={`field ${errors.price && touched.price ? "is-invalid" : ""}`} />
+                                        <ErrorMessage name="address" component="div" className="form-group-error" />
                                     </div>
                                 </div>
                             </div>
@@ -160,10 +154,10 @@ const BusinessForm = ({ BusinessSelect }) => {
                                 <Grid item xs={12}>
                                     {
                                         <Box display="flex" alignItems="center" width="100%" justifyContent="center" flexWrap="wrap" >
-                                            {values.workdays.map(selectday => (
+                                            {values.daysworks.map(selectday => (
                                                 <Chip label={
                                                     <React.Fragment key={selectday.day.id}>
-                                                        <span>{selectday.day.day}</span>
+                                                        <span>{selectday.day.name}</span>
                                                         <strong style={{ padding: ".3rem" }}>{selectday.startime}-{selectday.endtime}</strong>
                                                     </React.Fragment>
                                                 } style={{ margin: ".5em" }} onDelete={handleDeleteHour(selectday)} />
@@ -177,9 +171,8 @@ const BusinessForm = ({ BusinessSelect }) => {
 
                                         <div className="form-group-field">
                                             <div className="form-group-input-wrap">
-                                                <Field name="workdays" component={WeekCalendar} onIntervalSelect={(valuesSelectinterval) => {
-                                                    let workDaysForm = values.workdays;
-                                                    console.log("values", values.workdays)
+                                                <Field name="daysworks" component={WeekCalendar} onIntervalSelect={(valuesSelectinterval) => {
+                                                    let workDaysForm = values.daysworks;
                                                     let arrayMapValues = transformDataWeekDayToLinealObject(valuesSelectinterval);
                                                     for (let i = 0; i < arrayMapValues.length; i++) {
                                                         if (hasContentDayToArray(workDaysForm, arrayMapValues[i])) {
@@ -187,10 +180,10 @@ const BusinessForm = ({ BusinessSelect }) => {
                                                         } else {
                                                             workDaysForm.push(arrayMapValues[i])
                                                         }
-                                                        setFieldValue("workdays", workDaysForm)
+                                                        setFieldValue("daysworks", workDaysForm)
                                                     }
                                                 }} weekdays={[{ id: "1", day: "Lunes" }, { id: "2", day: "Martes" }, { id: "3", day: "Miercoles" }, { id: "4", day: "Jueves" }, { id: "5", day: "Viernes" }, { id: "6", day: "Sabado" }, { id: "7", day: "Domingo" }]} className={`field ${errors.price && touched.price ? "is-invalid" : ""}`} placeholder="Cosas que vendas,dedicacion,etc" />
-                                                <ErrorMessage name="workdays" component="div" className="form-group-error" />
+                                                <ErrorMessage name="daysworks" component="div" className="form-group-error" />
                                             </div>
                                         </div>
                                     </div>
