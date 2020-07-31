@@ -27,7 +27,7 @@ const PartnerList = ({ partners, handleClick, isLoading }) => {
                 <CardActionArea>
                     <CardMedia >
                         <Chip label={partner.category.name} className="category" />
-                        <ImgPreview fileName={partner.photo} directory="images" />
+                        <ImgPreview fileName={partner.photo} directory="images" heightSpinner="50%" widthSpinner="50%" />
                     </CardMedia>
 
                 </CardActionArea>

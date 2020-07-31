@@ -37,6 +37,8 @@ const BusinessForm = ({ BusinessSelect }) => {
             if (url == "") {
                 values.photo = productSelectMap.photo[0].source;
             }
+            (await BusinessService.update(values));
+
         }
     }
     useEffect(() => {

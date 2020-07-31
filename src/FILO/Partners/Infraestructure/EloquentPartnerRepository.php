@@ -62,12 +62,20 @@ class EloquentPartnerRepository implements PartnerRepositoryI
     }
     public function update(Partner $partner): void
     {
+        DB::beginTransaction();
         $partnerModel = PartnerModel::find($partner->id()->value(), ["id", "name", "description", "direction",  "phone", "amountdelivery"]);
         $partnerModel->name = $partner->name()->value();
         $partnerModel->description = $partner->description()->value();
         $partnerModel->direction = $partner->address()->value();
         $partnerModel->amountdelivery = $partner->amountDelivery()->value();
+        if ($partnerModel->category()->id != $partner->category()->id()) {
+            $partnerModel->category()->associate($partner->category()->id());
+        }
+        if ($partnerModel->city()->id != $partner->city()->id()) {
+            $partnerModel->city()->associate($partner->city()->id());
+        }
         $partnerModel->save();
+        DB::commit();
     }
     public function delete(PartnerId $id): void
     {
