@@ -10,48 +10,70 @@ import WeekCalendar from "../Calendar/WeekCalendar"
 import { transformDataWeekDayToLinealObject, hasSendFileToServer, removeObjectDayToArray, updateDayToArray, hasContentDayToArray, updateObjetToArray, generateUuid } from "../../Util/Util";
 import Chip from "@material-ui/core/Chip";
 import Box from "@material-ui/core/Box";
-import Select from "./Shared/Select";
+import SelectField from "./Shared/SelectField";
 import { CategoryService } from "../../Services/CategoryService"
 import { FileService } from "../../Services/FileService";
 import { BusinessService } from "../../Services/BusinessService"
 import productUtil from "../../Util/Product/Util";
 
-const BusinessForm = ({ BusinessSelect }) => {
-    const BusinessSelectMap = BusinessSelect ? { ...BusinessSelect, photo: [productUtil.transformPhotoSaved(BusinessSelect.photo)] } : { id: 0, name: "", description: "", email: "", category: {}, city: {}, address: "", phone: "", amountdelivery: "", photo: [{}], workdays: [] }
-    const [selectdays, setSelectdays] = useState([])
+const BusinessForm = (props) => {
+    const [business, setBusiness] = useState({ id: 0, name: "", description: "", email: "", category: { id: "" }, city: { id: "" }, address: "", phone: "", amountdelivery: "", photo: [{ options: { type: "local" }, source: "polleria.jpg" }], workdays: [] })
     const [categories, setCategories] = useState([])
-    const [cities, setCities] = useState([{ label: "Yanahuanca", value: { id: 2, name: "Yanahuanca" } }, { label: "Tingo Maria", value: { id: 1, name: "Tingo Maria" } }])
+    const [isLoadBusiness, setIsLoadBusiness] = useState(true)
+    const [cities, setCities] = useState([{ label: "Yanahuanca", value: 2 }, { label: "Tingo Maria", value: 1 }])
     const onSubmit = async (values) => {
-        console.log("values", values)
-        let url = ""
-        if (hasSendFileToServer(values.photo[0])) {
-            let formData = new FormData();
-            formData.append("files[]", values.photo[0]);
-            url = ((await FileService.save(formData, "images")).data)[0].url;
-            values.photo = url;
-        }
-        if (values.id == 0) {
-            values.id = generateUuid();
-            values.workdays = values.workdays.map(worday => ({ id: generateUuid(), ...worday }))
-            console.log("values map", values)
-                (await BusinessService.save(values))
-        } else {
-            if (url == "") {
-                values.photo = productSelectMap.photo[0].source;
+        if (!isLoadBusiness) {
+            let url = ""
+            let business = values;
+            if (hasSendFileToServer(values.photo[0])) {
+                let formData = new FormData();
+                formData.append("files[]", values.photo[0]);
+                url = ((await FileService.save(formData, "images")).data)[0].url;
+                values.photo = url;
             }
-            (await BusinessService.update(values));
+            if (values.id == 0) {
+                business.id = generateUuid();
+                business.workdays = values.workdays.map(workday => ({ id: generateUuid(), ...workday }))
+                console.log(business)
+                    (await BusinessService.save(business))
+            } else {
+                if (url == "") {
+                    values.photo = business.photo[0].source;
+                }
+                (await BusinessService.update(values));
 
+            }
         }
+
     }
     useEffect(() => {
         async function fetchCategoriesApi() {
+
             let dataCategories = (await CategoryService.getAll()).data
-            dataCategories = dataCategories.map(category => ({ value: category, label: category.name }))
+            dataCategories = dataCategories.map(category => ({ value: category.id, label: category.name }))
             setCategories(dataCategories)
         }
         fetchCategoriesApi();
-
     }, [])
+    useEffect(() => {
+        async function fetchBusiness() {
+            try {
+                let business = (await BusinessService.get()).data
+                setBusiness({ ...business, email: "dwdwd@und.di", photo: [productUtil.transformPhotoSaved(business.photo)] });
+            } catch (e) {
+
+            } finally {
+                setIsLoadBusiness(false)
+            }
+
+        }
+        fetchBusiness();
+    }, [])
+    const handleToggleState = (business, setFieldValue) => () => {
+        BusinessService.toogleState(business);
+        setFieldValue("state", business.state == 1 ? 0 : 1)
+
+    }
     const handleDeleteHour = (hour, daysworks, functionUpdate) => () => {
         if (daysworks.length == 1) {
             alert("Al  menos debe haber un dia de atencion")
@@ -67,8 +89,8 @@ const BusinessForm = ({ BusinessSelect }) => {
         console.log("file", file)
     }
 
-    return <Formik initialValues={BusinessSelectMap} enableReinitialize={true} onSubmit={onSubmit} mapPropsToValues={() => {
-        return BusinessSelectMap;
+    return <Formik initialValues={business} enableReinitialize={true} onSubmit={onSubmit} mapPropsToValues={() => {
+        return business;
     }}>
         {
             ({ values, handleChange, errors, touched, isSubmitting, setFieldValue, initialValues, resetForm }) => (
@@ -136,7 +158,7 @@ const BusinessForm = ({ BusinessSelect }) => {
                                 <span className="form-group-label">Categoria</span>
                                 <div className="form-group-field">
                                     <div className="form-group-input-wrap">
-                                        <Field name="category" component={Select} options={categories} className={`field ${errors.price && touched.price ? "is-invalid" : ""}`} placeholder="Categoria al que pertenece" />
+                                        <Field name="category.id" component={SelectField} options={categories} className={`field ${errors.price && touched.price ? "is-invalid" : ""}`} placeholder="Categoria al que pertenece" />
                                         <ErrorMessage name="category" component="div" className="form-group-error" />
                                     </div>
                                 </div>
@@ -147,7 +169,7 @@ const BusinessForm = ({ BusinessSelect }) => {
                                 <span className="form-group-label">Ciudad</span>
                                 <div className="form-group-field">
                                     <div className="form-group-input-wrap">
-                                        <Field name="city" component={Select} options={cities} className={`field ${errors.price && touched.price ? "is-invalid" : ""}`} placeholder="Categoria al que pertenece" />
+                                        <Field name="city.id" component={SelectField} options={cities} className={`field ${errors.price && touched.price ? "is-invalid" : ""}`} placeholder="Categoria al que pertenece" />
                                         <ErrorMessage name="city" component="div" className="form-group-error" />
                                     </div>
                                 </div>
@@ -175,7 +197,7 @@ const BusinessForm = ({ BusinessSelect }) => {
                                                         <span>{selectday.day.name}</span>
                                                         <strong style={{ padding: ".3rem" }}>{selectday.startime}-{selectday.endtime}</strong>
                                                     </React.Fragment>
-                                                } style={{ margin: ".5em" }} onDelete={handleDeleteHour(selectday, values.workdays, setFieldValue)} />
+                                                } style={{ margin: ".5em" }} key={selectday.day.id} onDelete={handleDeleteHour(selectday, values.workdays, setFieldValue)} />
                                             ))}
                                         </Box>
                                     }
@@ -219,12 +241,20 @@ const BusinessForm = ({ BusinessSelect }) => {
                         </Grid>
                         <Grid item xs={12}>
                             <div className="button-toolbar form-button-toolbar" style={{ float: "right" }}>
+                                {
+
+                                    values.id != 0 && <button type="button" onClick={handleToggleState(values, setFieldValue)} className="button button-secondary">
+                                        {
+                                            values.state == 1 ? "Suspender atencion" : "Volver a abrir"
+                                        }
+                                    </button>
+                                }
                                 <button
                                     className="button button-primary flex-center"
-                                    disabled={isSubmitting}
+                                    disabled={isSubmitting || isLoadBusiness}
                                     type="submit"
                                 >
-                                    {values.id == 0 ? "Crear" : "editar"}
+                                    {isLoadBusiness ? <Spinner /> : values.id == 0 ? "Crear" : "editar"}
                                     {isSubmitting && <Spinner type="Circles" />}
                                 </button>
                             </div>

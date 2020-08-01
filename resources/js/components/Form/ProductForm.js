@@ -13,7 +13,7 @@ import { ProductService } from "../../Services/ProductService"
 import { FileService } from "../../Services/FileService";
 const ProductForm = ({ productSelect, onSubmitSuccess }) => {
     const productSelectMap = productSelect ? { ...productSelect, photo: [productUtil.transformPhotoSaved(productSelect.photo)] } : {
-        id: 0, name: "", price: "", description: "", photo: [{}]
+        id: 0, name: "", price: "", description: "", photo: []
     }
     const onSubmit = async (values) => {
         let url = "";

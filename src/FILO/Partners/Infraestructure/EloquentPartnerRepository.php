@@ -16,6 +16,7 @@ use Filo\Partners\Domain\PartnerName;
 use Filo\Partners\Domain\PartnerPhone;
 use Filo\Partners\Domain\PartnerPhoto;
 use Filo\Partners\Domain\PartnerRepositoryI;
+use Filo\Partners\Domain\PartnerState;
 use Filo\Users\Domain\UserId;
 use Illuminate\Support\Facades\DB;
 use src\Shared\Domain\Pagination\NextPage;
@@ -67,7 +68,9 @@ class EloquentPartnerRepository implements PartnerRepositoryI
         $partnerModel->description = $partner->description()->value();
         $partnerModel->direction = $partner->address()->value();
         $partnerModel->amountdelivery = $partner->amountDelivery()->value();
-        dd($partnerModel->workdays()->get());
+        $partnerModel->photo = $partner->photo()->value();
+        $partnerModel->state = $partner->state()->value();
+        $partnerModel->phone = $partner->phone()->value();
         if ($partnerModel->category_id != $partner->category()->id()) {
             $partnerModel->category()->associate($partner->category()->id());
         }
@@ -97,13 +100,13 @@ class EloquentPartnerRepository implements PartnerRepositoryI
         })->toArray();
         return $partners;
     }
-    public function search(PartnerId $id): ?Partner
+    public function search(PartnerId $id, $states = [1]): ?Partner
     {
         $partnerModel = $this->model->with(["category" => function ($q) {
             $q->select("id", "name");
         }, "workdays", "city" => function ($q) {
             $q->select("id", "name");
-        }])->find($id->value());
+        }])->whereIn("state", $states)->where("id", $id->value())->first();
         if ($partnerModel == null) {
             return null;
         }
@@ -135,6 +138,7 @@ class EloquentPartnerRepository implements PartnerRepositoryI
             new PartnerCity($partnerModel->city->id, $partnerModel->city->name),
             new PartnerPhoto($partnerModel->photo),
             new PartnerAmountDelivery($partnerModel->amountdelivery),
+            new PartnerState($partnerModel->state),
             ...$partnerWorkDays->toArray()
 
         );

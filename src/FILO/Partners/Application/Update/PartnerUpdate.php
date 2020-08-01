@@ -10,6 +10,8 @@ use Filo\Partners\Domain\PartnerCity;
 use Filo\Partners\Domain\PartnerDescription;
 use Filo\Partners\Domain\PartnerId;
 use Filo\Partners\Domain\PartnerName;
+use Filo\Partners\Domain\PartnerPhone;
+use Filo\Partners\Domain\PartnerPhoto;
 use Filo\Partners\Domain\PartnerRepositoryI;
 use Illuminate\Support\Facades\App;
 
@@ -22,7 +24,7 @@ class PartnerUpdate
         $this->repository = $repository;
         $this->partnerFinder = App::make("partnerFinder");
     }
-    public function __invoke(PartnerId $id, PartnerName $name, PartnerDescription $description, PartnerAddress $address, PartnerAmountDelivery $amountDelivery, PartnerCategory $newCategory, PartnerCity $newCity)
+    public function __invoke(PartnerId $id, PartnerName $name, PartnerDescription $description, PartnerAddress $address, PartnerAmountDelivery $amountDelivery, PartnerCategory $newCategory, PartnerCity $newCity, PartnerPhoto $newPhoto, PartnerPhone $newPartnerPhone)
     {
         $partner = $this->partnerFinder->__invoke($id);
         $partner->updateDescription($description->value());
@@ -31,6 +33,8 @@ class PartnerUpdate
         $partner->updateAmountDelivery($amountDelivery->value());
         $partner->updateCategory($newCategory->id(), $newCategory->name());
         $partner->updayeCity($newCity->id(), $newCity->name());
+        $partner->updatePhone($newPartnerPhone->value());
+        $partner->updatePhoto($newPhoto->value());
         $this->repository->update($partner);
     }
 }

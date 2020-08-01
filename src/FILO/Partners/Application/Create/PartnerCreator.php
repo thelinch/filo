@@ -15,6 +15,7 @@ use Filo\Partners\Domain\PartnerName;
 use Filo\Partners\Domain\PartnerPhone;
 use Filo\Partners\Domain\PartnerPhoto;
 use Filo\Partners\Domain\PartnerRepositoryI;
+use Filo\Partners\Domain\PartnerState;
 use Filo\Users\Domain\UserId;
 use src\Shared\Domain\Bus\Event\EventBus;
 use src\Shared\Domain\UuidGenerator;
@@ -41,9 +42,10 @@ final class PartnerCreator
         PartnerCity $city,
         PartnerPhoto $photo,
         PartnerAmountDelivery $amountDelivery,
+        PartnerState $state,
         array $daysWork
     ) {
-        $partner = Partner::create($partnerId, $description, $name, $dishes, $category, $address, $phone, $userId, $city, $photo, $amountDelivery, $daysWork);
+        $partner = Partner::create($partnerId, $description, $name, $dishes, $category, $address, $phone, $userId, $city, $photo, $amountDelivery, $state, $daysWork);
         $this->repository->create($partner);
         /* $this->bus->publish(...$partner->pullDomainEvents()); */
     }

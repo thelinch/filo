@@ -14,6 +14,7 @@ use Filo\Partners\Domain\PartnerId;
 use Filo\Partners\Domain\PartnerName;
 use Filo\Partners\Domain\PartnerPhone;
 use Filo\Partners\Domain\PartnerPhoto;
+use Filo\Partners\Domain\PartnerState;
 use Filo\Users\Domain\UserId;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -41,16 +42,17 @@ class PartnerPostController extends ApiController
         });
         $this->parnertCreator->__invoke(
             new PartnerId($partnerParameter["id"]),
-            new PartnerCategory($partnerParameter["category"]["id"], $partnerParameter["category"]["name"]),
+            new PartnerCategory($partnerParameter["category"]["id"], "defecto"),
             new PartnerAddress($partnerParameter["address"]),
             new UserId("wdwdwd1dwdwd-wdwd12"),
             new PartnerPhone($partnerParameter["phone"]),
             new PartnerName($partnerParameter["name"]),
             new PartnerDescription($partnerParameter["description"]),
             new PartnerDishes(0),
-            new PartnerCity($partnerParameter["city"]["id"], $partnerParameter["city"]["name"]),
+            new PartnerCity($partnerParameter["city"]["id"], "defecto"),
             new PartnerPhoto($partnerParameter["photo"]),
             new PartnerAmountDelivery($partnerParameter["amountdelivery"]),
+            new PartnerState(1),
             $daysWorks->toArray()
         );
     }

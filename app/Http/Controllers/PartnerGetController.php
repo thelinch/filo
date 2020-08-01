@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Filo\Partners\Application\Find\PartnerFinder;
 use Filo\Partners\Application\Find\PartnerResponse;
 use Filo\Partners\Domain\PartnerId;
 use Filo\Partners\Domain\PartnerNotExist;
+use Filo\Partners\Domain\Service\PartnerFinder;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use src\Shared\Infraestructure\Eloquent\ApiController;
@@ -24,7 +24,7 @@ class PartnerGetController extends ApiController
     }
     public function __construct()
     {
-        $this->partnerFinder = App::make("partnerFinder");
+        $this->partnerFinder = App::make(PartnerFinder::class);
         $this->middleware("auth:api");
     }
 
@@ -33,7 +33,7 @@ class PartnerGetController extends ApiController
     {
         $partnerId = Auth::user()->partner->id;
         $partnerId = new PartnerId($partnerId);
-        $partnerResponse = new PartnerResponse($this->partnerFinder->__invoke($partnerId));
+        $partnerResponse = new PartnerResponse($this->partnerFinder->__invoke($partnerId, [1, 0]));
         return $partnerResponse;
     }
 }

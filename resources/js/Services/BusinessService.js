@@ -21,10 +21,14 @@ function update(business) {
         data: business
     })
 }
-function suspend(business) {
-
+function toogleState(business) {
+    return request({
+        method: "get",
+        url: `${BusinessDomain}/${business.id}/delete`
+    })
 
 }
+
 function deleteWorkDay(workday) {
     return request({
         method: "Post",
@@ -35,7 +39,7 @@ function deleteWorkDay(workday) {
 export const BusinessService = {
     save,
     update,
-    suspend,
+    toogleState,
     deleteWorkDay,
     get
 }

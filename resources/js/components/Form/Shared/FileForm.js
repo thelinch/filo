@@ -9,7 +9,9 @@ import { FileService } from "../../../Services/FileService";
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
 const FileForm = ({ filesParameter, isMultiple, messageUser, form, field, directory, onRemoveFileObject }) => {
-    const [files, setFiles] = useState(isMultiple ? filesParameter : Object.keys(filesParameter[0]).length == 0 ? [] : [filesParameter[0]]);
+    /*  const [files, setFiles] = useState(isMultiple ? filesParameter : Object.keys(filesParameter[0]).length == 0 ? [] : [filesParameter[0]]); */
+    const [files, setFiles] = useState(field.value);
+
     /* const [files, setFiles] = useState([{ source: "polleria.jpg", options: { type: "local" } }]); */
     const handleUpdateFiles = (files) => {
         let fileNotSave = files.filter((file) => file.origin == 1 || file.origin == 3).map((fileFilter) => fileFilter.file)
@@ -23,6 +25,7 @@ const FileForm = ({ filesParameter, isMultiple, messageUser, form, field, direct
         setFiles(files)
     }
     const onLoadFile = async (source, load, error, progress, abort) => {
+        console.log("on load file")
         let file = (await FileService.findId(source, directory)).data
         load(file)
     }
@@ -33,7 +36,7 @@ const FileForm = ({ filesParameter, isMultiple, messageUser, form, field, direct
         onRemoveFileObject(form.values.id);
     }
     return (
-        <FilePond files={files} instantUpload={false} server={{ url: "./", load: onLoadFile, remove: onRemoveFile }} onupdatefiles={handleUpdateFiles} allowMultiple={isMultiple} labelIdle={messageUser} />
+        <FilePond files={files} instantUpload={false} server={{ load: onLoadFile, remove: onRemoveFile }} onupdatefiles={handleUpdateFiles} allowMultiple={isMultiple} labelIdle={messageUser} />
 
     )
 
@@ -46,7 +49,7 @@ FileForm.propTypes = {
 }
 FileForm.defaultProps = {
     filesParameter: [],
-    isMultipe: false,
+    isMultiple: false,
     messageUser: "Arrastra una imagen"
 }
 export default FileForm;
