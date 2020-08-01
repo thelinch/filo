@@ -30,10 +30,10 @@ Route::group(["prefix" => "partners"], function () {
     Route::get("list", "PartnerListController@__invoke");
     Route::get("{categoryId}/list", "PartnerFindCategoryController@__invoke");
 
-    Route::get("{idPartner}/find", "PartnerGetController@__invoke");
+    Route::get("get", "PartnerGetController@__invoke");
     Route::get("{idPartner}/transactions", "Transaction\TransactionFindByPartnerController@__invoke");
     Route::get("{partnerId}/products", "Menu\MenuListController@__invoke");
-
+    Route::post("/deleteWorkday", "PartnerDeleteWorkDayController@__invoke");
     Route::get("{idPartner}/delete", "PartnerDeleteController@__invoke");
     Route::post("save", "PartnerPostController@__invoke");
     Route::post("update", "PartnerUpdateController@__invoke");

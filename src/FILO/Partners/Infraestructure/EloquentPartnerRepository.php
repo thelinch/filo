@@ -63,15 +63,15 @@ class EloquentPartnerRepository implements PartnerRepositoryI
     public function update(Partner $partner): void
     {
         DB::beginTransaction();
-        $partnerModel = PartnerModel::find($partner->id()->value(), ["id", "name", "description", "direction",  "phone", "amountdelivery"]);
-        $partnerModel->name = $partner->name()->value();
+        $partnerModel = PartnerModel::find($partner->id()->value(), ["id", "name", "description", "city_id", "category_id", "direction", "amountdelivery", "phone", "photo"]);
         $partnerModel->description = $partner->description()->value();
         $partnerModel->direction = $partner->address()->value();
         $partnerModel->amountdelivery = $partner->amountDelivery()->value();
-        if ($partnerModel->category()->id != $partner->category()->id()) {
+        dd($partnerModel->workdays()->get());
+        if ($partnerModel->category_id != $partner->category()->id()) {
             $partnerModel->category()->associate($partner->category()->id());
         }
-        if ($partnerModel->city()->id != $partner->city()->id()) {
+        if ($partnerModel->city_id != $partner->city()->id()) {
             $partnerModel->city()->associate($partner->city()->id());
         }
         $partnerModel->save();
@@ -109,6 +109,15 @@ class EloquentPartnerRepository implements PartnerRepositoryI
         }
         return $this->transformPartnerModelToPartner($partnerModel);
     }
+    public function deleteWorkDay(PartnerDayWork $workDay)
+    {
+
+        $dayWorkDelete = DB::table("dayworks")->where("id", $workDay->id());
+        if ($dayWorkDelete->exists()) {
+            $dayWorkDelete->update(["state" => 0]);
+        }
+    }
+
     private function transformPartnerModelToPartner(PartnerModel $partnerModel): Partner
     {
         $partnerWorkDays = collect($partnerModel->workdays)->map(function ($dayWork) {

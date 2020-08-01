@@ -7,15 +7,17 @@ import Grid from "@material-ui/core/Grid";
 import Input from "@material-ui/core/Input";
 import Spinner from "../Spinner/Spinner";
 import WeekCalendar from "../Calendar/WeekCalendar"
-import { transformDataWeekDayToLinealObject, hasSendFileToServer, insertObjectToArray, updateDayToArray, hasContentDayToArray, updateObjetToArray, generateUuid } from "../../Util/Util";
+import { transformDataWeekDayToLinealObject, hasSendFileToServer, removeObjectDayToArray, updateDayToArray, hasContentDayToArray, updateObjetToArray, generateUuid } from "../../Util/Util";
 import Chip from "@material-ui/core/Chip";
 import Box from "@material-ui/core/Box";
 import Select from "./Shared/Select";
 import { CategoryService } from "../../Services/CategoryService"
 import { FileService } from "../../Services/FileService";
 import { BusinessService } from "../../Services/BusinessService"
+import productUtil from "../../Util/Product/Util";
+
 const BusinessForm = ({ BusinessSelect }) => {
-    const BusinessSelectMap = BusinessSelect ? BusinessSelect : { id: 0, name: "", description: "", email: "", category: {}, city: {}, address: "", phone: "", amountdelivery: "", photo: [{}], daysworks: [] }
+    const BusinessSelectMap = BusinessSelect ? { ...BusinessSelect, photo: [productUtil.transformPhotoSaved(BusinessSelect.photo)] } : { id: 0, name: "", description: "", email: "", category: {}, city: {}, address: "", phone: "", amountdelivery: "", photo: [{}], workdays: [] }
     const [selectdays, setSelectdays] = useState([])
     const [categories, setCategories] = useState([])
     const [cities, setCities] = useState([{ label: "Yanahuanca", value: { id: 2, name: "Yanahuanca" } }, { label: "Tingo Maria", value: { id: 1, name: "Tingo Maria" } }])
@@ -30,7 +32,7 @@ const BusinessForm = ({ BusinessSelect }) => {
         }
         if (values.id == 0) {
             values.id = generateUuid();
-            values.daysworks = values.daysworks.map(worday => ({ id: generateUuid(), ...worday }))
+            values.workdays = values.workdays.map(worday => ({ id: generateUuid(), ...worday }))
             console.log("values map", values)
                 (await BusinessService.save(values))
         } else {
@@ -50,8 +52,19 @@ const BusinessForm = ({ BusinessSelect }) => {
         fetchCategoriesApi();
 
     }, [])
-    const handleDeleteHour = (hour) => () => {
-        console.log(hour)
+    const handleDeleteHour = (hour, daysworks, functionUpdate) => () => {
+        if (daysworks.length == 1) {
+            alert("Al  menos debe haber un dia de atencion")
+            return;
+        }
+        if (hour.id) {
+            console.log("Mandando al servidor para eliminar")
+            BusinessService.deleteWorkDay(hour);
+        }
+        functionUpdate("workdays", removeObjectDayToArray(daysworks, hour))
+    }
+    const onRemoveFile = (file) => {
+        console.log("file", file)
     }
 
     return <Formik initialValues={BusinessSelectMap} enableReinitialize={true} onSubmit={onSubmit} mapPropsToValues={() => {
@@ -156,13 +169,13 @@ const BusinessForm = ({ BusinessSelect }) => {
                                 <Grid item xs={12}>
                                     {
                                         <Box display="flex" alignItems="center" width="100%" justifyContent="center" flexWrap="wrap" >
-                                            {values.daysworks.map(selectday => (
+                                            {values.workdays.map(selectday => (
                                                 <Chip label={
                                                     <React.Fragment key={selectday.day.id}>
                                                         <span>{selectday.day.name}</span>
                                                         <strong style={{ padding: ".3rem" }}>{selectday.startime}-{selectday.endtime}</strong>
                                                     </React.Fragment>
-                                                } style={{ margin: ".5em" }} onDelete={handleDeleteHour(selectday)} />
+                                                } style={{ margin: ".5em" }} onDelete={handleDeleteHour(selectday, values.workdays, setFieldValue)} />
                                             ))}
                                         </Box>
                                     }
@@ -173,8 +186,8 @@ const BusinessForm = ({ BusinessSelect }) => {
 
                                         <div className="form-group-field">
                                             <div className="form-group-input-wrap">
-                                                <Field name="daysworks" component={WeekCalendar} onIntervalSelect={(valuesSelectinterval) => {
-                                                    let workDaysForm = values.daysworks;
+                                                <Field name="workdays" component={WeekCalendar} onIntervalSelect={(valuesSelectinterval) => {
+                                                    let workDaysForm = values.workdays;
                                                     let arrayMapValues = transformDataWeekDayToLinealObject(valuesSelectinterval);
                                                     for (let i = 0; i < arrayMapValues.length; i++) {
                                                         if (hasContentDayToArray(workDaysForm, arrayMapValues[i])) {
@@ -182,10 +195,10 @@ const BusinessForm = ({ BusinessSelect }) => {
                                                         } else {
                                                             workDaysForm.push(arrayMapValues[i])
                                                         }
-                                                        setFieldValue("daysworks", workDaysForm)
+                                                        setFieldValue("workdays", workDaysForm)
                                                     }
                                                 }} weekdays={[{ id: "1", day: "Lunes" }, { id: "2", day: "Martes" }, { id: "3", day: "Miercoles" }, { id: "4", day: "Jueves" }, { id: "5", day: "Viernes" }, { id: "6", day: "Sabado" }, { id: "7", day: "Domingo" }]} className={`field ${errors.price && touched.price ? "is-invalid" : ""}`} placeholder="Cosas que vendas,dedicacion,etc" />
-                                                <ErrorMessage name="daysworks" component="div" className="form-group-error" />
+                                                <ErrorMessage name="workdays" component="div" className="form-group-error" />
                                             </div>
                                         </div>
                                     </div>
@@ -198,7 +211,7 @@ const BusinessForm = ({ BusinessSelect }) => {
                                 <span className="form-group-label">Miniatura</span>
                                 <div className="form-group-field">
                                     <div className="form-group-input-wrap">
-                                        <Field name="photo" component={FileForm} messageUser="Foto de tu empresa" filesParameter={values.photo} directory="images" className={`field ${errors.category && touched.category ? "is-invalid" : ""}`} />
+                                        <Field name="photo" component={FileForm} onRemoveFileObject={onRemoveFile} messageUser="Foto de tu empresa" filesParameter={values.photo} directory="images" className={`field ${errors.category && touched.category ? "is-invalid" : ""}`} />
                                         <ErrorMessage name="photo" component="div" className="form-group-error" />
                                     </div>
                                 </div>
@@ -211,7 +224,7 @@ const BusinessForm = ({ BusinessSelect }) => {
                                     disabled={isSubmitting}
                                     type="submit"
                                 >
-                                    {values.id > 0 ? "Editar" : "Crear"}
+                                    {values.id == 0 ? "Crear" : "editar"}
                                     {isSubmitting && <Spinner type="Circles" />}
                                 </button>
                             </div>

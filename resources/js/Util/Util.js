@@ -22,7 +22,9 @@ export function updateDayToArray(array, object) {
     }
     return array;
 }
-
+export function removeObjectDayToArray(array, object) {
+    return array.filter(item => item.day.id != object.day.id)
+}
 export function hasSendFileToServer(file) {
     return Object.keys(file).length > 0 && file.lastModified
 }

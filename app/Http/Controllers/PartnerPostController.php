@@ -35,8 +35,8 @@ class PartnerPostController extends ApiController
 
     public function __invoke(Request $request)
     {
-        $partnerParameter = $request->only(["id", "address", "name", "amountdelivery", "category", "daysworks", "phone", "photo", "description", "user", "city"]);
-        $daysWorks = collect($partnerParameter["daysworks"])->map(function ($daywork) {
+        $partnerParameter = $request->only(["id", "address", "name", "amountdelivery", "category", "workdays", "phone", "photo", "description", "user", "city"]);
+        $daysWorks = collect($partnerParameter["workdays"])->map(function ($daywork) {
             return new PartnerDayWork($daywork["startime"], $daywork["endtime"], $daywork["day"]["name"], $daywork["day"]["id"], $daywork["id"]);
         });
         $this->parnertCreator->__invoke(

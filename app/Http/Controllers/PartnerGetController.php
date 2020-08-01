@@ -7,6 +7,7 @@ use Filo\Partners\Application\Find\PartnerResponse;
 use Filo\Partners\Domain\PartnerId;
 use Filo\Partners\Domain\PartnerNotExist;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use src\Shared\Infraestructure\Eloquent\ApiController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -24,11 +25,14 @@ class PartnerGetController extends ApiController
     public function __construct()
     {
         $this->partnerFinder = App::make("partnerFinder");
+        $this->middleware("auth:api");
     }
 
-    public function __invoke(string $idPartner)
+
+    public function __invoke()
     {
-        $partnerId = new PartnerId($idPartner);
+        $partnerId = Auth::user()->partner->id;
+        $partnerId = new PartnerId($partnerId);
         $partnerResponse = new PartnerResponse($this->partnerFinder->__invoke($partnerId));
         return $partnerResponse;
     }

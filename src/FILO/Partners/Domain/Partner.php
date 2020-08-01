@@ -119,6 +119,14 @@ final class Partner extends AggregateRoot
     {
         $this->description = $this->description->updateDescription($newDescription);
     }
+    public function updayeCity(int $id, string $name)
+    {
+        $this->city = new PartnerCity($id, $name);
+    }
+    public function updateCategory(int $id, string $name)
+    {
+        $this->category = new PartnerCategory($id, $name);
+    }
     public function updateDirection(string $newDirection)
     {
         $this->address = $this->address->updateAddress($newDirection);

@@ -29,7 +29,8 @@ class PartnerUpdate
         $partner->updateDirection($address->value());
         $partner->rename($name->value());
         $partner->updateAmountDelivery($amountDelivery->value());
-
+        $partner->updateCategory($newCategory->id(), $newCategory->name());
+        $partner->updayeCity($newCity->id(), $newCity->name());
         $this->repository->update($partner);
     }
 }

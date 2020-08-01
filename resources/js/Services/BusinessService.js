@@ -8,6 +8,12 @@ function save(business) {
         data: business
     })
 }
+function get() {
+    return request({
+        method: "get",
+        url: `${BusinessDomain}/get`
+    });
+}
 function update(business) {
     return request({
         method: "Post",
@@ -15,13 +21,23 @@ function update(business) {
         data: business
     })
 }
-function deleteB(business) {
+function suspend(business) {
 
+
+}
+function deleteWorkDay(workday) {
+    return request({
+        method: "Post",
+        data: workday,
+        url: `${BusinessDomain}/deleteWorkday`
+    })
 }
 export const BusinessService = {
     save,
     update,
-    deleteB
+    suspend,
+    deleteWorkDay,
+    get
 }
 
 

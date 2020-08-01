@@ -6,13 +6,22 @@ import Grid from "@material-ui/core/Grid";
 import Input from "@material-ui/core/Input";
 import PropTypes from 'prop-types';
 import Spinner from "../Spinner/Spinner";
-const InitSession = (props) => {
+import * as Yup from "yup";
+import cookie from 'react-cookies';
 
-    const onSubmit = (values) => {
+import { CredentialService } from "../../Services/CredentialService";
+const validateSchema = Yup.object().shape({
+    email: Yup.string().email("ingrese un email valido").required("requerido"),
+    password: Yup.string().required("requerido")
+})
+const InitSession = (props) => {
+    const onSubmit = async (values) => {
         console.log(values)
+        let token = (await CredentialService.login(values)).data
+        cookie.save("token", token.access_token)
     }
 
-    return <Formik initialValues={{ email: "", password: "" }} enableReinitialize={true} onSubmit={onSubmit} mapPropsToValues={() => {
+    return <Formik initialValues={{ email: "", password: "" }} validationSchema={validateSchema} enableReinitialize={true} onSubmit={onSubmit} mapPropsToValues={() => {
         return { email: "", password: "" };
     }
     }>
@@ -25,7 +34,7 @@ const InitSession = (props) => {
                                 <span className="form-group-label" htmlFor="email">Email</span>
                                 <div className="form-group-field">
                                     <div className="form-group-input-wrap">
-                                        <Field type="text" name="email" placeholder="Correo electronico" className={`field ${errors.name && touched.name ? "is-invalid" : ""}`} />
+                                        <Field type="text" name="email" placeholder="Correo electronico" className={`field ${errors.email && touched.email ? "is-invalid" : ""}`} />
                                         <ErrorMessage name="email" component="div" className="form-group-error" />
                                     </div>
                                 </div>
@@ -36,7 +45,7 @@ const InitSession = (props) => {
                                 <span className="form-group-label" htmlFor="password">Contraseña</span>
                                 <div className="form-group-field">
                                     <div className="form-group-input-wrap">
-                                        <Field type="text" name="password" placeholder="Contraseña" className={`field ${errors.phone && touched.phone ? "is-invalid" : ""}`} />
+                                        <Field type="password" name="password" placeholder="Contraseña" className={`field ${errors.password && touched.password ? "is-invalid" : ""}`} />
                                         <ErrorMessage name="password" component="div" className="form-group-error" />
                                     </div>
                                 </div>

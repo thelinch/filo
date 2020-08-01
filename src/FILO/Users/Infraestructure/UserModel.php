@@ -23,6 +23,6 @@ class UserModel extends Authenticatable
     protected $table = "users";
     public function partner()
     {
-        return $this->belongsTo(PartnerModel::class);
+        return $this->hasOne(PartnerModel::class, "user_id");
     }
 }

@@ -12,5 +12,6 @@ interface PartnerRepositoryI
     function search(PartnerId $id): ?Partner;
     public function update(Partner $partner): void;
     public function delete(PartnerId $id): void;
+    public function deleteWorkDay(PartnerDayWork $workDay);
     public function all(NextPage $nextPage, NumberPerPage $numberPartnerPerPage): array;
 }
