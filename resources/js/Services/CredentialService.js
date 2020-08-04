@@ -15,8 +15,15 @@ function login(credentials) {
         url: `${CredentialDomain}/login`
     })
 }
+function me() {
+    return request({
+        method: "get",
+        url: `${CredentialDomain}/me`
+    })
+}
 
 export const CredentialService = {
     login,
-    save
+    save,
+    me
 }

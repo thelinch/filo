@@ -24,7 +24,7 @@ const ProductForm = ({ productSelect, onSubmitSuccess }) => {
             values.photo = url;
         }
         if (values.id == 0) {
-            values = { ...values, id: generateUuid(), partnerId: "dddw" };
+            values = { ...values, id: generateUuid() };
             (await ProductService.save(values))
         } else {
             if (url == "") {

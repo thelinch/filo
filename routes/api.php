@@ -33,6 +33,7 @@ Route::group(["prefix" => "partners"], function () {
     Route::get("get", "PartnerGetController@__invoke");
     Route::get("{idPartner}/transactions", "Transaction\TransactionFindByPartnerController@__invoke");
     Route::get("{partnerId}/products", "Menu\MenuListController@__invoke");
+    Route::get("/products", "Menu\MenuListController@__invoke");
     Route::post("{partnerId}/deleteWorkday", "PartnerDeleteWorkDayController@__invoke");
     Route::post("{partnerId}/addAndUpdateWorkDay", "PartnerAddWorkDayController@__invoke");
     Route::get("{idPartner}/delete", "PartnerDeleteController@__invoke");

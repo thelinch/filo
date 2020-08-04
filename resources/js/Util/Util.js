@@ -22,6 +22,12 @@ export function updateDayToArray(array, object) {
     }
     return array;
 }
+export function setUser(user) {
+    localStorage.setItem("user", JSON.stringify(user))
+}
+export function getUser() {
+    return JSON.parse(localStorage.getItem("user")); p
+}
 export function removeObjectDayToArray(array, object) {
     return array.filter(item => item.day.id != object.day.id)
 }

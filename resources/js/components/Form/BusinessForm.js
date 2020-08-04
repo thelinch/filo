@@ -83,7 +83,7 @@ const BusinessForm = (props) => {
         }
         fetchCategoriesApi();
     }, [])
-    /* useEffect(() => {
+    useEffect(() => {
         async function fetchBusiness() {
             try {
                 let business = (await BusinessService.get()).data
@@ -96,7 +96,7 @@ const BusinessForm = (props) => {
 
         }
         fetchBusiness();
-    }, []) */
+    }, [])
     const handleToggleState = (business, setFieldValue) => () => {
         BusinessService.toogleState(business);
         setFieldValue("state", business.state == 1 ? 0 : 1)
