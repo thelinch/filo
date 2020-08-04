@@ -132,6 +132,31 @@ final class Partner extends AggregateRoot
     {
         $this->photo = new PartnerPhoto($newPhoto);
     }
+    public function addAndUpdateWorkDay(PartnerDayWork ...$daysWork)
+    {
+        /*  $collectDayWork =   collect($this->daysWork);
+        $collectDaysWorkParameter = collect($daysWork);
+        $collectDaysWorkAction = collect([]);
+        $collectDayWork->each(function (PartnerDayWork $value) use ($collectDaysWorkParameter, $collectDaysWorkAction) {
+            if ($collectDaysWorkParameter->contains(fn (PartnerDayWork $dayWorkParameter) => $dayWorkParameter->id() == $value->id())) {
+            
+            } else {
+                $collectDaysWorkAction->push($value);
+            }
+        }); */
+
+        $this->daysWork = collect($daysWork)->toArray();
+    }
+
+    public function deleteWorkDay(PartnerDayWork $dayWork)
+    {
+        $collectDayWork =    collect($this->daysWork);
+        if ($collectDayWork->contains(fn (PartnerDayWork $value, $key) => $value->id() == $dayWork->id())) {
+            $collectDayWork = $collectDayWork->filter(fn (PartnerDayWork $value, $key) => $value->id() != $dayWork->id());
+        }
+        $this->daysWork = $collectDayWork->toArray();
+    }
+
     public function updatePhone(string $newPhone)
     {
         $this->phone = new PartnerPhone($newPhone);

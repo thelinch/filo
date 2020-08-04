@@ -29,19 +29,27 @@ function toogleState(business) {
 
 }
 
-function deleteWorkDay(workday) {
+function deleteWorkDay(workday, partnerId) {
     return request({
         method: "Post",
         data: workday,
-        url: `${BusinessDomain}/deleteWorkday`
+        url: `${BusinessDomain}/${partnerId}/deleteWorkday`
     })
+}
+function addAndUpdateWorDay(workdays, partnerId) {
+    return request({
+        method: "post",
+        data: workdays,
+        url: `${BusinessDomain}/${partnerId}/addAndUpdateWorkDay`
+    });
 }
 export const BusinessService = {
     save,
     update,
     toogleState,
     deleteWorkDay,
-    get
+    get,
+    addAndUpdateWorDay
 }
 
 

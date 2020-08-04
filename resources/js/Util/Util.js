@@ -17,7 +17,7 @@ export function hasContentObject(array, object) {
 export function updateDayToArray(array, object) {
     let index = array.findIndex(e => e.day.id == object.day.id)
     if (index != -1) {
-        array[index] = object
+        array[index] = { id: array[index].id, ...object }
 
     }
     return array;

@@ -61,6 +61,57 @@ class EloquentPartnerRepository implements PartnerRepositoryI
 
         DB::commit();
     }
+    public function updateDaysWork(Partner $partner)
+    {
+        DB::beginTransaction();
+        $partnerModel = PartnerModel::find($partner->id()->value(), ["id", "name", "description", "city_id", "category_id", "direction", "amountdelivery", "phone", "photo"]);
+        $daysWorkModel = $partnerModel->workdays()->get()->map(function ($dayWork) {
+            return new PartnerDayWork($dayWork->pivot->starttime, $dayWork->pivot->endtime, $dayWork->day, $dayWork->id, $dayWork->pivot->id);
+        });
+        $daysWorkPartner = collect($partner->daysWork());
+        $isDelete = true;
+        $daysWorkAction = collect([]);
+        if ($daysWorkPartner->count() < $daysWorkModel->count()) {
+            $daysWorkModel->each(function (PartnerDayWork $value, $key) use ($daysWorkPartner, $daysWorkAction) {
+                if (!$daysWorkPartner->contains(fn (PartnerDayWork $dayWork, $key) => $value->id() == $dayWork->id())) {
+                    $daysWorkAction->push($value);
+                }
+            });
+        } else {
+            $isDelete = false;
+            // aca es insert o update
+            $daysWorkAction = $daysWorkAction->concat($daysWorkPartner);
+        }
+        if ($daysWorkAction->count() > 0) {
+            if ($isDelete) {
+                $dayWorkActionFirst = $daysWorkAction->first();
+                $partnerModel->workdays()->updateExistingPivot($dayWorkActionFirst->dayId(), [
+                    "endtime" => $dayWorkActionFirst->endTime(),
+                    "starttime" => $dayWorkActionFirst->startTime(),
+                    "state" => $isDelete ? 0 : 1,
+                ]);
+            } else {
+
+                $daysWorkAction->each(function (PartnerDayWork $dayWorkActionMapP) use ($partnerModel, $daysWorkModel) {
+                    if (!$daysWorkModel->contains(fn (PartnerDayWork $dayWork, $key) => $dayWorkActionMapP->id() == $dayWork->id())) {
+                        $partnerModel->workdays()->attach($dayWorkActionMapP->dayId(), [
+                            "endtime" => $dayWorkActionMapP->endTime(),
+                            "starttime" => $dayWorkActionMapP->startTime(),
+                            "state" =>  1,
+                            "id" => $dayWorkActionMapP->id()
+                        ]);
+                    } else {
+                        $partnerModel->workdays()->updateExistingPivot($dayWorkActionMapP->dayId(), [
+                            "endtime" => $dayWorkActionMapP->endTime(),
+                            "starttime" => $dayWorkActionMapP->startTime(),
+                            "state" => 1,
+                        ]);
+                    }
+                });
+            }
+        }
+        DB::commit();
+    }
     public function update(Partner $partner): void
     {
         DB::beginTransaction();
@@ -71,6 +122,7 @@ class EloquentPartnerRepository implements PartnerRepositoryI
         $partnerModel->photo = $partner->photo()->value();
         $partnerModel->state = $partner->state()->value();
         $partnerModel->phone = $partner->phone()->value();
+
         if ($partnerModel->category_id != $partner->category()->id()) {
             $partnerModel->category()->associate($partner->category()->id());
         }
@@ -112,15 +164,6 @@ class EloquentPartnerRepository implements PartnerRepositoryI
         }
         return $this->transformPartnerModelToPartner($partnerModel);
     }
-    public function deleteWorkDay(PartnerDayWork $workDay)
-    {
-
-        $dayWorkDelete = DB::table("dayworks")->where("id", $workDay->id());
-        if ($dayWorkDelete->exists()) {
-            $dayWorkDelete->update(["state" => 0]);
-        }
-    }
-
     private function transformPartnerModelToPartner(PartnerModel $partnerModel): Partner
     {
         $partnerWorkDays = collect($partnerModel->workdays)->map(function ($dayWork) {
