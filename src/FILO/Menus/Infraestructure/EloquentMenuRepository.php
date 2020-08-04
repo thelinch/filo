@@ -69,7 +69,7 @@ class EloquentMenuRepository implements MenuRepositoryI
     }
     public function update(Menu $menu): void
     {
-        $menuModel = MenuModel::find($menu->id()->value(), ["id", "name", "price", "photo", "description"])->sel;
+        $menuModel = MenuModel::find($menu->id()->value(), ["id", "name", "price", "photo", "description"]);
         $menuModel->name = $menu->name()->value();
         $menuModel->price = $menu->price()->value();
         $menuModel->photo = $menu->photo()->value();

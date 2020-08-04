@@ -34,7 +34,7 @@ class WeekCalendar extends Component {
     window.addEventListener('resize', this.calculateColumnDimension);
     window.addEventListener('mouseup', this.handleSelectionStop);
   }
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
     if (nextProps.scaleUnit !== this.props.scaleUnit || nextProps.inithour !== this.props.inithour || nextProps.endhour !== this.props.endhour) {
       const scaleIntervals = getIntervalsByDuration(nextProps.scaleUnit, nextProps.inithour, nextProps.endhour);
       this.setState({

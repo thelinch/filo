@@ -17,12 +17,14 @@ export function hasContentObject(array, object) {
 export function updateDayToArray(array, object) {
     let index = array.findIndex(e => e.day.id == object.day.id)
     if (index != -1) {
-        array[index] = object
+        array[index] = { id: array[index].id, ...object }
 
     }
     return array;
 }
-
+export function removeObjectDayToArray(array, object) {
+    return array.filter(item => item.day.id != object.day.id)
+}
 export function hasSendFileToServer(file) {
     return Object.keys(file).length > 0 && file.lastModified
 }
@@ -30,7 +32,7 @@ export function hasContentDayToArray(array, object) {
     return array.find(e => e.day.id == object.day.id) != null
 }
 export function transformDataWeekDayToLinealObject(object) {
-    let objectMap = object.days.map(dayObject => ({ startime: object.inithour, endtime: object.endhour, day: { ...dayObject } }));
+    let objectMap = object.days.map(dayObject => ({ startime: object.inithour, endtime: object.endhour, day: { name: dayObject.day, id: dayObject.id } }));
     return objectMap;
 
 }

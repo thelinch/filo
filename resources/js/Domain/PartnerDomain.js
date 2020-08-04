@@ -53,10 +53,10 @@ class PartnerDomain {
         const today = moment();
         let todayInDay = today.format("dddd")
         todayInDay = todayInDay[0].toUpperCase() + todayInDay.slice(1);
-        const daywork = this._daysWork.find((daywork) => daywork.day == todayInDay);
+        const daywork = this._daysWork.find((daywork) => daywork.day.name == todayInDay);
         if (daywork) {
-            const startTime = moment(daywork.startTime, "hh:mm:ss");
-            const endTime = moment(daywork.endTime, "hh:mm:ss");
+            const startTime = moment(daywork.startime, "hh:mm:ss");
+            const endTime = moment(daywork.endtime, "hh:mm:ss");
 
             isAvailableForAttend = today.isBetween(startTime, endTime);
         }
@@ -68,20 +68,20 @@ class PartnerDomain {
         let daysworkOrder = [];
         const todayInNumber = moment().day();
         daysInWeek.forEach((element) => {
-            let day = this._daysWork.find((daywork) => daywork.day == element);
+            let day = this._daysWork.find((daywork) => daywork.day.name == element);
             if (day) {
                 daysworkOrder.push(day)
             }
         })
         let nextDayAttend = daysworkOrder[0];
         for (let i = todayInNumber; i <= 6; i++) {
-            const daySearch = daysworkOrder.find((daywork) => daywork.day == daysInWeek[i])
+            const daySearch = daysworkOrder.find((daywork) => daywork.day.name == daysInWeek[i])
             if (daySearch) {
                 nextDayAttend = daySearch;
                 break;
             }
         }
-        return `Volvemos a abrir el dia  ${nextDayAttend.day} desde ${nextDayAttend.startTime} hasta  ${nextDayAttend.endTime}`;
+        return `Volvemos a abrir el dia  ${nextDayAttend.day.name} desde ${nextDayAttend.startime} hasta  ${nextDayAttend.endtime}`;
     }
 }
 export default PartnerDomain;

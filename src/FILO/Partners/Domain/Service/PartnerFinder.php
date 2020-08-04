@@ -14,9 +14,9 @@ class PartnerFinder
     {
         $this->repository = $repository;
     }
-    public function __invoke(PartnerId $id)
+    public function __invoke(PartnerId $id, $states = [1])
     {
-        $partner = $this->repository->search($id);
+        $partner = $this->repository->search($id, $states);
         if (null == $partner) {
             throw new PartnerNotExist($id);
         }

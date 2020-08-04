@@ -7,59 +7,118 @@ import Grid from "@material-ui/core/Grid";
 import Input from "@material-ui/core/Input";
 import Spinner from "../Spinner/Spinner";
 import WeekCalendar from "../Calendar/WeekCalendar"
-import { transformDataWeekDayToLinealObject, hasSendFileToServer, insertObjectToArray, updateDayToArray, hasContentDayToArray, updateObjetToArray, generateUuid } from "../../Util/Util";
+import { transformDataWeekDayToLinealObject, hasSendFileToServer, removeObjectDayToArray, updateDayToArray, hasContentDayToArray, updateObjetToArray, generateUuid } from "../../Util/Util";
 import Chip from "@material-ui/core/Chip";
 import Box from "@material-ui/core/Box";
-import Select from "./Shared/Select";
+import SelectField from "./Shared/SelectField";
 import { CategoryService } from "../../Services/CategoryService"
 import { FileService } from "../../Services/FileService";
 import { BusinessService } from "../../Services/BusinessService"
-const BusinessForm = ({ BusinessSelect }) => {
-    const BusinessSelectMap = BusinessSelect ? BusinessSelect : { id: 0, name: "", description: "", email: "", category: {}, city: {}, direction: "", phone: "", amountdelivery: "", photo: [{}], workdays: [] }
-    const [selectdays, setSelectdays] = useState([])
+import productUtil from "../../Util/Product/Util";
+import * as Yup from "yup";
+const validateSchema = Yup.object().shape({
+    name: Yup.string().required("Requerido"),
+    email: Yup.string().email("ingrese un email valido").required("requerido"),
+    description: Yup.string().required("requerido"),
+    category: Yup.object().shape({
+        id: Yup.number()
+    }).required("requerido"),
+    city: Yup.object().shape({
+        id: Yup.number()
+    }).required("requerido"),
+    address: Yup.string().required("requerido"),
+    phone: Yup.string().required("requerido"),
+    amountdelivery: Yup.number().positive().required("requerido"),
+    photo: Yup.array().required("Requerido"),
+    workdays: Yup.array().required("Requerido")
+})
+const BusinessForm = (props) => {
+    const [business, setBusiness] = useState({ id: 0, name: "", description: "", email: "", category: { id: "" }, city: { id: "" }, address: "", phone: "", amountdelivery: "", photo: [], workdays: [], state: 1 })
     const [categories, setCategories] = useState([])
+    const [isLoadBusiness, setIsLoadBusiness] = useState(true)
     const [cities, setCities] = useState([{ label: "Yanahuanca", value: 2 }, { label: "Tingo Maria", value: 1 }])
     const onSubmit = async (values) => {
         let url = ""
-/*         if (hasSendFileToServer(values.photo[0])) {
+        let business = values;
+        if (hasSendFileToServer(values.photo[0])) {
             let formData = new FormData();
             formData.append("files[]", values.photo[0]);
             url = ((await FileService.save(formData, "images")).data)[0].url;
             values.photo = url;
         }
- */        if (values.id == 0) {
-            values.id = generateUuid();
-            values.workdays = values.workdays.map(worday => ({ id: generateUuid(), ...worday }))
-            console.log("values map", values)
+        if (values.id == 0) {
+            business.id = generateUuid();
+            business.workdays = values.workdays.map(workday => ({ id: generateUuid(), ...workday }))
+                (await BusinessService.save(business))
+        } else {
+            if (url == "") {
+                values.photo = business.photo[0].source;
+            }
+            (await BusinessService.update(values));
+
+        }
+
+    }
+    const onSelectInterval = async (workdays, valuesSelectinterval, functionUpdate) => {
+        let workDaysForm = workdays;
+        let arrayMapValues = transformDataWeekDayToLinealObject(valuesSelectinterval);
+        for (let i = 0; i < arrayMapValues.length; i++) {
+            if (hasContentDayToArray(workDaysForm, arrayMapValues[i])) {
+                updateDayToArray(workDaysForm, arrayMapValues[i])
+            } else {
+                workDaysForm.push({ id: generateUuid(), ...arrayMapValues[i] })
+            }
+            if (business.id != 0) {
+                await BusinessService.addAndUpdateWorDay(workDaysForm, business.id)
+            }
+            functionUpdate("workdays", workDaysForm);
         }
     }
     useEffect(() => {
         async function fetchCategoriesApi() {
+
             let dataCategories = (await CategoryService.getAll()).data
             dataCategories = dataCategories.map(category => ({ value: category.id, label: category.name }))
             setCategories(dataCategories)
         }
         fetchCategoriesApi();
-
     }, [])
-    const handleDeleteHour = (hour) => () => {
-        console.log(hour)
-    }
-    const onSelectinterval = (values) => {
-        let arrayMapValues = transformDataWeekDayToLinealObject(values);
-        for (let i = 0; i < arrayMapValues.length; i++) {
-            if (hasContentDayToArray(selectdays, arrayMapValues[i])) {
-                updateDayToArray(selectdays, arrayMapValues[i])
-            } else {
-                selectdays.push(arrayMapValues[i])
+    /* useEffect(() => {
+        async function fetchBusiness() {
+            try {
+                let business = (await BusinessService.get()).data
+                setBusiness({ ...business, email: "dwdwd@und.di", photo: [productUtil.transformPhotoSaved(business.photo)] });
+            } catch (e) {
+
+            } finally {
+                setIsLoadBusiness(false)
             }
-        }
-        setSelectdays(cur => [...selectdays])
 
+        }
+        fetchBusiness();
+    }, []) */
+    const handleToggleState = (business, setFieldValue) => () => {
+        BusinessService.toogleState(business);
+        setFieldValue("state", business.state == 1 ? 0 : 1)
 
     }
-    return <Formik initialValues={BusinessSelectMap} enableReinitialize={true} onSubmit={onSubmit} mapPropsToValues={() => {
-        return BusinessSelectMap;
+    const handleDeleteHour = (hour, daysworks, functionUpdate) => () => {
+        if (daysworks.length == 1) {
+            alert("Al  menos debe haber un dia de atencion")
+            return;
+        }
+        if (hour.id) {
+            console.log("Mandando al servidor para eliminar")
+            BusinessService.deleteWorkDay(hour, business.id);
+        }
+        functionUpdate("workdays", removeObjectDayToArray(daysworks, hour))
+    }
+    const onRemoveFile = (file) => {
+        console.log("file", file)
+    }
+
+    return <Formik initialValues={business} enableReinitialize={true} validationSchema={validateSchema} onSubmit={onSubmit} mapPropsToValues={() => {
+        return business;
     }}>
         {
             ({ values, handleChange, errors, touched, isSubmitting, setFieldValue, initialValues, resetForm }) => (
@@ -83,7 +142,7 @@ const BusinessForm = ({ BusinessSelect }) => {
                                 <span className="form-group-label">Telefono:</span>
                                 <div className="form-group-field">
                                     <div className="form-group-input-wrap">
-                                        <Field placeholder="Numero de telefono" name="phone" type="text" className={`field ${errors.price && touched.price ? "is-invalid" : ""}`} />
+                                        <Field placeholder="Numero de telefono" name="phone" type="text" className={`field ${errors.phone && touched.phone ? "is-invalid" : ""}`} />
                                         <ErrorMessage name="phone" component="div" className="form-group-error" />
                                     </div>
                                 </div>
@@ -94,7 +153,7 @@ const BusinessForm = ({ BusinessSelect }) => {
                                 <span className="form-group-label">Email:</span>
                                 <div className="form-group-field">
                                     <div className="form-group-input-wrap">
-                                        <Field name="email" type="text" placeholder="correo electronico" className={`field ${errors.price && touched.price ? "is-invalid" : ""}`} />
+                                        <Field name="email" type="text" placeholder="correo electronico" className={`field ${errors.email && touched.email ? "is-invalid" : ""}`} />
                                         <ErrorMessage name="email" component="div" className="form-group-error" />
                                     </div>
                                 </div>
@@ -105,8 +164,8 @@ const BusinessForm = ({ BusinessSelect }) => {
                                 <span className="form-group-label">Direccion:</span>
                                 <div className="form-group-field">
                                     <div className="form-group-input-wrap">
-                                        <Field name="direction" type="text" placeholder="Direccion" className={`field ${errors.price && touched.price ? "is-invalid" : ""}`} />
-                                        <ErrorMessage name="direction" component="div" className="form-group-error" />
+                                        <Field name="address" type="text" placeholder="Direccion" className={`field ${errors.address && touched.address ? "is-invalid" : ""}`} />
+                                        <ErrorMessage name="address" component="div" className="form-group-error" />
                                     </div>
                                 </div>
                             </div>
@@ -116,7 +175,7 @@ const BusinessForm = ({ BusinessSelect }) => {
                                 <span className="form-group-label">Descripcion</span>
                                 <div className="form-group-field">
                                     <div className="form-group-input-wrap">
-                                        <Field name="description" type="text" as="textarea" className={`field ${errors.price && touched.price ? "is-invalid" : ""}`} placeholder="Cosas que vendas,dedicacion,etc" />
+                                        <Field name="description" type="text" as="textarea" className={`field ${errors.description && touched.description ? "is-invalid" : ""}`} placeholder="Cosas que vendas,dedicacion,etc" />
                                         <ErrorMessage name="description" component="div" className="form-group-error" />
                                     </div>
                                 </div>
@@ -127,7 +186,7 @@ const BusinessForm = ({ BusinessSelect }) => {
                                 <span className="form-group-label">Categoria</span>
                                 <div className="form-group-field">
                                     <div className="form-group-input-wrap">
-                                        <Field name="category" component={Select} options={categories} className={`field ${errors.price && touched.price ? "is-invalid" : ""}`} placeholder="Categoria al que pertenece" />
+                                        <Field name="category.id" component={SelectField} options={categories} className={`field ${errors.category && touched.category ? "is-invalid" : ""}`} placeholder="Categoria al que pertenece" />
                                         <ErrorMessage name="category" component="div" className="form-group-error" />
                                     </div>
                                 </div>
@@ -138,7 +197,7 @@ const BusinessForm = ({ BusinessSelect }) => {
                                 <span className="form-group-label">Ciudad</span>
                                 <div className="form-group-field">
                                     <div className="form-group-input-wrap">
-                                        <Field name="city" component={Select} options={cities} className={`field ${errors.price && touched.price ? "is-invalid" : ""}`} placeholder="Categoria al que pertenece" />
+                                        <Field name="city.id" component={SelectField} options={cities} className={`field ${errors.city && touched.city ? "is-invalid" : ""}`} placeholder="Categoria al que pertenece" />
                                         <ErrorMessage name="city" component="div" className="form-group-error" />
                                     </div>
                                 </div>
@@ -149,7 +208,7 @@ const BusinessForm = ({ BusinessSelect }) => {
                                 <span className="form-group-label">Monto adicional por delivery</span>
                                 <div className="form-group-field">
                                     <div className="form-group-input-wrap">
-                                        <Field name="amountdelivery" type="text" className={`field ${errors.price && touched.price ? "is-invalid" : ""}`} placeholder="Costo adicional por el delivery" />
+                                        <Field name="amountdelivery" type="text" className={`field ${errors.amountdelivery && touched.amountdelivery ? "is-invalid" : ""}`} placeholder="Costo adicional por el delivery" />
                                         <ErrorMessage name="amountdelivery" component="div" className="form-group-error" />
                                     </div>
                                 </div>
@@ -163,10 +222,10 @@ const BusinessForm = ({ BusinessSelect }) => {
                                             {values.workdays.map(selectday => (
                                                 <Chip label={
                                                     <React.Fragment key={selectday.day.id}>
-                                                        <span>{selectday.day.day}</span>
+                                                        <span>{selectday.day.name}</span>
                                                         <strong style={{ padding: ".3rem" }}>{selectday.startime}-{selectday.endtime}</strong>
                                                     </React.Fragment>
-                                                } style={{ margin: ".5em" }} onDelete={handleDeleteHour(selectday)} />
+                                                } style={{ margin: ".5em" }} key={selectday.day.id} onDelete={handleDeleteHour(selectday, values.workdays, setFieldValue)} />
                                             ))}
                                         </Box>
                                     }
@@ -178,18 +237,9 @@ const BusinessForm = ({ BusinessSelect }) => {
                                         <div className="form-group-field">
                                             <div className="form-group-input-wrap">
                                                 <Field name="workdays" component={WeekCalendar} onIntervalSelect={(valuesSelectinterval) => {
-                                                    let workDaysForm = values.workdays;
-                                                    console.log("values", values.workdays)
-                                                    let arrayMapValues = transformDataWeekDayToLinealObject(valuesSelectinterval);
-                                                    for (let i = 0; i < arrayMapValues.length; i++) {
-                                                        if (hasContentDayToArray(workDaysForm, arrayMapValues[i])) {
-                                                            updateDayToArray(workDaysForm, arrayMapValues[i])
-                                                        } else {
-                                                            workDaysForm.push(arrayMapValues[i])
-                                                        }
-                                                        setFieldValue("workdays", workDaysForm)
-                                                    }
-                                                }} weekdays={[{ id: "1", day: "Lunes" }, { id: "2", day: "Martes" }, { id: "3", day: "Miercoles" }, { id: "4", day: "Jueves" }, { id: "5", day: "Viernes" }, { id: "6", day: "Sabado" }, { id: "7", day: "Domingo" }]} className={`field ${errors.price && touched.price ? "is-invalid" : ""}`} placeholder="Cosas que vendas,dedicacion,etc" />
+                                                    console.log("hhhhhh")
+                                                    onSelectInterval(values.workdays, valuesSelectinterval, setFieldValue)
+                                                }} weekdays={[{ id: "1", day: "Lunes" }, { id: "2", day: "Martes" }, { id: "3", day: "Miercoles" }, { id: "4", day: "Jueves" }, { id: "5", day: "Viernes" }, { id: "6", day: "Sabado" }, { id: "7", day: "Domingo" }]} className={`field ${errors.workdays && touched.workdays ? "is-invalid" : ""}`} />
                                                 <ErrorMessage name="workdays" component="div" className="form-group-error" />
                                             </div>
                                         </div>
@@ -203,7 +253,7 @@ const BusinessForm = ({ BusinessSelect }) => {
                                 <span className="form-group-label">Miniatura</span>
                                 <div className="form-group-field">
                                     <div className="form-group-input-wrap">
-                                        <Field name="photo" component={FileForm} messageUser="Foto de tu empresa" filesParameter={values.photo} directory="images" className={`field ${errors.category && touched.category ? "is-invalid" : ""}`} />
+                                        <Field name="photo" component={FileForm} onRemoveFileObject={onRemoveFile} messageUser="Foto de tu empresa" filesParameter={values.photo} directory="images" className={`field ${errors.photo && touched.photo ? "is-invalid" : ""}`} />
                                         <ErrorMessage name="photo" component="div" className="form-group-error" />
                                     </div>
                                 </div>
@@ -211,12 +261,20 @@ const BusinessForm = ({ BusinessSelect }) => {
                         </Grid>
                         <Grid item xs={12}>
                             <div className="button-toolbar form-button-toolbar" style={{ float: "right" }}>
+                                {
+
+                                    values.id != 0 && <button type="button" onClick={handleToggleState(values, setFieldValue)} className="button button-secondary">
+                                        {
+                                            values.state == 1 ? "Suspender atencion" : "Volver a abrir"
+                                        }
+                                    </button>
+                                }
                                 <button
                                     className="button button-primary flex-center"
-                                    disabled={isSubmitting}
+                                    disabled={isSubmitting || isLoadBusiness}
                                     type="submit"
                                 >
-                                    {values.id > 0 ? "Editar" : "Crear"}
+                                    {isLoadBusiness ? <Spinner /> : values.id == 0 ? "Crear" : "editar"}
                                     {isSubmitting && <Spinner type="Circles" />}
                                 </button>
                             </div>

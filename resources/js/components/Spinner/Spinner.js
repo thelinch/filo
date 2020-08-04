@@ -8,8 +8,6 @@ const Spinner = ({ type = "Rings", ...props }) => (
                 type={type}
                 // color={'#004889'}
                 color={'#138035'}
-                height={100}
-                width={100}
                 {...props}
             />
         </div>

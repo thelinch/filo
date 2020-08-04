@@ -9,8 +9,9 @@ use src\Shared\Domain\Pagination\NumberPerPage;
 interface PartnerRepositoryI
 {
     function create(Partner $partner): void;
-    function search(PartnerId $id): ?Partner;
+    public function search(PartnerId $id, $states = [1]): ?Partner;
     public function update(Partner $partner): void;
     public function delete(PartnerId $id): void;
+    public function updateDaysWork(Partner $partner);
     public function all(NextPage $nextPage, NumberPerPage $numberPartnerPerPage): array;
 }

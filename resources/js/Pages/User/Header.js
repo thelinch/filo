@@ -88,7 +88,7 @@ const Header = (props) => {
                     <AccountCircleIcon />
                 </Toolbar>
             </AppBar>
-            <Search />
+            {/*  <Search /> */}
         </React.Fragment>
     )
 }
