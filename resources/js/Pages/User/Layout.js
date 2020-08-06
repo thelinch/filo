@@ -3,7 +3,7 @@ import { Router } from "@reach/router"
 import InitPage from "./InitPage"
 import PartnerPage from "./PartnerPage"
 import { SearchProvider } from "../../Contexts/SearchContext";
-import Header from "./Header";
+import Header from "../../components/User/Header/Header";
 import { CartProvider } from "../../Contexts/CartContext";
 import ProductPage from "../Admin/ProductPage copy";
 import BusinessPage from "../Admin/BusinessPage";

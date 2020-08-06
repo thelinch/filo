@@ -20,8 +20,6 @@ class MenuListController extends ApiController
     private MenuListFindPartner $menuListFindPartner;
     public function __construct()
     {
-        $this->middleware("auth:api");
-
         $this->menuListFindPartner = App::make(MenuListFindPartner::class);
     }
     public function exceptions(): array
@@ -31,7 +29,10 @@ class MenuListController extends ApiController
 
     public function __invoke(string $partnerId = null)
     {
-        $partnerIdAuth = Auth::user()->partner->id;
+        $partnerIdAuth = null;
+        if (Auth::guard("api")->check()) {
+            $partnerIdAuth = Auth::guard("api")->user()->partner->id;
+        };
         $partnerId = new PartnerId($partnerId ?? $partnerIdAuth);
         return new MenuListResponse($this->menuListFindPartner->__invoke(new NextPage(3), new NumberPerPage(20), new PartnerId($partnerId)));
     }

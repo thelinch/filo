@@ -47,6 +47,6 @@ final class PartnerCreator
     ) {
         $partner = Partner::create($partnerId, $description, $name, $dishes, $category, $address, $phone, $userId, $city, $photo, $amountDelivery, $state, $daysWork);
         $this->repository->create($partner);
-        /* $this->bus->publish(...$partner->pullDomainEvents()); */
+        $this->bus->publish(...$partner->pullDomainEvents());
     }
 }

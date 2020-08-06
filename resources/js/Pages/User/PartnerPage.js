@@ -11,6 +11,7 @@ import PartnerDomain from "../../Domain/PartnerDomain";
 import ProductDomain from "../../Domain/ProductDomain";
 import { CartContext } from "../../Contexts/CartContext";
 import ImgPreview from "../../components/Img/ImgPreview";
+import axios from "../../Config/axiosconfig";
 const PartnerPage = (props) => {
     const searchContext = useContext(SearchContext);
     const cartContext = useContext(CartContext)
@@ -25,7 +26,6 @@ const PartnerPage = (props) => {
     useEffect(() => {
         searchContext.setFavorites([]);
         searchContext.setCategories([<strong>No hay categorias</strong>]);
-
         async function fetchProductsFindPartner() {
             let productsData = (await ProductService.getAllFindPartner(partner.id)).data
             let products = productsData.data;
@@ -61,8 +61,10 @@ const PartnerPage = (props) => {
                 ));
             }
             searchContext.setFavorites(productsView);
+
         }
         fetchProductsFindPartner();
+
     }, [])
     const handleChangePage = (event, newPage) => {
         setPage(newPage)

@@ -25,13 +25,12 @@ class PartnerGetController extends ApiController
     public function __construct()
     {
         $this->partnerFinder = App::make(PartnerFinder::class);
-        $this->middleware("auth:api");
     }
 
 
     public function __invoke()
     {
-        $partnerId = Auth::user()->partner->id;
+        $partnerId = Auth::guard("api")->user()->partner->id;
         $partnerId = new PartnerId($partnerId);
         $partnerResponse = new PartnerResponse($this->partnerFinder->__invoke($partnerId, [1, 0]));
         return $partnerResponse;

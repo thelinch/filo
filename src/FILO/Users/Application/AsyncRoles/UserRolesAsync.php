@@ -10,7 +10,7 @@ class UserRolesAsync
 
     public function handle(PartnerCreatedDomianEvent $partnerCreatedDomianEvent)
     {
-        $user = Auth::user();
+        $user = Auth::guard("api")->user();
         if (!$user->hasRole(["administrator"])) {
             $user->syncRoles(["diner", "administrator"]);
         }

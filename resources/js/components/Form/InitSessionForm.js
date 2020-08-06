@@ -12,13 +12,13 @@ import { connect } from 'react-redux';
 import { CredentialService } from "../../Services/CredentialService";
 import { login } from "../../redux/actions/authActions";
 import { setUser } from "../../Util/Util";
+import { navigate } from "@reach/router"
 const validateSchema = Yup.object().shape({
     email: Yup.string().email("ingrese un email valido").required("requerido"),
     password: Yup.string().required("requerido")
 })
 
 const InitSession = (props) => {
-    console.log(props)
     const onSubmit = async (values) => {
         console.log(values)
         let token = (await CredentialService.login(values)).data
@@ -27,6 +27,7 @@ const InitSession = (props) => {
         let userData = (await CredentialService.me()).data
         setUser(userData);
         props.dispatch(login());
+        navigate(props.redirectUrl ?? "/");
 
     }
 

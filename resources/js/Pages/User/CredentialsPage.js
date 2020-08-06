@@ -7,7 +7,7 @@ import TabList from '@material-ui/lab/TabList';
 import TabPanel from '@material-ui/lab/TabPanel';
 import InitSessionForm from "../../components/Form/InitSessionForm"
 import RegisterForm from "../../components/Form/RegisterForm"
-import { Paper } from '@material-ui/core';
+import { Paper, Grid } from '@material-ui/core';
 
 export default function LabTabs() {
     const [value, setValue] = React.useState('1');
@@ -17,21 +17,28 @@ export default function LabTabs() {
     };
 
     return (
-        <Paper style={{ width: "50%", margin: "0 auto" }}>
-            <TabContext value={value}>
-                <TabList onChange={handleChange} aria-label="simple tabs example">
-                    <Tab label="Iniciar Session" value="1" />
-                    <Tab label="Registrate" value="2" />
-                </TabList>
-                <TabPanel value="1">
-                    <InitSessionForm />
-                </TabPanel>
-                <TabPanel value="2">
 
-                    <RegisterForm />
-                </TabPanel>
-            </TabContext>
+        <Grid container >
+            <Grid item xs={12} md={6} style={{ margin: "0 auto" }}>
+                <Paper>
+                    <TabContext value={value}>
+                        <TabList onChange={handleChange} aria-label="simple tabs example">
+                            <Tab label="Iniciar Session" value="1" />
+                            <Tab label="Registrate" value="2" />
+                        </TabList>
+                        <TabPanel value="1">
+                            <InitSessionForm />
+                        </TabPanel>
+                        <TabPanel value="2">
 
-        </Paper>
+                            <RegisterForm />
+                        </TabPanel>
+                    </TabContext>
+                </Paper>
+
+
+
+            </Grid>
+        </Grid>
     );
 }

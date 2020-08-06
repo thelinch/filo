@@ -12,4 +12,5 @@ interface JwtAuth
     function login(string $password, string $email): array;
     public function me(): User;
     function logout();
+    public function isAutenticate(): bool;
 }

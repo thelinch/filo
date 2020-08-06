@@ -3,6 +3,9 @@ import axios from "../Config/axiosconfig";
 import cookie from 'react-cookies';
 
 export const request = (options) => {
+    const CancelToken = axios.CancelToken;
+    const source = CancelToken.source();
+    options.cancelToken = source.token
     let headers = {}
     if (cookie.load("token")) {
         headers["Authorization"] = 'Bearer ' + cookie.load("token")

@@ -5,6 +5,10 @@ import { v4 as uuidv4 } from 'uuid';
 export function getObjectFindId(array, idObject) {
     return array.find((object) => object.id == idObject);
 }
+export function currentUserIsAdmin() {
+    let user = getUser();
+    return user.roles.find(role => role == "administrator") != null;
+}
 export function removeObjectOfArray(array, object) {
 
     console.log("uti", array, object)
@@ -26,7 +30,7 @@ export function setUser(user) {
     localStorage.setItem("user", JSON.stringify(user))
 }
 export function getUser() {
-    return JSON.parse(localStorage.getItem("user")); p
+    return JSON.parse(localStorage.getItem("user"));
 }
 export function removeObjectDayToArray(array, object) {
     return array.filter(item => item.day.id != object.day.id)

@@ -28,7 +28,6 @@ class PartnerPostController extends ApiController
     public function __construct()
     {
         $this->parnertCreator = App::make(CreatePartnerCreator::class);
-        $this->middleware("auth:api");
 
         /*  $this->middleware("auth:api"); */
     }
@@ -43,7 +42,7 @@ class PartnerPostController extends ApiController
         $daysWorks = collect($partnerParameter["workdays"])->map(function ($daywork) {
             return new PartnerDayWork($daywork["startime"], $daywork["endtime"], $daywork["day"]["name"], $daywork["day"]["id"], $daywork["id"]);
         });
-        $userId = Auth::user()->id;
+        $userId = Auth::guard("api")->user()->id;
         $this->parnertCreator->__invoke(
             new PartnerId($partnerParameter["id"]),
             new PartnerCategory($partnerParameter["category"]["id"], "defecto"),
