@@ -160,7 +160,7 @@ const Header = ({ isAuthenticated, dispatch }, ...props) => {
                                                     }
                                                 </Link> 
                                                 <ListItem className="flex " style={{ justifyContent: "center" }}>
-                                                    <button className="button button-secondary">
+                                                    <button className="button button-secondary" onClick={handleCloseSession}>
                                                         Cerrar sesion
                                             </button>
                                                 </ListItem>
@@ -285,7 +285,9 @@ const Header = ({ isAuthenticated, dispatch }, ...props) => {
                                         </div>
                                     </Menu>
                                 </div>
-                            </Hidden>):  <Button
+                            </Hidden>):
+                            <Hidden mdDown>
+                                 <Button
                                         style={{ color: "white", borderColor: "white" }}
                                         variant="outlined"
                                         className="topbar__button"
@@ -294,9 +296,8 @@ const Header = ({ isAuthenticated, dispatch }, ...props) => {
                                         }}
                                     >
                                   Iniciar Sesion</Button>
+                            </Hidden>
                         }
-                       
-
                     </div>
 
                 </Toolbar>
