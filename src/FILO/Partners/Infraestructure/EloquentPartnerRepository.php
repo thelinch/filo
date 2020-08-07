@@ -116,6 +116,7 @@ class EloquentPartnerRepository implements PartnerRepositoryI
     {
         DB::beginTransaction();
         $partnerModel = PartnerModel::find($partner->id()->value(), ["id", "name", "description", "city_id", "category_id", "direction", "amountdelivery", "phone", "photo"]);
+        $partnerModel->name = $partner->name()->value();
         $partnerModel->description = $partner->description()->value();
         $partnerModel->direction = $partner->address()->value();
         $partnerModel->amountdelivery = $partner->amountDelivery()->value();

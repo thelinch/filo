@@ -20,7 +20,6 @@ const validateSchema = Yup.object().shape({
 
 const InitSession = (props) => {
     const onSubmit = async (values) => {
-        console.log(values)
         let token = (await CredentialService.login(values)).data
         cookie.remove("token");
         cookie.save("token", token.access_token);

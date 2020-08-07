@@ -76,6 +76,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 const Header = ({ isAuthenticated, dispatch }, ...props) => {
+    console.log(isAuthenticated)
     const classes = useStyles();
     const [collapse, setCollapse] = React.useState(null);
     const [openDrawer, setOpenDrawer] = React.useState(false)
@@ -109,7 +110,7 @@ const Header = ({ isAuthenticated, dispatch }, ...props) => {
                                                 <ListItem>
                                                     <div className="topbar__menu-profile-user text-center">
                                                         <Typography variant="h4" weight="medium" className="topbar__user-name">
-                                                            {getUser().name}</Typography>
+                                                            {getUser()?.name}</Typography>
                                                     </div>
                                                 </ListItem>
                                                 <Link to="/" className="topbar__link">
@@ -142,7 +143,7 @@ const Header = ({ isAuthenticated, dispatch }, ...props) => {
                                                 </Typography>
                                                     </ListItem>
                                                 </Link>
-                                                <Link to="/products" className="topbar__link">
+                                            <Link to="/products" className="topbar__link">
                                                     {
 
 
@@ -157,7 +158,7 @@ const Header = ({ isAuthenticated, dispatch }, ...props) => {
                                                         </ListItem>
 
                                                     }
-                                                </Link>
+                                                </Link> 
                                                 <ListItem className="flex " style={{ justifyContent: "center" }}>
                                                     <button className="button button-secondary">
                                                         Cerrar sesion
@@ -221,7 +222,7 @@ const Header = ({ isAuthenticated, dispatch }, ...props) => {
                                     >
                                         <div className="topbar__menu-profile-user text-center">
                                             <Typography variant="h4" weight="medium" className="topbar__user-name">
-                                                {getUser().name}</Typography>
+                                                {getUser()?.name}</Typography>
                                         </div>
                                         <div className="topbar__menu-profile-user">
                                             <MenuItem>
@@ -261,7 +262,7 @@ const Header = ({ isAuthenticated, dispatch }, ...props) => {
                                                 </Link>
                                             </MenuItem> 
                                             
-                                            {
+                                           {
                                                 currentUserIsAdmin() &&   <MenuItem>
                                                 <Link to="/products" className="topbar__link">
                                                     <Typography
@@ -274,7 +275,7 @@ const Header = ({ isAuthenticated, dispatch }, ...props) => {
                                                         </Typography>
                                                 </Link>
                                             </MenuItem>
-                                            }
+                                            } 
                                           
                                             <MenuItem >
                                                 <button className="button button-secondary" onClick={handleCloseSession}>
@@ -284,10 +285,15 @@ const Header = ({ isAuthenticated, dispatch }, ...props) => {
                                         </div>
                                     </Menu>
                                 </div>
-                            </Hidden>): <Link className= "button button-secondary" to = "/credential">
-                            Iniciar Session
-
-                    </Link>
+                            </Hidden>):  <Button
+                                        style={{ color: "white", borderColor: "white" }}
+                                        variant="outlined"
+                                        className="topbar__button"
+                                        onClick={()=>{
+                                            navigate("/credential")
+                                        }}
+                                    >
+                                  Iniciar Sesion</Button>
                         }
                        
 

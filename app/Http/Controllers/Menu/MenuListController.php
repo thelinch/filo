@@ -30,7 +30,7 @@ class MenuListController extends ApiController
     public function __invoke(string $partnerId = null)
     {
         $partnerIdAuth = null;
-        if (Auth::guard("api")->check()) {
+        if (!$partnerId) {
             $partnerIdAuth = Auth::guard("api")->user()->partner->id;
         };
         $partnerId = new PartnerId($partnerId ?? $partnerIdAuth);

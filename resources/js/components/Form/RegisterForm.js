@@ -22,7 +22,9 @@ const RegisterForm = (props) => {
         values.id = generateUuid();
         console.log(values)
         await CredentialService.save(values)
+
     }
+
 
     return <Formik initialValues={{ name: "", phone: "", email: "", direction: "", password: "" }} validationSchema={validateSchema} enableReinitialize={true} onSubmit={onSubmit} mapPropsToValues={() => {
         return { name: "", phone: "", email: "", direction: "", password: "" };
