@@ -9,6 +9,7 @@ use Filo\Menus\Application\Find\MenuResponse;
 use Filo\Menus\Domain\MenuId;
 use Filo\Partners\Domain\PartnerId;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use src\Shared\Domain\Pagination\NextPage;
 use src\Shared\Domain\Pagination\NumberPerPage;
 use src\Shared\Infraestructure\Eloquent\ApiController;
@@ -26,8 +27,13 @@ class MenuListController extends ApiController
         return [];
     }
 
-    public function __invoke(string $partnerId)
+    public function __invoke(string $partnerId = null)
     {
+        $partnerIdAuth = null;
+        if (Auth::guard("api")->check()) {
+            $partnerIdAuth = Auth::guard("api")->user()->partner->id;
+        };
+        $partnerId = new PartnerId($partnerId ?? $partnerIdAuth);
         return new MenuListResponse($this->menuListFindPartner->__invoke(new NextPage(3), new NumberPerPage(20), new PartnerId($partnerId)));
     }
 }

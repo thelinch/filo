@@ -18,6 +18,9 @@ import { Router, Link } from "@reach/router";
 import Layout from "./Pages/User/Layout";
 import LayoutAdmin from "./Pages/Admin/LayoutAdmin";
 import moment from "moment"
+import { Provider } from 'react-redux';
+import store from './store';
+
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 
@@ -25,12 +28,14 @@ class App extends React.Component {
     render() {
 
         return (
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <Router>
-                    <Layout path="/*" />
-                    <LayoutAdmin path="/admin/*" />
-                </Router>
-            </MuiPickersUtilsProvider>
+            <Provider store={store}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <Router>
+                        <Layout path="/*" />
+                        <LayoutAdmin path="/admin/*" />
+                    </Router>
+                </MuiPickersUtilsProvider>
+            </Provider>
         )
     }
 }

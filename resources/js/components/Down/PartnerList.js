@@ -51,7 +51,7 @@ const PartnerList = ({ partners, handleClick, isLoading }) => {
                             <PhoneIcon /> {partner.phone}
                         </Box>
                         <Box display="flex" alignItems="center">
-                            <LocationOnIcon /> {partner.address}
+                            <LocationOnIcon />{partner.city.name}-{partner.address}
                         </Box>
                     </Box>
                 </CardContent>

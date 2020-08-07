@@ -18,6 +18,7 @@ use Filo\Partners\Domain\PartnerState;
 use Filo\Users\Domain\UserId;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use src\Shared\Infraestructure\Eloquent\ApiController;
 
 class PartnerPostController extends ApiController
@@ -27,6 +28,7 @@ class PartnerPostController extends ApiController
     public function __construct()
     {
         $this->parnertCreator = App::make(CreatePartnerCreator::class);
+
         /*  $this->middleware("auth:api"); */
     }
     public function exceptions(): array
@@ -40,11 +42,12 @@ class PartnerPostController extends ApiController
         $daysWorks = collect($partnerParameter["workdays"])->map(function ($daywork) {
             return new PartnerDayWork($daywork["startime"], $daywork["endtime"], $daywork["day"]["name"], $daywork["day"]["id"], $daywork["id"]);
         });
+        $userId = Auth::guard("api")->user()->id;
         $this->parnertCreator->__invoke(
             new PartnerId($partnerParameter["id"]),
             new PartnerCategory($partnerParameter["category"]["id"], "defecto"),
             new PartnerAddress($partnerParameter["address"]),
-            new UserId("wdwdwd1dwdwd-wdwd12"),
+            new UserId($userId),
             new PartnerPhone($partnerParameter["phone"]),
             new PartnerName($partnerParameter["name"]),
             new PartnerDescription($partnerParameter["description"]),

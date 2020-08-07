@@ -37,14 +37,14 @@ const BusinessForm = (props) => {
     const [categories, setCategories] = useState([])
     const [isLoadBusiness, setIsLoadBusiness] = useState(true)
     const [cities, setCities] = useState([{ label: "Yanahuanca", value: 2 }, { label: "Tingo Maria", value: 1 }])
-    const onSubmit = async (values) => {
+    const onSubmit = async (values, { setFieldValue }) => {
         let url = ""
-        let business = values;
+        let business = { ...values };
         if (hasSendFileToServer(values.photo[0])) {
             let formData = new FormData();
             formData.append("files[]", values.photo[0]);
             url = ((await FileService.save(formData, "images")).data)[0].url;
-            values.photo = url;
+            business.photo = url;
         }
         if (values.id == 0) {
             business.id = generateUuid();
@@ -57,6 +57,7 @@ const BusinessForm = (props) => {
             (await BusinessService.update(values));
 
         }
+        setFieldValue("id", business.id)
 
     }
     const onSelectInterval = async (workdays, valuesSelectinterval, functionUpdate) => {
@@ -83,7 +84,7 @@ const BusinessForm = (props) => {
         }
         fetchCategoriesApi();
     }, [])
-    /* useEffect(() => {
+    useEffect(() => {
         async function fetchBusiness() {
             try {
                 let business = (await BusinessService.get()).data
@@ -96,7 +97,7 @@ const BusinessForm = (props) => {
 
         }
         fetchBusiness();
-    }, []) */
+    }, [])
     const handleToggleState = (business, setFieldValue) => () => {
         BusinessService.toogleState(business);
         setFieldValue("state", business.state == 1 ? 0 : 1)

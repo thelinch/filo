@@ -9,7 +9,7 @@ function deleteProduct(productId) {
 function getAllFindPartner(partnerId) {
     return request({
         method: "GET",
-        url: `${PartnerDomain}/${partnerId}/products`
+        url: partnerId ? `${PartnerDomain}/${partnerId}/products` : `${PartnerDomain}/products`
     })
 }
 function save(product) {

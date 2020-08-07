@@ -20,8 +20,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(["prefix" => "files"], function () {
     Route::get("/find", "File\FileGetController@__invoke");
-    Route::get("/delete", "File\FileDeleteController@__invoke");
-    Route::post("/save", "File\FileSaveController@__invoke");
+    Route::middleware("api.verify")->get("/delete", "File\FileDeleteController@__invoke");
+    Route::middleware("api.verify")->post("/save", "File\FileSaveController@__invoke");
 
 
     /* Route::post("/save"); */
@@ -29,18 +29,18 @@ Route::group(["prefix" => "files"], function () {
 Route::group(["prefix" => "partners"], function () {
     Route::get("list", "PartnerListController@__invoke");
     Route::get("{categoryId}/list", "PartnerFindCategoryController@__invoke");
-
-    Route::get("get", "PartnerGetController@__invoke");
-    Route::get("{idPartner}/transactions", "Transaction\TransactionFindByPartnerController@__invoke");
+    Route::middleware("api.verify")->get("get", "PartnerGetController@__invoke");
+    Route::middleware("api.verify")->get("{idPartner}/transactions", "Transaction\TransactionFindByPartnerController@__invoke");
     Route::get("{partnerId}/products", "Menu\MenuListController@__invoke");
-    Route::post("{partnerId}/deleteWorkday", "PartnerDeleteWorkDayController@__invoke");
-    Route::post("{partnerId}/addAndUpdateWorkDay", "PartnerAddWorkDayController@__invoke");
-    Route::get("{idPartner}/delete", "PartnerDeleteController@__invoke");
-    Route::post("save", "PartnerPostController@__invoke");
-    Route::post("update", "PartnerUpdateController@__invoke");
+    Route::middleware("api.verify")->get("/products", "Menu\MenuListController@__invoke");
+    Route::middleware("api.verify")->post("{partnerId}/deleteWorkday", "PartnerDeleteWorkDayController@__invoke");
+    Route::middleware("api.verify")->post("{partnerId}/addAndUpdateWorkDay", "PartnerAddWorkDayController@__invoke");
+    Route::middleware("api.verify")->get("{idPartner}/delete", "PartnerDeleteController@__invoke");
+    Route::middleware("api.verify")->post("save", "PartnerPostController@__invoke");
+    Route::middleware("api.verify")->post("update", "PartnerUpdateController@__invoke");
 });
 
-Route::group(["prefix" => "products"], function () {
+Route::group(["prefix" => "products", "middleware" => ["api.verify"]], function () {
     Route::post("save", "Menu\MenuPostController@__invoke");
     Route::get("{idMenu}/find", "Menu\MenuGetController@__invoke");
     Route::post("{idMenu}/update", "Menu\MenuUpdateController@__invoke");
@@ -54,10 +54,11 @@ Route::group(["prefix" => "users"], function () {
     Route::post("login", "User\UserLoginController@__invoke")->name("login");
     Route::post("update", "User\UserUpdateController@__invoke");
     Route::get("{idUser}/find", "User\UserGetController@__invoke");
-    Route::get("me", "User\UserAuthController@__invoke");
-    Route::get("{idUser}/delete", "User\UserDeleteController@__invoke");
+    Route::middleware("api.verify")->get("me", "User\UserAuthController@__invoke");
+    Route::middleware("auth:api")->get("logout", "User\UserLogoutController@__invoke");
+    Route::middleware("api.verify")->get("{idUser}/delete", "User\UserDeleteController@__invoke");
 });
-Route::group(["prefix" => "transactions"], function () {
+Route::group(["prefix" => "transactions", "middleware" => ["api.verify"]], function () {
     Route::post("save", "Transaction\TransactionPostController@__invoke");
     Route::get("{transactionId}/cancelled", "Transaction\TransactionCancelledGetController@__invoke");
     Route::get("{transactionId}/onMyWay", "Transaction\TransactionStateOnMyWayController@__invoke");

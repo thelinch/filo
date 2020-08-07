@@ -43,7 +43,7 @@ class PartnerDomain {
         return this._daysWork;
     }
     get city() {
-        return this._cityy;
+        return this._city;
     }
     get photo() {
         return this._photo;

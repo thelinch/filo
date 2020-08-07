@@ -39,7 +39,7 @@ const ProductPage = (props) => {
         searchContext.setFavorites(productsView);
         async function getProductsApi() {
 
-            let productsData = (await ProductService.getAllFindPartner("dddw")).data
+            let productsData = (await ProductService.getAllFindPartner()).data
             setProducts(productsData.data)
         }
         getProductsApi();

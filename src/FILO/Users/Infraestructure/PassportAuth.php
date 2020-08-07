@@ -32,8 +32,12 @@ class PassportAuth implements JwtAuth
     }
     function logout()
     {
-        $user = Auth::user();
+        $user = Auth::guard("api")->user();
         $user->token()->revoke();
+    }
+    public function isAutenticate(): bool
+    {
+        return Auth::check();
     }
     public function me(): User
     {

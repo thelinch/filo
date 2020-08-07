@@ -50,7 +50,7 @@ class ProductPage extends React.Component {
         this.context.setFavorites([]);
         let productsView = [<strong>Actualmente no existe productos populares</strong>];
         this.context.setFavorites(productsView);
-        let productsData = (await ProductService.getAllFindPartner("dddw")).data
+        let productsData = (await ProductService.getAllFindPartner()).data
         this.setState({ products: productsData.data })
     }
     handleCloseModal = () => {
