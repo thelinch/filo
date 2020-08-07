@@ -10,7 +10,6 @@ import BusinessPage from "../Admin/BusinessPage";
 import CredentialsPage from "../User/CredentialsPage";
 import { connect } from "react-redux"
 const Layout = (props) => {
-    console.log("Layout Props", props)
     return (
         <CartProvider>
             <SearchProvider>

@@ -7,7 +7,7 @@ export function getObjectFindId(array, idObject) {
 }
 export function currentUserIsAdmin() {
     let user = getUser();
-    return user.roles.find(role => role == "administrator") != null;
+    return user.roles.includes("administrator");
 }
 export function removeObjectOfArray(array, object) {
 
