@@ -1,0 +1,40 @@
+.cart {
+  /*  & ::before {
+    content: '';
+    width: 20px;
+    height: 10px;
+    position: absolute;
+  } */
+  max-height: 200px;
+  @include media(xs) {
+    & {
+      right: 5px !important;
+    }
+  }
+  .content {
+    width: 640px;
+    padding: 0.4rem;
+    @include media(xs) {
+      & {
+        width: 100%;
+      }
+    }
+    .table {
+      width: inherit;
+      .tr {
+        display: flex;
+        padding: 0.3rem;
+        margin-bottom: 0.3rem;
+        justify-content: space-around;
+        align-items: center;
+      }
+      .tr_first {
+        border-bottom: 1px solid $color-primary;
+      }
+      .head {
+        width: inherit;
+        font-size: 16px;
+      }
+    }
+  }
+}

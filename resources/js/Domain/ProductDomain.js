@@ -1,13 +1,28 @@
 
 class ProductDomain {
-    constructor(id, name, votes, description, photo, price) {
+    constructor(id, name, votes, description, photo, price, partner) {
         this._id = id;
         this._name = name;
         this._votes = votes;
         this._description = description;
         this._photo = photo;
         this._price = price;
+        this._partner = partner;
+        this._quantity = 1;
     }
+    get quantity() {
+        return this._quantity;
+    }
+    incrementQuantity() {
+        this._quantity++;
+    }
+    set quantity(quantity) {
+        this._quantity = quantity;
+    }
+    get partner() {
+        return this._partner;
+    }
+
     get photo() {
         return this._photo;
     }

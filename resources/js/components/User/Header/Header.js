@@ -21,6 +21,7 @@ import { getUser, currentUserIsAdmin } from "../../../Util/Util";
 import { CredentialService } from "../../../Services/CredentialService";
 import { logout } from "../../../redux/actions/authActions"
 import {navigate} from "@reach/router"
+import ShoppingCart from "../../Shopping cart/ShoppingCart";
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -198,7 +199,7 @@ const Header = ({ isAuthenticated, dispatch }, ...props) => {
                     </div>
 
                     <div className="topbar__right">
-                        <ShoppingCartIcon className="shopping_cart" />
+                        <ShoppingCart/>
                         {
                             isAuthenticated ? ( <Hidden mdDown>
                                 <div className="topbar__profile">
