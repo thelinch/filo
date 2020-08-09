@@ -13,6 +13,11 @@ class ProductDomain {
     get quantity() {
         return this._quantity;
     }
+    delete() {
+
+        this._quantity = 1;
+
+    }
     incrementQuantity() {
         this._quantity++;
     }

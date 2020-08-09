@@ -6,3 +6,4 @@ export const FileDomain = "/api/files/";
 export const ProductDomain = "/api/products"
 export const BusinessDomain = "/api/partners"
 export const CredentialDomain = "/api/users";
+export const TransactionDomain = "/api/transactions"

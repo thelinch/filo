@@ -5,14 +5,23 @@
     height: 10px;
     position: absolute;
   } */
-  max-height: 200px;
-  @include media(xs) {
-    & {
-      right: 5px !important;
+  width: 100%;
+  &.icon {
+    width: 640px;
+    @include media(xs) {
+      & {
+        width: 100%;
+      }
     }
   }
+  /*   max-height: 200px;
+ */
   .content {
-    width: 640px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
     padding: 0.4rem;
     @include media(xs) {
       & {
@@ -27,7 +36,16 @@
         margin-bottom: 0.3rem;
         justify-content: space-around;
         align-items: center;
+        &.item {
+          position: relative;
+          & > .delete {
+            position: absolute;
+            top: -5px;
+            left: 0;
+          }
+        }
       }
+
       .tr_first {
         border-bottom: 1px solid $color-primary;
       }

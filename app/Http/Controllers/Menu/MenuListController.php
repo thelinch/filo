@@ -30,9 +30,12 @@ class MenuListController extends ApiController
     public function __invoke(string $partnerId = null)
     {
         $partnerIdAuth = null;
-        if (!$partnerId) {
+        if (!$partnerId &&  Auth::guard("api")->user()->hasRole(["administrator"])) {
             $partnerIdAuth = Auth::guard("api")->user()->partner->id;
         };
+        if (!$partnerIdAuth && !$partnerId) {
+            return response(["message" => "products not found"], 404);
+        }
         $partnerId = new PartnerId($partnerId ?? $partnerIdAuth);
         return new MenuListResponse($this->menuListFindPartner->__invoke(new NextPage(3), new NumberPerPage(20), new PartnerId($partnerId)));
     }

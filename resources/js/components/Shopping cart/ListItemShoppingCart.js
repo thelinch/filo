@@ -1,15 +1,8 @@
 import React, { useState } from "react"
 import ImgPreview from "../Img/ImgPreview"
-const ListItemShoppingCart = ({ itemsP }) => {
-    console.log()
-    const [items, setItems] = useState(itemsP);
-    const handleChange = (itemParameter, event) => {
-        console.log(itemParameter, event.target.value)
-        items.find(item => item.id == itemParameter.id).quantity = event.target.value
-        setItems(curr => [...items])
-
-    }
-    return items.map((item) => (<tr key={item.id} className="tr">
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+const ListItemShoppingCart = ({ itemsP, onChangeInput, onDelete }) => {
+    return itemsP.map((item) => (<tr key={item.id} className="tr item">
         <td style={{ width: "20%" }}>
             <ImgPreview fileName={item.photo} directory="images" />
         </td>
@@ -17,7 +10,7 @@ const ListItemShoppingCart = ({ itemsP }) => {
             {item.name}
         </td>
         <td>
-            <input style={{ width: "50%" }} value={item.quantity} type="number" onChange={(event) => { handleChange(item, event) }} />
+            <input style={{ width: "50%" }} value={item.quantity} type="number" min="1" onChange={(event) => { onChangeInput(item, event) }} />
         </td>
         <td>
             S./ {item.price}
@@ -25,6 +18,7 @@ const ListItemShoppingCart = ({ itemsP }) => {
         <td>
             S./ {item.quantity * item.price}
         </td>
+        <HighlightOffIcon className="delete " style={{ cursor: "pointer" }} onClick={onDelete(item)} />
     </tr>))
 
 

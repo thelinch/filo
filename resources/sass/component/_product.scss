@@ -20,9 +20,14 @@
     }
   }
   & > .product-content {
+    width: 100%;
     .title {
       font-family: 'Montserrat', sans-serif;
       font-size: 1.3rem;
+    }
+    .description {
+      height: 40px;
+      width: 100%;
     }
   }
   & > button {

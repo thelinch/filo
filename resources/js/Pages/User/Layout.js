@@ -9,6 +9,7 @@ import ProductPage from "../Admin/ProductPage copy";
 import BusinessPage from "../Admin/BusinessPage";
 import CredentialsPage from "../User/CredentialsPage";
 import { connect } from "react-redux"
+import CartShoppingPage from "./CartShoppingPage";
 const Layout = (props) => {
     return (
         <CartProvider>
@@ -23,6 +24,7 @@ const Layout = (props) => {
                         <ProductPage path="/products" />
                         <BusinessPage path="/business" />
                         <CredentialsPage path="/credential" />
+                        <CartShoppingPage isAuthenticated={props.isAuthenticated} path="/cart" />
                     </Router>
                 </div>
             </SearchProvider>

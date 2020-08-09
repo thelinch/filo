@@ -37,9 +37,9 @@ class TransactionCreator
         array $details
     ) {
         $partner = $this->partnerFinder->__invoke($partnerId);
-        if (!$partner->isAvailableForAttention()) {
+        /*  if (!$partner->isAvailableForAttention()) {
             throw new PartnerNotAvailableForAttetion($partnerId);
-        }
+        } */
         $transactionCode = new TransactionCode($this->codeGenerator->generate());
         $transaction = Transaction::create($userId, $id, $total, $partnerId, $details, $transactionCode);
         $this->repository->create($transaction);

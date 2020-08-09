@@ -6,8 +6,7 @@ import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import IconButton from '@material-ui/core/IconButton';
 import Search from "../../Search/Search";
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import ShoppingCartIconComponent from '../../Shopping cart/ShoppingCartIcon';
 import PropTypes from "prop-types"
 import DehazeIcon from '@material-ui/icons/Dehaze';
 import { Link } from "@reach/router";
@@ -21,7 +20,6 @@ import { getUser, currentUserIsAdmin } from "../../../Util/Util";
 import { CredentialService } from "../../../Services/CredentialService";
 import { logout } from "../../../redux/actions/authActions"
 import {navigate} from "@reach/router"
-import ShoppingCart from "../../Shopping cart/ShoppingCart";
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -160,6 +158,16 @@ const Header = ({ isAuthenticated, dispatch }, ...props) => {
 
                                                     }
                                                 </Link> 
+                                                <Link to="/buys" className="topbar__link">
+                                                    <ListItem >
+                                                        <Typography
+                                                            className="topbar__link"
+                                                            color="primary"
+                                                        >
+                                                            Compras
+                                                </Typography>
+                                                    </ListItem>
+                                                </Link>
                                                 <ListItem className="flex " style={{ justifyContent: "center" }}>
                                                     <button className="button button-secondary" onClick={handleCloseSession}>
                                                         Cerrar sesion
@@ -199,7 +207,7 @@ const Header = ({ isAuthenticated, dispatch }, ...props) => {
                     </div>
 
                     <div className="topbar__right">
-                        <ShoppingCart/>
+                        <ShoppingCartIconComponent/>
                         {
                             isAuthenticated ? ( <Hidden mdDown>
                                 <div className="topbar__profile">
@@ -277,7 +285,19 @@ const Header = ({ isAuthenticated, dispatch }, ...props) => {
                                                 </Link>
                                             </MenuItem>
                                             } 
-                                          
+                                      <MenuItem>
+                                      <Link to="/buys" className="topbar__link">
+                                                    <Typography
+                                                        className="topbar__link"
+                                                        color="primary"
+        
+                                                    >
+                                                        Compras
+        
+                                                        </Typography>
+                                                </Link>
+                                      </MenuItem>
+
                                             <MenuItem >
                                                 <button className="button button-secondary" onClick={handleCloseSession}>
                                                     Cerrar sesion
