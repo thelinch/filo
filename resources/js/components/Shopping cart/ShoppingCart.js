@@ -23,7 +23,7 @@ const ShoppingCart = (props) => {
     return <React.Fragment>
         <div className="content">
             {
-                items.length == 0 ? <p>No hay elementos</p> :
+                items.length == 0 ? <strong>No hay productos</strong> :
                     <React.Fragment>
                         <table className="table">
                             <thead className="head">

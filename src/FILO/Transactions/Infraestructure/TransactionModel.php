@@ -13,7 +13,7 @@ use Spatie\ModelStates\HasStates;
 class TransactionModel extends Model
 {
     use HasStates;
-    protected $fillable = ["id", "user_id", "total", "state", "partner_id", "code"];
+    protected $fillable = ["id", "user_id", "total", "state", "partner_id", "code", "amountpayment", "direction", "phone"];
     protected $keyType = 'string';
     protected $table = "transactions";
     protected $primaryKey = 'id';

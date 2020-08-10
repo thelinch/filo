@@ -3,6 +3,7 @@
 namespace Filo\Menus\Infraestructure;
 
 use Filo\Partners\Infraestructure\PartnerModel;
+use Filo\Transactions\Domain\TransactionDetail;
 use Illuminate\Database\Eloquent\Model;
 
 class MenuModel extends Model
@@ -18,5 +19,9 @@ class MenuModel extends Model
     public function partner()
     {
         return $this->belongsTo(PartnerModel::class);
+    }
+    public function details()
+    {
+        return $this->hasMany(TransactionDetail::class, "menu_id");
     }
 }

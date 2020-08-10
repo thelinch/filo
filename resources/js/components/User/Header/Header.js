@@ -144,17 +144,32 @@ const Header = ({ isAuthenticated, dispatch }, ...props) => {
                                                 </Link>
                                             <Link to="/products" className="topbar__link">
                                                     {
+                                                        currentUserIsAdmin() && 
+                                                        <React.Fragment>
 
-
-                                                        currentUserIsAdmin() && <ListItem >
+                                                        <Link to="/products" className="topbar__link">
+                                                            <ListItem >
                                                             <Typography
-                                                                className="topbar__link"
                                                                 color="primary"
 
                                                             >
                                                                 Productos
                                                                 </Typography>
                                                         </ListItem>
+
+                                                        </Link>
+                                                       <Link to="/sales" >
+                                                        <ListItem >
+                                                            <Typography
+                                                                className="topbar__link"
+                                                                color="primary"
+
+                                                            >
+                                                                Ventas
+                                                                </Typography>
+                                                        </ListItem>
+                                                       </Link>
+                                                        </React.Fragment>
 
                                                     }
                                                 </Link> 
@@ -272,7 +287,10 @@ const Header = ({ isAuthenticated, dispatch }, ...props) => {
                                             </MenuItem> 
                                             
                                            {
-                                                currentUserIsAdmin() &&   <MenuItem>
+                                                currentUserIsAdmin() &&   
+                                                <React.Fragment>
+
+                                                <MenuItem>
                                                 <Link to="/products" className="topbar__link">
                                                     <Typography
                                                         className="topbar__link"
@@ -284,6 +302,19 @@ const Header = ({ isAuthenticated, dispatch }, ...props) => {
                                                         </Typography>
                                                 </Link>
                                             </MenuItem>
+                                                <MenuItem>
+                                                <Link to="/sales" className="topbar__link">
+                                                    <Typography
+                                                        className="topbar__link"
+                                                        color="primary"
+        
+                                                    >
+                                                        Ventas
+        
+                                                        </Typography>
+                                                </Link>
+                                            </MenuItem>
+                                                </React.Fragment>
                                             } 
                                       <MenuItem>
                                       <Link to="/buys" className="topbar__link">
