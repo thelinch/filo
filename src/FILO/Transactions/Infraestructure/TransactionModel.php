@@ -2,6 +2,7 @@
 
 namespace Filo\Transactions\Infraestructure;
 
+use Filo\Partners\Infraestructure\PartnerModel;
 use Filo\Transactions\Infraestructure\ConcretState\Attended;
 use Filo\Transactions\Infraestructure\ConcretState\Cancelled;
 use Filo\Transactions\Infraestructure\ConcretState\OnMyWay;
@@ -31,5 +32,9 @@ class TransactionModel extends Model
     public function details()
     {
         return $this->hasMany(TransactionModelDetail::class, "transaction_id");
+    }
+    public function partner()
+    {
+        return $this->belongsTo(PartnerModel::class);
     }
 }

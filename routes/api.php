@@ -30,7 +30,7 @@ Route::group(["prefix" => "partners"], function () {
     Route::get("list", "PartnerListController@__invoke");
     Route::get("{categoryId}/list", "PartnerFindCategoryController@__invoke");
     Route::middleware("api.verify")->get("get", "PartnerGetController@__invoke");
-    Route::get("{idPartner}/transactions", "Transaction\TransactionFindByPartnerController@__invoke");
+    Route::middleware("api.verify")->get("/transactions", "Transaction\TransactionFindByPartnerController@__invoke");
     Route::get("{partnerId}/products", "Menu\MenuListController@__invoke");
     Route::middleware("api.verify")->get("/products", "Menu\MenuListController@__invoke");
     Route::middleware("api.verify")->post("{partnerId}/deleteWorkday", "PartnerDeleteWorkDayController@__invoke");
@@ -54,7 +54,7 @@ Route::group(["prefix" => "users"], function () {
     Route::post("login", "User\UserLoginController@__invoke")->name("login");
     Route::post("update", "User\UserUpdateController@__invoke");
     Route::get("{idUser}/find", "User\UserGetController@__invoke");
-    Route::get("/transactions", "Transaction\TransactionFindByUserController@__invoke");
+    Route::middleware("api.verify")->get("/transactions", "Transaction\TransactionFindByUserController@__invoke");
     Route::middleware("api.verify")->get("me", "User\UserAuthController@__invoke");
     Route::middleware("auth:api")->get("logout", "User\UserLogoutController@__invoke");
     Route::middleware("api.verify")->get("{idUser}/delete", "User\UserDeleteController@__invoke");

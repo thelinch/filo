@@ -3,6 +3,7 @@
 namespace Filo\Transactions\Domain;
 
 use Filo\Partners\Domain\PartnerId;
+use Filo\Partners\Domain\PartnerName;
 use Filo\Transactions\Application\OnMyWayState\TransactionStateTransitionOnMyWay;
 use Filo\Users\Domain\UserId;
 use JsonSerializable;
@@ -20,6 +21,7 @@ class Transaction extends AggregateRoot implements JsonSerializable
     private TransactionAmountPayment $amountPayment;
     private TransactionPhone $phone;
     private TransactionCode $code;
+    private PartnerName $partnerName;
     public function __construct(
         UserId $userId,
         TransactionId $id,
@@ -42,6 +44,14 @@ class Transaction extends AggregateRoot implements JsonSerializable
         $this->direction = $direction;
         $this->amountPayment = $amountPayment;
         $this->phone = $phone;
+    }
+    public function setPartnerName(string $value): void
+    {
+        $this->partnerName = new PartnerName($value);
+    }
+    public function partnerName(): PartnerName
+    {
+        return $this->partnerName;
     }
 
     public static function create(UserId $userId, TransactionId $id, TransactionTotal $total, PartnerId $partnerId, array $details, TransactionCode $code, TransactionPhone $phone, TransactionAmountPayment $amountPayment, TransactionDirection $direction): self
@@ -81,6 +91,7 @@ class Transaction extends AggregateRoot implements JsonSerializable
     {
         return [
             "id" => $this->id->value(),
+            "business" => $this->partnerName->value(),
             "items" => $this->details,
             "total" => $this->total()->value(),
             "state" => $this->state()->value(),

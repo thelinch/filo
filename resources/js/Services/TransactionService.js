@@ -1,5 +1,5 @@
 const { request } = require("../Util/requestObject");
-import { TransactionDomain } from "../env"
+import { TransactionDomain, CredentialDomain, PartnerDomain } from "../env"
 function save(buyBody) {
     return request({
         method: "post",
@@ -7,13 +7,20 @@ function save(buyBody) {
         data: buyBody
     })
 }
-
+function listFindPartner() {
+    return request({
+        method: "get",
+        url: `${PartnerDomain}/transactions`
+    });
+}
 function listFindUser() {
     return request({
         method: "get",
-        url: ``
+        url: `${CredentialDomain}/transactions`
     })
 }
 export const TransactionService = {
-    save
+    save,
+    listFindUser,
+    listFindPartner
 }

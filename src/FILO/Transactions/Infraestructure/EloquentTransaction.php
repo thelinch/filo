@@ -56,7 +56,7 @@ class EloquentTransaction implements TransactionRepository
     }
     function findByPartner(PartnerId $partnerId): array
     {
-        $transactions = $this->model->with(["details:id,quantity,transaction_id,menu_id", "details.menu:id,price,votes,name,photo,description"])->where(["partner_id" => $partnerId->value()])->orderBy("created_at", "DESC")->get();
+        $transactions = $this->model->with(["details:id,quantity,transaction_id,menu_id", "details.menu:id,price,votes,name,photo,description", "partner:id,name"])->where(["partner_id" => $partnerId->value()])->orderBy("created_at", "DESC")->get();
         $transactions = $transactions->map(function ($transactionModel) {
             return $this->transformTransactionModelToTransactionDomain($transactionModel);
         })->toArray();
@@ -64,7 +64,7 @@ class EloquentTransaction implements TransactionRepository
     }
     function findByUser(UserId $id): array
     {
-        $transactions = $this->model->with(["details:id,quantity,transaction_id,menu_id", "details.menu:id,price,votes,name,photo,description"])->where(["user_id" => $id->value()])->get();
+        $transactions = $this->model->with(["details:id,quantity,transaction_id,menu_id", "details.menu:id,price,votes,name,photo,description", "partner:id,name"])->where(["user_id" => $id->value()])->orderBy("created_at", "DESC")->get();
         $transactions = $transactions->map(function ($transactionModel) {
             return $this->transformTransactionModelToTransactionDomain($transactionModel);
         })->toArray();
@@ -83,7 +83,7 @@ class EloquentTransaction implements TransactionRepository
                 new MenuDescription($detail->menu->description)
             ), $detail->quantity);
         })->toArray();
-        return new Transaction(
+        $transaction = new Transaction(
             new UserId($transactionModel->user_id),
             new TransactionId($transactionModel->id),
             new TransactionState($transactionModel->state->name()),
@@ -95,10 +95,12 @@ class EloquentTransaction implements TransactionRepository
             new TransactionAmountPayment($transactionModel->amountpayment),
             new TransactionDirection($transactionModel->direction)
         );
+        $transaction->setPartnerName($transactionModel->partner->name);
+        return $transaction;
     }
     function findById(TransactionId $id): ?Transaction
     {
-        $transactionModel = $this->model->with("details")->find($id->value());
+        $transactionModel = $this->model->with(["details:id,quantity,transaction_id,menu_id", "details.menu:id,price,votes,name,photo,description", "partner:id,name"])->find($id->value());
         if ($transactionModel == null) {
             return null;
         }
