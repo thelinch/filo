@@ -7,7 +7,7 @@ import { ProductService } from "../../Services/ProductService";
 import Delete from '@material-ui/icons/Delete';
 import Edit from '@material-ui/icons/Edit';
 import Modal from "../../components/Modal/Modal";
-import { removeObjectOfArray, insertObjectToArray, hasContentObject, updateObjetToArray } from "../../Util/Util";
+import { removeObjectOfArray, insertObjectToArray, hasContentObject, updateObjetToArray, deleteElementOfArray } from "../../Util/Util";
 
 const ProductPage = (props) => {
     const searchContext = useContext(SearchContext)
@@ -49,8 +49,9 @@ const ProductPage = (props) => {
         /* this.setState({ products: removeObjectOfArray(this.state.products, product) }) */
         let productsCopy = products;
 
-        console.log("products", products)
-        setProducts(removeObjectOfArray(productsCopy, product))
+        deleteElementOfArray(productsCopy, product.id)
+        console.log("products", productsCopy)
+        setProducts(productsCopy)
     }
     const handleEditProduct = (product) => () => {
         /*  this.setState({ productSelect: product, formProductModal: true }) */
@@ -76,7 +77,7 @@ const ProductPage = (props) => {
         }
         console.log(productsCopy)
         /*  this.setState({ products: productsCopy }) */
-        setProducts(productsCopy)
+        setProducts(curr => [...productsCopy])
         /* console.log(this.state.products) */
         handleCloseModal();
 

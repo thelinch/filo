@@ -2,7 +2,6 @@
 
 namespace Filo\Partners\Infraestructure;
 
-use Filo\Partners\Domain\Pagination\PaginationPartner;
 use Filo\Partners\Domain\Partner;
 use Filo\Partners\Domain\PartnerAddress;
 use Filo\Partners\Domain\PartnerAmountDelivery;
@@ -21,8 +20,6 @@ use Filo\Users\Domain\UserId;
 use Illuminate\Support\Facades\DB;
 use src\Shared\Domain\Pagination\NextPage;
 use src\Shared\Domain\Pagination\NumberPerPage;
-use src\Shared\Domain\Pagination\PreviusPage;
-use src\Shared\Domain\Pagination\Total;
 
 class EloquentPartnerRepository implements PartnerRepositoryI
 {

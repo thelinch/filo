@@ -2,6 +2,7 @@
 
 namespace Filo\Transactions\Infraestructure;
 
+use Filo\Partners\Infraestructure\PartnerModel;
 use Filo\Transactions\Infraestructure\ConcretState\Attended;
 use Filo\Transactions\Infraestructure\ConcretState\Cancelled;
 use Filo\Transactions\Infraestructure\ConcretState\OnMyWay;
@@ -13,7 +14,7 @@ use Spatie\ModelStates\HasStates;
 class TransactionModel extends Model
 {
     use HasStates;
-    protected $fillable = ["id", "user_id", "total", "state", "partner_id", "code"];
+    protected $fillable = ["id", "user_id", "total", "state", "partner_id", "code", "amountpayment", "direction", "phone"];
     protected $keyType = 'string';
     protected $table = "transactions";
     protected $primaryKey = 'id';
@@ -31,5 +32,9 @@ class TransactionModel extends Model
     public function details()
     {
         return $this->hasMany(TransactionModelDetail::class, "transaction_id");
+    }
+    public function partner()
+    {
+        return $this->belongsTo(PartnerModel::class);
     }
 }

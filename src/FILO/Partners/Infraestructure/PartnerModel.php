@@ -5,6 +5,7 @@ namespace Filo\Partners\Infraestructure;
 use Carbon\Carbon;
 use Filo\Categories\Infraestructure\CategoryModel;
 use Filo\Menus\Infraestructure\MenuModel;
+use Filo\Transactions\Infraestructure\TransactionModel;
 use Filo\Users\Domain\User;
 use Filo\Users\Infraestructure\UserModel;
 use Illuminate\Database\Eloquent\Model;
@@ -40,6 +41,10 @@ class PartnerModel extends Model
     public function city()
     {
         return $this->belongsTo(CityModel::class);
+    }
+    public function transactions()
+    {
+        return $this->hasMany(TransactionModel::class);
     }
     public function category()
     {

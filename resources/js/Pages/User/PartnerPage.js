@@ -14,8 +14,8 @@ import ImgPreview from "../../components/Img/ImgPreview";
 import axios from "../../Config/axiosconfig";
 const PartnerPage = (props) => {
     const searchContext = useContext(SearchContext);
-    const cartContext = useContext(CartContext)
-    console.log(cartContext);
+    const { addToCart } = useContext(CartContext)
+
     const panertLocation = props.location.state.partner
     const [partner, setPartner] = useState(new PartnerDomain(panertLocation._id, panertLocation._description, panertLocation._name, panertLocation._dishes, panertLocation._category, panertLocation._address,
         panertLocation._phone, panertLocation._daysWork, panertLocation._city, panertLocation._photo));
@@ -29,7 +29,7 @@ const PartnerPage = (props) => {
         async function fetchProductsFindPartner() {
             let productsData = (await ProductService.getAllFindPartner(partner.id)).data
             let products = productsData.data;
-            products = products.map((product) => new ProductDomain(product.id, product.name, product.votes, product.description, product.photo, product.price))
+            products = products.map((product) => new ProductDomain(product.id, product.name, product.votes, product.description, product.photo, product.price, partner))
             setProducts(products)
             setIsLoadingProducts(false);
             let productsView = [<strong>Actualmente no existe productos populares</strong>];
@@ -74,7 +74,10 @@ const PartnerPage = (props) => {
         setPage(0);
     }
     const handleClickProduct = (productId) => () => {
-        console.log(productId)
+        let product = products.find(product => product.id == productId);
+        console.log(product)
+        addToCart(product)
+
     }
     const productPaginate = products.slice(page * itemsPerPage, page * itemsPerPage + itemsPerPage);
 

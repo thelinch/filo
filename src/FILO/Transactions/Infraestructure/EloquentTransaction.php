@@ -11,13 +11,17 @@ use Filo\Menus\Domain\MenuPrice;
 use Filo\Menus\Domain\MenuVotes;
 use Filo\Partners\Domain\PartnerId;
 use Filo\Transactions\Domain\Transaction;
+use Filo\Transactions\Domain\TransactionAmountPayment;
 use Filo\Transactions\Domain\TransactionCode;
 use Filo\Transactions\Domain\TransactionDetail;
+use Filo\Transactions\Domain\TransactionDirection;
 use Filo\Transactions\Domain\TransactionId;
+use Filo\Transactions\Domain\TransactionPhone;
 use Filo\Transactions\Domain\TransactionRepository;
 use Filo\Transactions\Domain\TransactionState;
 use Filo\Transactions\Domain\TransactionTotal;
 use Filo\Transactions\Infraestructure\ConcretState\Cancelled;
+use Filo\Transactions\Infraestructure\ConcretState\Received;
 use Filo\Users\Domain\UserId;
 use Illuminate\Support\Facades\DB;
 
@@ -36,7 +40,10 @@ class EloquentTransaction implements TransactionRepository
             "user_id" => $transaction->userId()->value(),
             "total" => $transaction->total()->value(),
             "partner_id" => $transaction->partnerId()->value(),
-            "code" => $transaction->code()->value()
+            "code" => $transaction->code()->value(),
+            "direction" => $transaction->direction()->value(),
+            "phone" => $transaction->phone()->value(),
+            "amountpayment" => $transaction->amountPayment()->value()
         ]);
         $transactionDetails = collect($transaction->details())->map(function ($item) {
             return [
@@ -49,7 +56,7 @@ class EloquentTransaction implements TransactionRepository
     }
     function findByPartner(PartnerId $partnerId): array
     {
-        $transactions = $this->model->with(["details"])->where(["partner_id" => $partnerId->value()])->orderBy("created_at", "DESC")->get();
+        $transactions = $this->model->with(["details:id,quantity,transaction_id,menu_id", "details.menu:id,price,votes,name,photo,description", "partner:id,name"])->where(["partner_id" => $partnerId->value()])->orderBy("created_at", "DESC")->get();
         $transactions = $transactions->map(function ($transactionModel) {
             return $this->transformTransactionModelToTransactionDomain($transactionModel);
         })->toArray();
@@ -57,7 +64,7 @@ class EloquentTransaction implements TransactionRepository
     }
     function findByUser(UserId $id): array
     {
-        $transactions = $this->model->with(["details"])->where(["user_id" => $id->value(), "state" => "1"])->get();
+        $transactions = $this->model->with(["details:id,quantity,transaction_id,menu_id", "details.menu:id,price,votes,name,photo,description", "partner:id,name"])->where(["user_id" => $id->value()])->orderBy("created_at", "DESC")->get();
         $transactions = $transactions->map(function ($transactionModel) {
             return $this->transformTransactionModelToTransactionDomain($transactionModel);
         })->toArray();
@@ -76,19 +83,24 @@ class EloquentTransaction implements TransactionRepository
                 new MenuDescription($detail->menu->description)
             ), $detail->quantity);
         })->toArray();
-        return new Transaction(
+        $transaction = new Transaction(
             new UserId($transactionModel->user_id),
             new TransactionId($transactionModel->id),
             new TransactionState($transactionModel->state->name()),
             new TransactionTotal($transactionModel->total),
             new PartnerId($transactionModel->partner_id),
             $details,
-            new TransactionCode($transactionModel->code)
+            new TransactionCode($transactionModel->code),
+            new TransactionPhone($transactionModel->phone),
+            new TransactionAmountPayment($transactionModel->amountpayment),
+            new TransactionDirection($transactionModel->direction)
         );
+        $transaction->setPartnerName($transactionModel->partner->name);
+        return $transaction;
     }
     function findById(TransactionId $id): ?Transaction
     {
-        $transactionModel = $this->model->with("details")->find($id->value());
+        $transactionModel = $this->model->with(["details:id,quantity,transaction_id,menu_id", "details.menu:id,price,votes,name,photo,description", "partner:id,name"])->find($id->value());
         if ($transactionModel == null) {
             return null;
         }

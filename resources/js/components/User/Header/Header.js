@@ -6,8 +6,7 @@ import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import IconButton from '@material-ui/core/IconButton';
 import Search from "../../Search/Search";
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import ShoppingCartIconComponent from '../../Shopping cart/ShoppingCartIcon';
 import PropTypes from "prop-types"
 import DehazeIcon from '@material-ui/icons/Dehaze';
 import { Link } from "@reach/router";
@@ -145,11 +144,12 @@ const Header = ({ isAuthenticated, dispatch }, ...props) => {
                                                 </Link>
                                             <Link to="/products" className="topbar__link">
                                                     {
+                                                        currentUserIsAdmin() && 
+                                                        <React.Fragment>
 
-
-                                                        currentUserIsAdmin() && <ListItem >
+                                                        <Link to="/products" className="topbar__link">
+                                                            <ListItem >
                                                             <Typography
-                                                                className="topbar__link"
                                                                 color="primary"
 
                                                             >
@@ -157,8 +157,32 @@ const Header = ({ isAuthenticated, dispatch }, ...props) => {
                                                                 </Typography>
                                                         </ListItem>
 
+                                                        </Link>
+                                                       <Link to="/sales" >
+                                                        <ListItem >
+                                                            <Typography
+                                                                className="topbar__link"
+                                                                color="primary"
+
+                                                            >
+                                                                Ventas
+                                                                </Typography>
+                                                        </ListItem>
+                                                       </Link>
+                                                        </React.Fragment>
+
                                                     }
                                                 </Link> 
+                                                <Link to="/buys" className="topbar__link">
+                                                    <ListItem >
+                                                        <Typography
+                                                            className="topbar__link"
+                                                            color="primary"
+                                                        >
+                                                            Compras
+                                                </Typography>
+                                                    </ListItem>
+                                                </Link>
                                                 <ListItem className="flex " style={{ justifyContent: "center" }}>
                                                     <button className="button button-secondary" onClick={handleCloseSession}>
                                                         Cerrar sesion
@@ -198,7 +222,7 @@ const Header = ({ isAuthenticated, dispatch }, ...props) => {
                     </div>
 
                     <div className="topbar__right">
-                        <ShoppingCartIcon className="shopping_cart" />
+                        <ShoppingCartIconComponent/>
                         {
                             isAuthenticated ? ( <Hidden mdDown>
                                 <div className="topbar__profile">
@@ -263,7 +287,10 @@ const Header = ({ isAuthenticated, dispatch }, ...props) => {
                                             </MenuItem> 
                                             
                                            {
-                                                currentUserIsAdmin() &&   <MenuItem>
+                                                currentUserIsAdmin() &&   
+                                                <React.Fragment>
+
+                                                <MenuItem>
                                                 <Link to="/products" className="topbar__link">
                                                     <Typography
                                                         className="topbar__link"
@@ -275,8 +302,33 @@ const Header = ({ isAuthenticated, dispatch }, ...props) => {
                                                         </Typography>
                                                 </Link>
                                             </MenuItem>
+                                                <MenuItem>
+                                                <Link to="/sales" className="topbar__link">
+                                                    <Typography
+                                                        className="topbar__link"
+                                                        color="primary"
+        
+                                                    >
+                                                        Ventas
+        
+                                                        </Typography>
+                                                </Link>
+                                            </MenuItem>
+                                                </React.Fragment>
                                             } 
-                                          
+                                      <MenuItem>
+                                      <Link to="/buys" className="topbar__link">
+                                                    <Typography
+                                                        className="topbar__link"
+                                                        color="primary"
+        
+                                                    >
+                                                        Compras
+        
+                                                        </Typography>
+                                                </Link>
+                                      </MenuItem>
+
                                             <MenuItem >
                                                 <button className="button button-secondary" onClick={handleCloseSession}>
                                                     Cerrar sesion

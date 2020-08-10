@@ -11,12 +11,29 @@ export function currentUserIsAdmin() {
 }
 export function removeObjectOfArray(array, object) {
 
-    console.log("uti", array, object)
     return array.filter(item => item.id != object.id)
 }
 export function hasContentObject(array, object) {
 
     return array.find(e => e.id == object.id) != null;
+}
+export function deleteElementOfArray(array, id) {
+    let index = array.findIndex(object => object.id == id);
+    if (index != -1) {
+        array.splice(index, 1);
+    }
+}
+export const encode = (object) => JSON.stringify(Object.entries(object));
+
+export const decode = (string, T) => {
+    const object = new T();
+    JSON.parse(string).map(([key, value]) => (object[key] = value));
+    return object;
+}
+export function transformDomainToJson(instance) {
+    let object = {}
+    Object.keys(instance).map((key) => (object[key.replace("_", "")] = instance[key]))
+    return object;
 }
 export function updateDayToArray(array, object) {
     let index = array.findIndex(e => e.day.id == object.day.id)

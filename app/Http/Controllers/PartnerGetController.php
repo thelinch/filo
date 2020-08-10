@@ -30,7 +30,13 @@ class PartnerGetController extends ApiController
 
     public function __invoke()
     {
-        $partnerId = Auth::guard("api")->user()->partner->id;
+        $userAuth = Auth::guard("api")->user();
+        if (!$userAuth->hasRole(["administrator"])) {
+            return response([
+                "message" => "user not role"
+            ], 500);
+        }
+        $partnerId = $userAuth->partner->id;
         $partnerId = new PartnerId($partnerId);
         $partnerResponse = new PartnerResponse($this->partnerFinder->__invoke($partnerId, [1, 0]));
         return $partnerResponse;

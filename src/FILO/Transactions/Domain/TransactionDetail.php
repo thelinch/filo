@@ -24,10 +24,11 @@ class TransactionDetail implements JsonSerializable
         return [
             "id" => $this->id,
             "quantity" => $this->quantity,
-            "menu" => [
+            "product" => [
                 "id" => $this->menu->id()->value(),
                 "name" => $this->menu->name()->value(),
-                "price" => $this->menu->price()->value()
+                "price" => $this->menu->price()->value(),
+                "photo" => $this->menu->photo()->value()
             ]
         ];
     }
