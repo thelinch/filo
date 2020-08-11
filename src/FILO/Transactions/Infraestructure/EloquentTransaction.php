@@ -96,6 +96,7 @@ class EloquentTransaction implements TransactionRepository
             new TransactionDirection($transactionModel->direction)
         );
         $transaction->setPartnerName($transactionModel->partner->name);
+        $transaction->setCreatedAt($transactionModel->created_at);
         return $transaction;
     }
     function findById(TransactionId $id): ?Transaction

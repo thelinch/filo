@@ -13,11 +13,12 @@ import CartShoppingPage from "./CartShoppingPage";
 import TransactionPage from "./TransactionPage";
 
 const Layout = (props) => {
+    console.log("role admin", props.isRoleAdmin)
     return (
         <CartProvider>
             <SearchProvider>
                 <nav>
-                    <Header isAuthenticated={props.isAuthenticated} />
+                    <Header isAuthenticated={props.isAuthenticated} isRoleAdmin={props.isRoleAdmin} />
                 </nav>
                 <div className="main" style={{ minHeight: "100vh", paddingTop: ".5rem", paddingBottom: ".5rem" }}>
                     <Router>
@@ -37,7 +38,9 @@ const Layout = (props) => {
 
 
 export default connect(state => ({
-    isAuthenticated: state.auth.isAuthenticated
+    isAuthenticated: state.auth.isAuthenticated,
+    isRoleAdmin: state.userActions.isRoleAdmin
+
 }))(Layout);
 
 

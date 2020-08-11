@@ -10,6 +10,7 @@ import ShoppingCartForm from "../../components/Form/ShoppingCartForm";
 
 const CartShoppingPage = (props) => {
     const { items, updateCart } = useContext(CartContext)
+    const amountDelivery = items.length > 0 ? items[0].partner.amountdelivery || items[0].partner._amountdelivery : 0
     const handleBuy = async (values) => {
         let partnerId = items[0].partner._id;
         let itemsMap = items.map((item) => (transformDomainToJson(item)))
@@ -35,6 +36,13 @@ const CartShoppingPage = (props) => {
                     items.length > 0 &&
                     <React.Fragment>
                         <Divider />
+                        <p>
+                            {
+                                amountDelivery == 0 ?
+                                    <div className="notification success">El delivery es gratis!! </div> : <div className="notification default">Costo por delivery S./ {amountDelivery}</div>
+
+                            }
+                        </p>
                         <ShoppingCartForm onSubmit={handleBuy} />
                     </React.Fragment>
                     : <button className="button button-secondary" style={{ float: "right" }}>

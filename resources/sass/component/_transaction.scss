@@ -1,6 +1,10 @@
 .transaction {
+  position: relative;
   @include media(xs) {
     margin: 0 0.9rem;
+  }
+  &-date {
+    padding: 0.2rem;
   }
   &-title {
     text-align: center;
@@ -12,7 +16,9 @@
   }
   &-total {
     padding: 0.4rem;
-    text-align: end;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
   &-state {
     color: white;

@@ -18,7 +18,7 @@ const PartnerPage = (props) => {
 
     const panertLocation = props.location.state.partner
     const [partner, setPartner] = useState(new PartnerDomain(panertLocation._id, panertLocation._description, panertLocation._name, panertLocation._dishes, panertLocation._category, panertLocation._address,
-        panertLocation._phone, panertLocation._daysWork, panertLocation._city, panertLocation._photo));
+        panertLocation._phone, panertLocation._daysWork, panertLocation._city, panertLocation._photo, panertLocation._amountdelivery));
     const [products, setProducts] = useState([])
     const [isLoadingProducts, setIsLoadingProducts] = useState(true);
     const [page, setPage] = useState(0);

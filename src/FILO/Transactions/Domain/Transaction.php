@@ -22,6 +22,7 @@ class Transaction extends AggregateRoot implements JsonSerializable
     private TransactionPhone $phone;
     private TransactionCode $code;
     private PartnerName $partnerName;
+    private TransactionCreatedAt $createdAt;
     public function __construct(
         UserId $userId,
         TransactionId $id,
@@ -64,6 +65,10 @@ class Transaction extends AggregateRoot implements JsonSerializable
     {
         return $this->phone;
     }
+    public function setCreatedAt(string $value)
+    {
+        $this->createdAt = new TransactionCreatedAt($value);
+    }
     public function amountPayment(): TransactionAmountPayment
     {
         return $this->amountPayment;
@@ -98,8 +103,13 @@ class Transaction extends AggregateRoot implements JsonSerializable
             "code" => $this->code->value(),
             "phone" => $this->phone()->value(),
             "direction" => $this->direction()->value(),
-            "amountpayment" => $this->amountPayment()->value()
+            "amountpayment" => $this->amountPayment()->value(),
+            "created_at" => $this->createdAt()->value()
         ];
+    }
+    public function createdAt(): TransactionCreatedAt
+    {
+        return $this->createdAt;
     }
     public function code(): TransactionCode
     {

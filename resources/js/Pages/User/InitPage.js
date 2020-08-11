@@ -47,7 +47,7 @@ class InitPage extends React.Component {
         let categories = categoriesPromise.data
         let partners = partnersPromise.data.data
         partners = partners.map((partner) =>
-            Object.freeze(new PartnerDomain(partner.id, partner.description, partner.name, partner.dishes, partner.category, partner.address, partner.phone, partner.workdays, partner.city, partner.photo)))
+            Object.freeze(new PartnerDomain(partner.id, partner.description, partner.name, partner.dishes, partner.category, partner.address, partner.phone, partner.workdays, partner.city, partner.photo, partner.amountdelivery)))
         this.setState({ partners, categories, isLoadingPartners: false })
         this.context.setCategories(categories);
         let partnerMap = partners.map((partner) => (

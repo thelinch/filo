@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
            }, */
     },
 }));
-const Header = ({ isAuthenticated, dispatch }, ...props) => {
+const Header = ({ isAuthenticated, dispatch,isRoleAdmin }, ...props) => {
     console.log(isAuthenticated)
     const classes = useStyles();
     const [collapse, setCollapse] = React.useState(null);
@@ -144,7 +144,7 @@ const Header = ({ isAuthenticated, dispatch }, ...props) => {
                                                 </Link>
                                             <Link to="/products" className="topbar__link">
                                                     {
-                                                        currentUserIsAdmin() && 
+                                                        isRoleAdmin && 
                                                         <React.Fragment>
 
                                                         <Link to="/products" className="topbar__link">
@@ -287,7 +287,7 @@ const Header = ({ isAuthenticated, dispatch }, ...props) => {
                                             </MenuItem> 
                                             
                                            {
-                                                currentUserIsAdmin() &&   
+                                                isRoleAdmin &&   
                                                 <React.Fragment>
 
                                                 <MenuItem>
@@ -359,9 +359,11 @@ const Header = ({ isAuthenticated, dispatch }, ...props) => {
     )
 }
 Header.propTypes = {
-    isAuthenticated: PropTypes.bool.isRequired
+    isAuthenticated: PropTypes.bool.isRequired,
+    isRoleAdmin:PropTypes.bool.isRequired
 }
 Header.defaultProps = {
-    isAuthenticated: false
+    isAuthenticated: false,
+    isRoleAdmin:false
 }
 export default connect()(Header);

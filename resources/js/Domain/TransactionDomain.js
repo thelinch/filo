@@ -4,7 +4,7 @@ import { extendMoment } from "moment-range";
 const moment = extendMoment(Moment);
 moment.locale("es");
 class TransactionDomain {
-    constructor(id, items, total, state, code, phone, direction, amountpayment) {
+    constructor(id, items, total, state, code, phone, direction, amountpayment, created_at) {
         this._id = id;
         this._items = items;
         this._total = total;
@@ -13,9 +13,10 @@ class TransactionDomain {
         this._phone = phone;
         this._direction = direction;
         this._amountpayment = amountpayment;
+        this._created_at = created_at;
     }
-    get dateLaguageHuman() {
-        return moment().fromNow(true)
+    get transformDateToLenguageHuman() {
+        return moment(this._created_at).fromNow()
     }
     get color() {
         let color = ""
