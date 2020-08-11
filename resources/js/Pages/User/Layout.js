@@ -25,8 +25,9 @@ const Layout = (props) => {
                         <InitPage path="/" />
                         <PartnerPage path="/partner/:partnerId" />
                         <ProductPage path="/products" />
-                        <BusinessPage path="/business" />
+                        <BusinessPage path="/business" isRoleAdmin={props.isRoleAdmin} />
                         <CredentialsPage path="/credential" />
+
                         <CartShoppingPage isAuthenticated={props.isAuthenticated} path="/cart" />
                         <TransactionPage path="/buys" />
                     </Router>

@@ -19,6 +19,7 @@ import Drawer from '@material-ui/core/Drawer';
 import { getUser, currentUserIsAdmin } from "../../../Util/Util";
 import { CredentialService } from "../../../Services/CredentialService";
 import { logout } from "../../../redux/actions/authActions"
+import {userLogout} from "../../../redux/actions/userActions"
 import {navigate} from "@reach/router"
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -84,6 +85,7 @@ const Header = ({ isAuthenticated, dispatch,isRoleAdmin }, ...props) => {
         cookie.remove("token");
         localStorage.removeItem("user")
         dispatch(logout());
+        dispatch(userLogout());
         navigate("/credential")
 
     }

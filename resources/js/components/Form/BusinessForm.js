@@ -2,13 +2,15 @@ import React, { useState, useEffect } from "react"
 import {
     Formik, Form, Field, ErrorMessage
 } from 'formik';
+import cookie from 'react-cookies';
+
 import FileForm from "./Shared/FileForm"
 import Grid from "@material-ui/core/Grid";
 import Input from "@material-ui/core/Input";
 import Spinner from "../Spinner/Spinner";
 import WeekCalendar from "../Calendar/WeekCalendar"
 import { connect } from 'react-redux';
-import { transformDataWeekDayToLinealObject, hasSendFileToServer, removeObjectDayToArray, updateDayToArray, hasContentDayToArray, updateObjetToArray, generateUuid, setUser, getUser } from "../../Util/Util";
+import { transformDataWeekDayToLinealObject, hasSendFileToServer, removeObjectDayToArray, updateDayToArray, hasContentDayToArray, updateObjetToArray, generateUuid, setUser, getUser, currentUserIsAdmin } from "../../Util/Util";
 import Chip from "@material-ui/core/Chip";
 import Box from "@material-ui/core/Box";
 import SelectField from "./Shared/SelectField";
@@ -40,6 +42,7 @@ const BusinessForm = ({ dispatch }) => {
     const [categories, setCategories] = useState([])
     const [isLoadBusiness, setIsLoadBusiness] = useState(true)
     const [cities, setCities] = useState([{ label: "Yanahuanca", value: 2 }, { label: "Tingo Maria", value: 1 }])
+    console.log("ldldl", currentUserIsAdmin() && !!cookie.load("token"))
     const onSubmit = async (values) => {
         let url = ""
         let business = { ...values };
@@ -89,15 +92,14 @@ const BusinessForm = ({ dispatch }) => {
     }, [])
     useEffect(() => {
         async function fetchBusiness() {
-            try {
-                let business = (await BusinessService.get()).data
-                setBusiness({ ...business, email: "dwdwd@und.di", photo: [productUtil.transformPhotoSaved(business.photo)] });
-            } catch (e) {
+            let business = (await BusinessService.get()).data
+            setBusiness({ ...business, email: "dwdwd@und.di", photo: [productUtil.transformPhotoSaved(business.photo)] });
+            setIsLoadBusiness(false)
 
-            } finally {
-                setIsLoadBusiness(false)
-            }
-
+        }
+        if (!currentUserIsAdmin()) {
+            setIsLoadBusiness(false)
+            return;
         }
         fetchBusiness();
     }, [])
