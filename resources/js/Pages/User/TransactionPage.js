@@ -11,7 +11,7 @@ const TransactionPage = (props) => {
         async function fetchTransactionByUser() {
             let transactionsData = (await TransactionService.listFindUser()).data
             let transactionsMap = transactionsData.map((transaction) => {
-                let transactionDomain = new TransactionDomain(transaction.id, transaction.items, transaction.total, transaction.state, transaction.code, transaction.phone, transaction.direction, transaction.amountpayment)
+                let transactionDomain = new TransactionDomain(transaction.id, transaction.items, transaction.total, transaction.state, transaction.code, transaction.phone, transaction.direction, transaction.amountpayment, transaction.created_at)
                 transactionDomain.business = transaction.business
                 return transactionDomain;
             })

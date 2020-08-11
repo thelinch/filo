@@ -4,8 +4,9 @@ import { extendMoment } from "moment-range";
 const moment = extendMoment(Moment);
 moment.locale("es");
 class PartnerDomain {
-    constructor(id, description, name, dishes, category, address, phone, daysWork, city, photo) {
+    constructor(id, description, name, dishes, category, address, phone, daysWork, city, photo, amountdelivery) {
         this._id = id;
+        this._amountdelivery = amountdelivery;
         this._description = description;
         this._name = name;
         this._dishes = dishes;
@@ -15,6 +16,9 @@ class PartnerDomain {
         this._daysWork = daysWork;
         this._city = city;
         this._photo = photo;
+    }
+    get amountdelivery() {
+        return this._amountdelivery;
     }
     get id() {
         return this._id;

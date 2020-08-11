@@ -1,0 +1,18 @@
+.notification {
+  width: 100%;
+  text-align: center;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &.success {
+    background-color: yellowgreen;
+  }
+  &.default {
+    color: darkslategray;
+    background-color: darkgrey;
+  }
+  &.info {
+    background-color: blue;
+  }
+}

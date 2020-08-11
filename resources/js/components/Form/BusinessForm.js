@@ -7,7 +7,8 @@ import Grid from "@material-ui/core/Grid";
 import Input from "@material-ui/core/Input";
 import Spinner from "../Spinner/Spinner";
 import WeekCalendar from "../Calendar/WeekCalendar"
-import { transformDataWeekDayToLinealObject, hasSendFileToServer, removeObjectDayToArray, updateDayToArray, hasContentDayToArray, updateObjetToArray, generateUuid } from "../../Util/Util";
+import { connect } from 'react-redux';
+import { transformDataWeekDayToLinealObject, hasSendFileToServer, removeObjectDayToArray, updateDayToArray, hasContentDayToArray, updateObjetToArray, generateUuid, setUser, getUser } from "../../Util/Util";
 import Chip from "@material-ui/core/Chip";
 import Box from "@material-ui/core/Box";
 import SelectField from "./Shared/SelectField";
@@ -15,6 +16,7 @@ import { CategoryService } from "../../Services/CategoryService"
 import { FileService } from "../../Services/FileService";
 import { BusinessService } from "../../Services/BusinessService"
 import productUtil from "../../Util/Product/Util";
+import { businessSaveSuccess } from "../../redux/actions/userActions"
 import * as Yup from "yup";
 const validateSchema = Yup.object().shape({
     name: Yup.string().required("Requerido"),
@@ -28,16 +30,17 @@ const validateSchema = Yup.object().shape({
     }).required("requerido"),
     address: Yup.string().required("requerido"),
     phone: Yup.string().required("requerido"),
-    amountdelivery: Yup.number().positive().required("requerido"),
+    amountdelivery: Yup.number().min(0, "El numero minimo es 0").required("requerido"),
     photo: Yup.array().required("Requerido"),
     workdays: Yup.array().required("Requerido")
 })
-const BusinessForm = (props) => {
+const BusinessForm = ({ dispatch }) => {
+    console.log("dispatch", businessSaveSuccess())
     const [business, setBusiness] = useState({ id: 0, name: "", description: "", email: "", category: { id: "" }, city: { id: "" }, address: "", phone: "", amountdelivery: "", photo: [], workdays: [], state: 1 })
     const [categories, setCategories] = useState([])
     const [isLoadBusiness, setIsLoadBusiness] = useState(true)
     const [cities, setCities] = useState([{ label: "Yanahuanca", value: 2 }, { label: "Tingo Maria", value: 1 }])
-    const onSubmit = async (values, { setFieldValue }) => {
+    const onSubmit = async (values) => {
         let url = ""
         let business = { ...values };
         if (hasSendFileToServer(values.photo[0])) {
@@ -49,15 +52,15 @@ const BusinessForm = (props) => {
         if (values.id == 0) {
             business.id = generateUuid();
             business.workdays = values.workdays.map(workday => ({ id: generateUuid(), ...workday }))
-                (await BusinessService.save(business))
+            await BusinessService.save(business)
+            setUser({ ...getUser(), roles: [...getUser().roles, "administrator"] })
+            dispatch(businessSaveSuccess())
         } else {
             if (url == "") {
                 values.photo = business.photo[0].source;
             }
             (await BusinessService.update(values));
-
         }
-        setFieldValue("id", business.id)
 
     }
     const onSelectInterval = async (workdays, valuesSelectinterval, functionUpdate) => {
@@ -289,4 +292,4 @@ const BusinessForm = (props) => {
 }
 
 
-export default BusinessForm;
+export default connect()(BusinessForm);
