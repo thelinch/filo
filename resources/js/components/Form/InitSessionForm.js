@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useContext } from "react"
 import {
     Formik, Form, Field, ErrorMessage
 } from 'formik';
@@ -13,18 +13,20 @@ import { CredentialService } from "../../Services/CredentialService";
 import { login } from "../../redux/actions/authActions";
 import { setUser } from "../../Util/Util";
 import { navigate } from "@reach/router"
+import { AuthUserContext } from "../../Contexts/AuthUserContext";
 const validateSchema = Yup.object().shape({
     email: Yup.string().email("ingrese un email valido").required("requerido"),
     password: Yup.string().required("requerido")
 })
 
 const InitSession = (props) => {
+    const { setUserAuthenticated } = useContext(AuthUserContext)
     const onSubmit = async (values) => {
         let token = (await CredentialService.login(values)).data
         cookie.remove("token");
         cookie.save("token", token.access_token);
         let userData = (await CredentialService.me()).data
-        setUser(userData);
+        setUserAuthenticated(userData);
         props.dispatch(login());
         navigate(props.redirectUrl ?? "/");
 

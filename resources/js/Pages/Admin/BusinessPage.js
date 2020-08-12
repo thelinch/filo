@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Grid, Paper } from "@material-ui/core";
 import BusinessForm from "../../components/Form/BusinessForm";
-import { BusinessService } from "../../Services/BusinessService";
-
+import { AuthUserContext } from "../../Contexts/AuthUserContext";
 
 const BusinessPage = (props) => {
+    const { userIsAdmin } = useContext(AuthUserContext)
     return (<Grid container>
         {
-            !props.isRoleAdmin && <Grid item xs={12}>
+            !userIsAdmin && <Grid item xs={12}>
                 <div className="notification default">
                     <p>
                         Registra tu negocio y vende por el metodo de delivery
