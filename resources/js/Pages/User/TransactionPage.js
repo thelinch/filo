@@ -4,6 +4,7 @@ import qs from "qs"
 import TransactionDomain from "../../Domain/TransactionDomain"
 import { Grid } from "@material-ui/core"
 import TransactionList from "../../components/Down/Transaction/TransactionList"
+import { messageSuccess } from "../../Util/Swal"
 const TransactionPage = (props) => {
     const itemSearch = qs.parse(props.location.search, { ignoreQueryPrefix: true })?.item
     const [transactions, setTransactions] = useState([])
@@ -13,6 +14,7 @@ const TransactionPage = (props) => {
         let index = transactions.findIndex((transactionP) => transactionP.id == transaction.id);
         transactions[index].state = "Cancelado"
         setTransactions(curr => [...transactions])
+        messageSuccess();
     }
     const handlelOnMyWay = (transaction) => async () => {
         await TransactionService.onMyWay(transaction)
@@ -20,12 +22,14 @@ const TransactionPage = (props) => {
         let index = transactions.findIndex((transactionP) => transactionP.id == transaction.id);
         transactions[index].state = "En camino"
         setTransactions(curr => [...transactions])
+        messageSuccess()
     }
     const handleAttended = (transaction) => async () => {
         await TransactionService.attended(transaction)
         let index = transactions.findIndex((transactionP) => transactionP.id == transaction.id);
         transactions[index].state = "Atendido"
         setTransactions(curr => [...transactions])
+        messageSuccess()
     }
     useEffect(() => {
         async function fetchTransactionByUser() {
