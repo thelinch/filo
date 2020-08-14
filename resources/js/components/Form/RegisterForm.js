@@ -9,6 +9,7 @@ import Spinner from "../Spinner/Spinner";
 import * as Yup from "yup";
 import { CredentialService } from "../../Services/CredentialService";
 import { generateUuid } from "../../Util/Util";
+import { messageSuccess } from "../../Util/Swal";
 const validateSchema = Yup.object().shape({
     name: Yup.string().required("Requerido"),
     email: Yup.string().email("ingrese un email valido").required("requerido"),
@@ -20,8 +21,8 @@ const RegisterForm = (props) => {
 
     const onSubmit = async (values) => {
         values.id = generateUuid();
-        console.log(values)
         await CredentialService.save(values)
+        messageSuccess("Se registro correctamente, Inicie sesion");
 
     }
 

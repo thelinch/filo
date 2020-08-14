@@ -11,7 +11,13 @@ export const AutUserProvider = (props) => {
         setUserIsAdmin(user.roles.includes("administrator"))
     }
     const [userIsAdmin, setUserIsAdmin] = useState(userAuthenticated ? userAuthenticated.roles.includes("administrator") : false);
-    return < AuthUserContext.Provider value={{ userAuth, setUserAuthenticated, userIsAdmin, setUserIsAdmin }
+    const setUserIsAdminAuth = () => {
+        const userAuthenticated = JSON.parse(localStorage.getItem("user"));
+        userAuthenticated.roles = [...userAuthenticated.roles, "administrator"]
+        localStorage.setItem("user", JSON.stringify(userAuthenticated))
+        setUserIsAdmin(true)
+    }
+    return < AuthUserContext.Provider value={{ userAuth, setUserAuthenticated, userIsAdmin, setUserIsAdminAuth }
     } >
         {props.children}
     </AuthUserContext.Provider >
