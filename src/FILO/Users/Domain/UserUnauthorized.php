@@ -16,6 +16,6 @@ class UserUnauthorized extends DomainError
     }
     protected function errorMessage(): string
     {
-        return sprintf("user unauthorized");
+        return sprintf("Contraseña o correo incorrectos");
     }
 }

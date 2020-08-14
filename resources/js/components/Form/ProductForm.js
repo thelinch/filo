@@ -11,7 +11,15 @@ import productUtil from "../../Util/Product/Util";
 import { generateUuid } from "../../Util/Util";
 import { ProductService } from "../../Services/ProductService"
 import { FileService } from "../../Services/FileService";
-const ProductForm = ({ productSelect, onSubmitSuccess }) => {
+import * as Yup from "yup";
+const validateSchema = Yup.object().shape({
+    name: Yup.string().required("requerido"),
+    description: Yup.string().required("requerido"),
+    price: Yup.number().positive("Debe ser positivo").required("requerido"),
+    photo: Yup.array().required("Requerido"),
+
+})
+const ProductForm = ({ productSelect, onSubmitSuccess, onCancel }) => {
     const productSelectMap = productSelect ? { ...productSelect, photo: [productUtil.transformPhotoSaved(productSelect.photo)] } : {
         id: 0, name: "", price: "", description: "", photo: []
     }
@@ -39,7 +47,7 @@ const ProductForm = ({ productSelect, onSubmitSuccess }) => {
             ProductService.deletePhotoById(productId);
         }
     }
-    return <Formik initialValues={productSelectMap} enableReinitialize={true} onSubmit={onSubmit} mapPropsToValues={() => {
+    return <Formik initialValues={productSelectMap} validationSchema={validateSchema} enableReinitialize={true} onSubmit={onSubmit} mapPropsToValues={() => {
         return productSelectMap;
     }
     }>
@@ -64,7 +72,7 @@ const ProductForm = ({ productSelect, onSubmitSuccess }) => {
                                 <span className="form-group-label" htmlFor="name">Descripcion</span>
                                 <div className="form-group-field">
                                     <div className="form-group-input-wrap">
-                                        <Field type="text" name="description" as="textarea" placeholder="Color,cremas,tallas,formas,etc." className={`field ${errors.name && touched.name ? "is-invalid" : ""}`} />
+                                        <Field type="text" name="description" as="textarea" placeholder="Color,cremas,tallas,formas,etc." className={`field ${errors.description && touched.description ? "is-invalid" : ""}`} />
                                         <ErrorMessage name="description" component="div" className="form-group-error" />
                                     </div>
                                 </div>
@@ -96,16 +104,16 @@ const ProductForm = ({ productSelect, onSubmitSuccess }) => {
                         <Grid item xs={12}>
                             <div className="button-toolbar form-button-toolbar">
                                 <button
-                                    className="button flex-center button-primary"
+                                    className="button flex-center button-primary flex  aling-center align-space-beetwen"
 
                                     type="submit"
                                 >
                                     {values.id != 0 ? "Editar" : "Guardar"}
-                                    {isSubmitting && <Spinner type="Circles" />}
+                                    {isSubmitting && <Spinner className="spinner primary" type="Circles" height="40px" width="40px" />}
                                 </button>
                                 <button
-                                    className="button button-primary"
-                                    type="button"
+                                    className="button button-secondary"
+                                    type="button" onClick={onCancel}
                                 >
                                     Cancelar
                                         </button>
@@ -121,7 +129,8 @@ const ProductForm = ({ productSelect, onSubmitSuccess }) => {
 
 ProductForm.propTypes = {
     onSubmitSuccess: PropTypes.func.isRequired,
-    productSelect: PropTypes.object
+    productSelect: PropTypes.object,
+    onCancel: PropTypes.func.isRequired
 }
 ProductForm.defaultProps = {
     productSelect: null

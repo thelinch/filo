@@ -11,9 +11,9 @@ export default function (state = initialState, action) {
             return { ...state, isRoleAdmin: true };
         case USER_LOGOUT:
             return { ...state, isRoleAdmin: false }
-        default: {
+        default:
             return state;
-        }
+
 
     }
 }

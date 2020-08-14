@@ -93,11 +93,11 @@ const RegisterForm = (props) => {
                         <Grid item xs={12}>
                             <div className="button-toolbar form-button-toolbar" style={{ float: "right" }}>
                                 <button
-                                    className="button flex-center button-primary"
+                                    className="button flex-center button-primary flex  aling-center align-space-beetwen"
                                     type="submit"
                                 >
                                     Registrate
-                                    {isSubmitting && (<Spinner />)}
+                                    {isSubmitting && (<Spinner className="spinner primary" type="Circles" height="40px" width="40px" />)}
                                 </button>
                             </div>
                         </Grid>

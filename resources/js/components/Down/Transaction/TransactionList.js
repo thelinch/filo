@@ -5,7 +5,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import Box from '@material-ui/core/Box';
 import Grid from "@material-ui/core/Grid";
 
-const TransactionList = ({ transactions, isLoading }) => {
+const TransactionList = ({ transactions, path, isLoading, onCancelled, onOnMyWay, onAttended, transactionSelect = undefined }) => {
     const notTransaction = (<div width="100%" className="not-items" >
         <strong className="message">No existe registros</strong>
     </div>);
@@ -20,7 +20,7 @@ const TransactionList = ({ transactions, isLoading }) => {
     ));
     const transactionsMap = transactions.map((transaction) => (
         <Grid item xs={12} md={4} >
-            <Transaction transaction={transaction} />
+            <Transaction path={path} onCancelled={onCancelled} transactionSelect={transactionSelect} onOnMyWay={onOnMyWay} onAttended={onAttended} transaction={transaction} />
         </Grid >
 
     ))

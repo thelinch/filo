@@ -13,6 +13,21 @@ function listFindPartner() {
         url: `${PartnerDomain}/transactions`
     });
 }
+function cancelled(transaction) {
+    return request({
+        method: "get",
+        url: `${TransactionDomain}/${transaction.id}/cancelled`
+    })
+}
+function onMyWay(transaction) {
+    return request({
+        method: "get",
+        url: `${TransactionDomain}/${transaction.id}/onMyWay`
+    })
+}
+function attended(transaction) {
+    return request({ method: "get", url: `${TransactionDomain}/${transaction.id}/attended` })
+}
 function listFindUser() {
     return request({
         method: "get",
@@ -22,5 +37,8 @@ function listFindUser() {
 export const TransactionService = {
     save,
     listFindUser,
-    listFindPartner
+    listFindPartner,
+    attended,
+    onMyWay,
+    cancelled
 }

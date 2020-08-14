@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import {
     Formik, Form, Field, ErrorMessage
 } from 'formik';
-import cookie from 'react-cookies';
 
 import FileForm from "./Shared/FileForm"
 import Grid from "@material-ui/core/Grid";
@@ -18,8 +17,8 @@ import { CategoryService } from "../../Services/CategoryService"
 import { FileService } from "../../Services/FileService";
 import { BusinessService } from "../../Services/BusinessService"
 import productUtil from "../../Util/Product/Util";
-import { businessSaveSuccess } from "../../redux/actions/userActions"
 import * as Yup from "yup";
+import { AuthUserContext } from "../../Contexts/AuthUserContext";
 const validateSchema = Yup.object().shape({
     name: Yup.string().required("Requerido"),
     email: Yup.string().email("ingrese un email valido").required("requerido"),
@@ -37,34 +36,34 @@ const validateSchema = Yup.object().shape({
     workdays: Yup.array().required("Requerido")
 })
 const BusinessForm = ({ dispatch }) => {
-    console.log("dispatch", businessSaveSuccess())
-    const [business, setBusiness] = useState({ id: 0, name: "", description: "", email: "", category: { id: "" }, city: { id: "" }, address: "", phone: "", amountdelivery: "", photo: [], workdays: [], state: 1 })
+    const { setUserIsAdmin, userIsAdmin, userAuth } = useContext(AuthUserContext)
+    const [business, setBusiness] = useState({ id: 0, name: "", description: "", email: "", category: { id: "" }, city: { id: "" }, address: "", phone: userAuth.phone, amountdelivery: "", photo: [], workdays: [], state: 1 })
     const [categories, setCategories] = useState([])
     const [isLoadBusiness, setIsLoadBusiness] = useState(true)
     const [cities, setCities] = useState([{ label: "Yanahuanca", value: 2 }, { label: "Tingo Maria", value: 1 }])
-    console.log("ldldl", currentUserIsAdmin() && !!cookie.load("token"))
+
     const onSubmit = async (values) => {
         let url = ""
-        let business = { ...values };
+        let businessSubmit = { ...values };
         if (hasSendFileToServer(values.photo[0])) {
             let formData = new FormData();
             formData.append("files[]", values.photo[0]);
             url = ((await FileService.save(formData, "images")).data)[0].url;
-            business.photo = url;
+            businessSubmit.photo = url;
         }
         if (values.id == 0) {
-            business.id = generateUuid();
-            business.workdays = values.workdays.map(workday => ({ id: generateUuid(), ...workday }))
-            await BusinessService.save(business)
-            setUser({ ...getUser(), roles: [...getUser().roles, "administrator"] })
-            dispatch(businessSaveSuccess())
+            businessSubmit.id = generateUuid();
+            businessSubmit.workdays = values.workdays.map(workday => ({ id: generateUuid(), ...workday }))
+            await BusinessService.save(businessSubmit)
+
+            setUserIsAdmin(true)
+            setBusiness({ ...business, id: businessSubmit.id })
         } else {
             if (url == "") {
                 values.photo = business.photo[0].source;
             }
-            (await BusinessService.update(values));
+            await BusinessService.update(values);
         }
-
     }
     const onSelectInterval = async (workdays, valuesSelectinterval, functionUpdate) => {
         let workDaysForm = workdays;
@@ -97,7 +96,7 @@ const BusinessForm = ({ dispatch }) => {
             setIsLoadBusiness(false)
 
         }
-        if (!currentUserIsAdmin()) {
+        if (!userIsAdmin) {
             setIsLoadBusiness(false)
             return;
         }
@@ -276,12 +275,12 @@ const BusinessForm = ({ dispatch }) => {
                                     </button>
                                 }
                                 <button
-                                    className="button button-primary flex-center"
+                                    className="button button-primary flex  aling-center align-space-beetwen"
                                     disabled={isSubmitting || isLoadBusiness}
                                     type="submit"
                                 >
-                                    {isLoadBusiness ? <Spinner /> : values.id == 0 ? "Crear" : "editar"}
-                                    {isSubmitting && <Spinner type="Circles" />}
+                                    {isLoadBusiness ? <Spinner className="spinner primary" type="Circles" height="40px" width="40px" /> : values.id == 0 ? "Crear" : "editar"}
+                                    {isSubmitting && <Spinner className="spinner primary" type="Circles" height="40px" width="40px" />}
                                 </button>
                             </div>
                         </Grid>

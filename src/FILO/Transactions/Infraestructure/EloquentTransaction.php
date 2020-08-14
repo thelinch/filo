@@ -56,7 +56,7 @@ class EloquentTransaction implements TransactionRepository
     }
     function findByPartner(PartnerId $partnerId): array
     {
-        $transactions = $this->model->with(["details:id,quantity,transaction_id,menu_id", "details.menu:id,price,votes,name,photo,description", "partner:id,name"])->where(["partner_id" => $partnerId->value()])->orderBy("created_at", "DESC")->get();
+        $transactions = $this->model->with(["details:id,quantity,transaction_id,menu_id", "user:id,name,phone", "details.menu:id,price,votes,name,photo,description", "partner:id,name,phone"])->where(["partner_id" => $partnerId->value()])->orderBy("created_at", "DESC")->get();
         $transactions = $transactions->map(function ($transactionModel) {
             return $this->transformTransactionModelToTransactionDomain($transactionModel);
         })->toArray();
@@ -64,7 +64,7 @@ class EloquentTransaction implements TransactionRepository
     }
     function findByUser(UserId $id): array
     {
-        $transactions = $this->model->with(["details:id,quantity,transaction_id,menu_id", "details.menu:id,price,votes,name,photo,description", "partner:id,name"])->where(["user_id" => $id->value()])->orderBy("created_at", "DESC")->get();
+        $transactions = $this->model->with(["details:id,quantity,transaction_id,menu_id", "user:id,name,phone", "details.menu:id,price,votes,name,photo,description", "partner:id,name,phone"])->where(["user_id" => $id->value()])->orderBy("created_at", "DESC")->get();
         $transactions = $transactions->map(function ($transactionModel) {
             return $this->transformTransactionModelToTransactionDomain($transactionModel);
         })->toArray();
@@ -96,6 +96,9 @@ class EloquentTransaction implements TransactionRepository
             new TransactionDirection($transactionModel->direction)
         );
         $transaction->setPartnerName($transactionModel->partner->name);
+        $transaction->setUserName($transactionModel->user->name);
+        $transaction->setUserPhone($transactionModel->user->phone);
+        $transaction->setPartnerPhone($transactionModel->partner->phone);
         $transaction->setCreatedAt($transactionModel->created_at);
         return $transaction;
     }

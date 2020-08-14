@@ -1,6 +1,6 @@
 import { AppBar, Toolbar, Typography, MenuItem, Menu, Button } from "@material-ui/core"
 
-import React from "react";
+import React, { useContext } from "react";
 import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
@@ -21,6 +21,7 @@ import { CredentialService } from "../../../Services/CredentialService";
 import { logout } from "../../../redux/actions/authActions"
 import {userLogout} from "../../../redux/actions/userActions"
 import {navigate} from "@reach/router"
+import { AuthUserContext } from "../../../Contexts/AuthUserContext";
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -75,17 +76,17 @@ const useStyles = makeStyles((theme) => ({
            }, */
     },
 }));
-const Header = ({ isAuthenticated, dispatch,isRoleAdmin }, ...props) => {
-    console.log(isAuthenticated)
+const Header = ({ isAuthenticated, dispatch }, ...props) => {
     const classes = useStyles();
     const [collapse, setCollapse] = React.useState(null);
     const [openDrawer, setOpenDrawer] = React.useState(false)
+    const {userIsAdmin,userAuth}=useContext(AuthUserContext)
+
     const handleCloseSession = () => {
         CredentialService.logout();
         cookie.remove("token");
         localStorage.removeItem("user")
         dispatch(logout());
-        dispatch(userLogout());
         navigate("/credential")
 
     }
@@ -111,7 +112,7 @@ const Header = ({ isAuthenticated, dispatch,isRoleAdmin }, ...props) => {
                                                 <ListItem>
                                                     <div className="topbar__menu-profile-user text-center">
                                                         <Typography variant="h4" weight="medium" className="topbar__user-name">
-                                                            {getUser()?.name}</Typography>
+                                                            {userAuth?.name}</Typography>
                                                     </div>
                                                 </ListItem>
                                                 <Link to="/" className="topbar__link">
@@ -146,7 +147,7 @@ const Header = ({ isAuthenticated, dispatch,isRoleAdmin }, ...props) => {
                                                 </Link>
                                             <Link to="/products" className="topbar__link">
                                                     {
-                                                        isRoleAdmin && 
+                                                        userIsAdmin && 
                                                         <React.Fragment>
 
                                                         <Link to="/products" className="topbar__link">
@@ -248,7 +249,7 @@ const Header = ({ isAuthenticated, dispatch,isRoleAdmin }, ...props) => {
                                     >
                                         <div className="topbar__menu-profile-user text-center">
                                             <Typography variant="h4" weight="medium" className="topbar__user-name">
-                                                {getUser()?.name}</Typography>
+                                                {userAuth?.name}</Typography>
                                         </div>
                                         <div className="topbar__menu-profile-user">
                                             <MenuItem>
@@ -289,7 +290,7 @@ const Header = ({ isAuthenticated, dispatch,isRoleAdmin }, ...props) => {
                                             </MenuItem> 
                                             
                                            {
-                                                isRoleAdmin &&   
+                                                userIsAdmin &&   
                                                 <React.Fragment>
 
                                                 <MenuItem>
