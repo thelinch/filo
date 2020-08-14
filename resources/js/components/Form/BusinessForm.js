@@ -19,7 +19,7 @@ import { BusinessService } from "../../Services/BusinessService"
 import productUtil from "../../Util/Product/Util";
 import * as Yup from "yup";
 import { AuthUserContext } from "../../Contexts/AuthUserContext";
-import { messageSuccess } from "../../Util/Swal";
+import { messageSuccess, successSaveBusiness } from "../../Util/Swal";
 const validateSchema = Yup.object().shape({
     name: Yup.string().required("Requerido"),
     email: Yup.string().email("ingrese un email valido").required("requerido"),
@@ -37,7 +37,7 @@ const validateSchema = Yup.object().shape({
     workdays: Yup.array().required("Requerido")
 })
 const BusinessForm = ({ dispatch }) => {
-    const { setUserIsAdmin, userIsAdmin, userAuth } = useContext(AuthUserContext)
+    const { setUserIsAdminAuth, userIsAdmin, userAuth } = useContext(AuthUserContext)
     const [business, setBusiness] = useState({ id: 0, name: "", description: "", email: "", category: { id: "" }, city: { id: "" }, address: "", phone: userAuth.phone, amountdelivery: "", photo: [], workdays: [], state: 1 })
     const [categories, setCategories] = useState([])
     const [isLoadBusiness, setIsLoadBusiness] = useState(true)
@@ -57,8 +57,10 @@ const BusinessForm = ({ dispatch }) => {
             businessSubmit.workdays = values.workdays.map(workday => ({ id: generateUuid(), ...workday }))
             await BusinessService.save(businessSubmit)
 
-            setUserIsAdmin(true)
-            setBusiness({ ...business, id: businessSubmit.id })
+            setUserIsAdminAuth();
+            setBusiness({ ...values, id: businessSubmit.id })
+            successSaveBusiness()
+            return;
         } else {
             if (url == "") {
                 values.photo = business.photo[0].source;
@@ -206,7 +208,7 @@ const BusinessForm = ({ dispatch }) => {
                                 <span className="form-group-label">Ciudad</span>
                                 <div className="form-group-field">
                                     <div className="form-group-input-wrap">
-                                        <Field name="city.id" component={SelectField} options={cities} className={`field ${errors.city && touched.city ? "is-invalid" : ""}`} placeholder="Categoria al que pertenece" />
+                                        <Field name="city.id" component={SelectField} options={cities} className={`field ${errors.city && touched.city ? "is-invalid" : ""}`} placeholder="Ciudad al que pertenece" />
                                         <ErrorMessage name="city" component="div" className="form-group-error" />
                                     </div>
                                 </div>

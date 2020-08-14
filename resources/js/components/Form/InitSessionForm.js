@@ -11,6 +11,7 @@ import { CredentialService } from "../../Services/CredentialService";
 import { login } from "../../redux/actions/authActions";
 import { navigate } from "@reach/router"
 import { AuthUserContext } from "../../Contexts/AuthUserContext";
+import { messageError } from "../../Util/Swal";
 const validateSchema = Yup.object().shape({
     email: Yup.string().email("ingrese un email valido").required("requerido"),
     password: Yup.string().required("requerido")
@@ -31,7 +32,7 @@ const InitSession = (props) => {
             navigate(props.redirectUrl ?? "/");
 
         } catch (error) {
-
+            messageError("Ups parece que la contraseña o el email no son correctos")
         }
     }
 

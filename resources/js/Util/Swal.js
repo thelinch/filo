@@ -14,4 +14,21 @@ export function messageSuccess(message = "¡Operacion exitosa!") {
         background: "#388e3c"
     })
 }
+export function messageError(message) {
+    return MySwal.fire({
+        text: message,
+        showConfirmButton: true,
+        position: "center",
+        confirmButtonText: "Entendido",
 
+    })
+}
+export function successSaveBusiness() {
+    return MySwal.fire({
+        text: "¡Genial, se activaron nuevas opciones para que pueda administrar sus negocios!",
+        showConfirmButton: true,
+        position: "center",
+        confirmButtonText: "Entendido",
+
+    })
+}
