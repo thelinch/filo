@@ -5,7 +5,6 @@ import { Link } from "@reach/router";
 import { CartContext } from "../../Contexts/CartContext";
 import { generateUuid, transformDomainToJson } from "../../Util/Util";
 import { TransactionService } from "../../Services/TransactionService";
-import Spinner from "../../components/Spinner/Spinner";
 import ShoppingCartForm from "../../components/Form/ShoppingCartForm";
 
 const CartShoppingPage = (props) => {

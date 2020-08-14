@@ -104,7 +104,7 @@ class EloquentTransaction implements TransactionRepository
     }
     function findById(TransactionId $id): ?Transaction
     {
-        $transactionModel = $this->model->with(["details:id,quantity,transaction_id,menu_id", "details.menu:id,price,votes,name,photo,description", "partner:id,name"])->find($id->value());
+        $transactionModel = $this->model->with(["details:id,quantity,transaction_id,menu_id", "details.menu:id,price,votes,name,photo,description", "partner:id,name,phone", "user:id,name,phone"])->find($id->value());
         if ($transactionModel == null) {
             return null;
         }

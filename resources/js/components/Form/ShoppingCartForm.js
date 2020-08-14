@@ -7,6 +7,7 @@ import Grid from "@material-ui/core/Grid";
 import { getUser } from "../../Util/Util";
 import * as Yup from "yup";
 import { CartContext } from "../../Contexts/CartContext";
+import Spinner from "../Spinner/Spinner";
 const ShoppingCartForm = (props) => {
     const { items } = useContext(CartContext)
     let amountTotal = items.reduce((prev, current) => (prev + current.price * current.quantity), 0)
@@ -65,9 +66,12 @@ const ShoppingCartForm = (props) => {
                             <div className="button-toolbar form-button-toolbar" style={{ float: "right" }}>
                                 <button
                                     className="button flex-center button-primary"
-                                    type="submit"
+                                    type="submit" disabled={isSubmitting}
                                 >
                                     ¡Pedir Ahora !
+                                    {
+                                        isSubmitting && (<Spinner className="spinner primary" type="Circles" height="30px" width="30px" />)
+                                    }
                                 </button>
                             </div>
                         </Grid>
