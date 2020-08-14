@@ -1,167 +1,171 @@
-.modal-open, .ReactModal__Body--open{
-    overflow: hidden !important;
+.modal-open,
+.ReactModal__Body--open {
+  overflow: hidden !important;
 }
-  
-.modal-overlay{
-    bottom: 0;
-    left: 0;
-    position: fixed;
-    right: 0;
-    top: 0;
-    background-color: rgba(0, 0, 0, .5);
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    z-index: 999;
+
+.modal-overlay {
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 999;
 }
 .modal-dialog {
-      max-width: 385px;
+  max-width: 385px;
 }
-    
+
 .modal-content {
-    border-radius: 0;
-    border: none;
-    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
-    position: relative;
-    padding: 50px 40px 60px 40px;
-    text-align: center;
-    background-color: #ffffff;
-    color: #333;
+  border-radius: 0;
+  border: none;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+  position: relative;
+  padding: 50px 40px 60px 40px;
+  text-align: center;
+  background-color: #ffffff;
+  color: #333;
 }
-    
+
 .modal__close-button {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    font-size: 14px;
-    width: 14px;
-    height: 14px;
-    cursor: pointer;
-    padding: 0;
-    border: none;
-    background: transparent;
-    // color: $colorIcon;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+  padding: 0;
+  border: none;
+  background: transparent;
+  // color: $colorIcon;
 }
-    
+
 .modal__title-icon {
-    width: 24px;
-    height: 24px;
-    font-size: 24px;
+  width: 24px;
+  height: 24px;
+  font-size: 24px;
 }
-    
+
 .modal__title {
-    margin-top: 10px;
-    margin-bottom: 15px;
+  margin-top: 10px;
+  margin-bottom: 15px;
 
-    &:first-child {
-        margin-top: 0;
-    }
+  &:first-child {
+    margin-top: 0;
+  }
 }
-    
+
 .modal__footer {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0;
+
+  button {
+    min-width: 100px;
+    // padding: 4px 25px;
     margin-bottom: 0;
-
-    button {
-        min-width: 100px;
-        // padding: 4px 25px;
-        margin-bottom: 0;
-        &.button-secondary {
-            margin-left: 13px;
-        }
+    &.button-secondary {
+      margin-left: 13px;
     }
+  }
 }
-    
+
 .modal-dialog--primary {
-    .modal__title-icon {
-        color: $color-primary;
-    }
+  .modal__title-icon {
+    color: $color-primary;
+  }
 }
-    
+
 .modal-dialog--success {
-
-    .modal__title-icon {
-        color: $color-success;
-    }
+  .modal__title-icon {
+    color: $color-success;
+  }
 }
-    
+
 .modal-dialog--warning {
-
-    .modal__title-icon {
-        color: $color-warning;
-    }
+  .modal__title-icon {
+    color: $color-warning;
+  }
 }
-    
+
 .modal-dialog--danger {
-    .modal__title-icon {
-        color: $color-danger;
-    }
+  .modal__title-icon {
+    color: $color-danger;
+  }
 }
 .modal-dialog--info {
-
-    .modal__title-icon {
-        color: $color-info;
-    }
+  .modal__title-icon {
+    color: $color-info;
+  }
 }
-    
+
 .modal-dialog--header {
-    width: 520px;
-    max-width: 520px;
+  @include media(xs) {
+    max-height: 90%;
+    overflow: scroll;
+    width: 95%;
+    margin: 0 auto;
+  }
+  width: 520px;
+  max-width: 520px;
 
-    .modal-content {
-        padding: 0;
-        text-align: left;
-    }
+  .modal-content {
+    padding: 0;
+    text-align: left;
+  }
 
-    .modal__header {
-        color: white;
-        padding: 15px 20px;
-        position: relative;
-    }
+  .modal__header {
+    color: white;
+    padding: 15px 20px;
+    position: relative;
+  }
 
-    .modal__title {
-        margin: 0;
-        font-weight: 300;
-        color: white;
-    }
+  .modal__title {
+    margin: 0;
+    font-weight: 300;
+    color: white;
+  }
 
-    .modal__close-button {
-        color: white;
-        top: calc(50% - 8px);
-    }
+  .modal__close-button {
+    color: white;
+    top: calc(50% - 8px);
+  }
 
-    .modal__body {
-        padding: 20px;
-    }
+  .modal__body {
+    padding: 20px;
+  }
 
-    .modal__footer {
-        margin-bottom: 40px;
-        justify-content: flex-end;
-        padding-right: 20px;
-    }
+  .modal__footer {
+    margin-bottom: 40px;
+    justify-content: flex-end;
+    padding-right: 20px;
+  }
 
-    &.modal-dialog--primary .modal__header {
-        background-color: $color-primary;
-    }
+  &.modal-dialog--primary .modal__header {
+    background-color: $color-primary;
+  }
 
-    &.modal-dialog--success .modal__header {
-        background-color: $color-success;
-    }
+  &.modal-dialog--success .modal__header {
+    background-color: $color-success;
+  }
 
-    &.modal-dialog--warning .modal__header {
-        background-color: $color-warning;
-    }
+  &.modal-dialog--warning .modal__header {
+    background-color: $color-warning;
+  }
 
-    &.modal-dialog--danger .modal__header {
-        background-color: $color-danger;
-    }
-    &.modal-dialog--info .modal__header {
-        background-color: $color-info;
-    }
+  &.modal-dialog--danger .modal__header {
+    background-color: $color-danger;
+  }
+  &.modal-dialog--info .modal__header {
+    background-color: $color-info;
+  }
 }
-    // .button-warning {
-    //   color: #fff !important;
-    // }
+// .button-warning {
+//   color: #fff !important;
+// }

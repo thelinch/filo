@@ -5,6 +5,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  &.swal {
+    color: white;
+    height: auto;
+  }
   &.success {
     background-color: #388e3c;
   }

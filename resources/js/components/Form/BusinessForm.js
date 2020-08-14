@@ -19,6 +19,7 @@ import { BusinessService } from "../../Services/BusinessService"
 import productUtil from "../../Util/Product/Util";
 import * as Yup from "yup";
 import { AuthUserContext } from "../../Contexts/AuthUserContext";
+import { messageSuccess } from "../../Util/Swal";
 const validateSchema = Yup.object().shape({
     name: Yup.string().required("Requerido"),
     email: Yup.string().email("ingrese un email valido").required("requerido"),
@@ -64,6 +65,7 @@ const BusinessForm = ({ dispatch }) => {
             }
             await BusinessService.update(values);
         }
+        messageSuccess()
     }
     const onSelectInterval = async (workdays, valuesSelectinterval, functionUpdate) => {
         let workDaysForm = workdays;
@@ -76,6 +78,7 @@ const BusinessForm = ({ dispatch }) => {
             }
             if (business.id != 0) {
                 await BusinessService.addAndUpdateWorDay(workDaysForm, business.id)
+                messageSuccess()
             }
             functionUpdate("workdays", workDaysForm);
         }
@@ -117,6 +120,7 @@ const BusinessForm = ({ dispatch }) => {
             BusinessService.deleteWorkDay(hour, business.id);
         }
         functionUpdate("workdays", removeObjectDayToArray(daysworks, hour))
+        messageSuccess()
     }
     const onRemoveFile = (file) => {
         console.log("file", file)

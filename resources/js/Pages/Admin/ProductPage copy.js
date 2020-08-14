@@ -8,6 +8,7 @@ import Delete from '@material-ui/icons/Delete';
 import Edit from '@material-ui/icons/Edit';
 import Modal from "../../components/Modal/Modal";
 import { removeObjectOfArray, insertObjectToArray, hasContentObject, updateObjetToArray, deleteElementOfArray } from "../../Util/Util";
+import { messageSuccess } from "../../Util/Swal";
 
 const ProductPage = (props) => {
     const searchContext = useContext(SearchContext)
@@ -40,18 +41,17 @@ const ProductPage = (props) => {
         async function getProductsApi() {
 
             let productsData = (await ProductService.getAllFindPartner()).data
-            setProducts(productsData.data)
+            setProducts(curr => [...productsData.data])
         }
         getProductsApi();
     }, [])
-    const handelRemoveProduct = (product) => async () => {
-        (await ProductService.deleteProduct(product.id))
-        /* this.setState({ products: removeObjectOfArray(this.state.products, product) }) */
-        let productsCopy = products;
+    const handelRemoveProduct = (product) => () => {
+        console.log("products", products)
+        ProductService.deleteProduct(product.id)
+        deleteElementOfArray(products, product.id)
+        setProducts(curr => [...products])
+        messageSuccess();
 
-        deleteElementOfArray(productsCopy, product.id)
-        console.log("products", productsCopy)
-        setProducts(productsCopy)
     }
     const handleEditProduct = (product) => () => {
         /*  this.setState({ productSelect: product, formProductModal: true }) */
@@ -69,17 +69,17 @@ const ProductPage = (props) => {
 
     }
     const handleSubmitSuccess = (product) => {
-        let productsCopy = products
-        if (!hasContentObject(productsCopy, product)) {
-            insertObjectToArray(productsCopy, product)
+        if (!hasContentObject(products, product)) {
+            insertObjectToArray(products, product)
         } else {
-            updateObjetToArray(productsCopy, product)
+            updateObjetToArray(products, product)
         }
-        console.log(productsCopy)
         /*  this.setState({ products: productsCopy }) */
-        setProducts(curr => [...productsCopy])
+        setProducts(curr => [...products])
         /* console.log(this.state.products) */
         handleCloseModal();
+        messageSuccess();
+
 
     }
     return (<Grid container spacing={2}>
