@@ -20,6 +20,7 @@ class InitPage extends React.Component {
         this.state = {
             categories: [],
             partners: [],
+            initPartnerValue: [],
             openSnackBar: false,
             isLoadingPartners: true,
             page: 0,
@@ -48,7 +49,7 @@ class InitPage extends React.Component {
         let partners = partnersPromise.data.data
         partners = partners.map((partner) =>
             Object.freeze(new PartnerDomain(partner.id, partner.description, partner.name, partner.dishes, partner.category, partner.address, partner.phone, partner.workdays, partner.city, partner.photo, partner.amountdelivery)))
-        this.setState({ partners, categories, isLoadingPartners: false })
+        this.setState({ partners, categories, isLoadingPartners: false, initPartnerValue: partners })
         this.context.setCategories(categories);
         let partnerMap = partners.map((partner) => (
             <div className="favorites-partner" key={partner.id} onClick={this.handleClickPartner(partner)}>
@@ -73,15 +74,21 @@ class InitPage extends React.Component {
         this.context.setFavorites(partnerMap);
 
     }
-    handleClickCategory = (category) => {
-        console.log(category);
+    handleClickCategory = (categoryId) => {
+        const { initPartnerValue } = this.state
+        if (categoryId == -1) {
+            this.setState({ partners: initPartnerValue, page: 0 })
+            return;
+        }
+        let partnersFilter = initPartnerValue.filter((partner) => partner.category.id == categoryId)
+        this.setState({ partners: partnersFilter, page: 0 })
 
     }
     handleClickPartner = (partner) => () => {
-        /*   if (!partner.isAvailableForAttend) {
-              this.handleOpenSnackBar()
-              return;
-          } */
+        if (!partner.isAvailableForAttend) {
+            this.handleOpenSnackBar()
+            return;
+        }
         navigate(`/partner/${partner.id}`, { state: { partner: Object.seal(partner) } })
     }
     render() {
