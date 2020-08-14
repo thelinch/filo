@@ -15,17 +15,41 @@ class TransactionDomain {
         this._amountpayment = amountpayment;
         this._created_at = created_at;
     }
+    set user(value) {
+        this._user = value
+    }
+    get user() {
+        return this._user;
+    }
     get transformDateToLenguageHuman() {
         return moment(this._created_at).fromNow()
+    }
+    get canBeRemove() {
+        return this._state == "Recibido";
+    }
+    get canBeOnMyWay() {
+        return this._state == "Recibido"
+    }
+    get canBeAttend() {
+        return this._state == "En camino";
+    }
+    set state(value) {
+        this._state = value
     }
     get color() {
         let color = ""
         switch (this._state) {
             case "Recibido":
-                color = "green";
+                color = "#388e3c";
                 break;
-            case "En Camino":
-                color = "blue"
+            case "Cancelado":
+                color = "#dc004e"
+                break
+            case "Atendido":
+                color = "#388e3c"
+                break;
+            case "En camino":
+                color = "#ff9800";
                 break;
             default:
                 color = "yellow"

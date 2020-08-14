@@ -82,7 +82,7 @@ class ProductPage extends React.Component {
                 <DataTable responsive={true} exportToCSV={true} data={products} columns={this.columns} />
             </Grid>
             <Modal color="primary" title="Formulario de producto" header show={formProductModal} onClose={this.handleCloseModal}>
-                <ProductForm onSubmitSuccess={this.handleSubmitSuccess} productSelect={productSelect} />
+                <ProductForm onCancel={this.handleCloseModal} onSubmitSuccess={this.handleSubmitSuccess} productSelect={productSelect} />
             </Modal>
         </Grid>)
 

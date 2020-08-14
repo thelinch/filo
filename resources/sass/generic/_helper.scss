@@ -1,33 +1,36 @@
 .text-center {
-    text-align: center;
+  text-align: center;
 }
 .no-margin {
-    margin: 0;
+  margin: 0;
 }
 .no-padding {
-    padding: 0;
+  padding: 0;
 }
 .circle {
-    border-radius: 50%;
+  border-radius: 50%;
 }
 .full-width {
-    width: 100%;
+  width: 100%;
 }
 .flex {
-    display: flex;
-    &.center {
-        justify-content: center;
-    }
-    &.align-space-beetwen {
-        justify-content: space-between;
-    }
+  display: flex;
+  &.center {
+    justify-content: center;
+  }
+  &.align-space-beetwen {
+    justify-content: space-between;
+  }
+  &.aling-center {
+    align-items: center;
+  }
 }
 .text {
-    &.decoration-none {
-        text-decoration: none;
-    }
+  &.decoration-none {
+    text-decoration: none;
+  }
 }
 .main {
-    overflow: hidden;
-    padding-bottom: 0.4rem;
+  overflow: hidden;
+  padding-bottom: 0.4rem;
 }

@@ -8,6 +8,7 @@ use Filo\Transactions\Infraestructure\ConcretState\Cancelled;
 use Filo\Transactions\Infraestructure\ConcretState\OnMyWay;
 use Filo\Transactions\Infraestructure\ConcretState\Received;
 use Filo\Transactions\Infraestructure\State\TransactionState;
+use Filo\Users\Infraestructure\UserModel;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\ModelStates\HasStates;
 
@@ -32,6 +33,11 @@ class TransactionModel extends Model
     public function details()
     {
         return $this->hasMany(TransactionModelDetail::class, "transaction_id");
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(UserModel::class);
     }
     public function partner()
     {

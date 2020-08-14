@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react"
 import {
     Formik, Form, Field, ErrorMessage
 } from 'formik';
-import cookie from 'react-cookies';
 
 import FileForm from "./Shared/FileForm"
 import Grid from "@material-ui/core/Grid";
@@ -18,7 +17,6 @@ import { CategoryService } from "../../Services/CategoryService"
 import { FileService } from "../../Services/FileService";
 import { BusinessService } from "../../Services/BusinessService"
 import productUtil from "../../Util/Product/Util";
-import { businessSaveSuccess } from "../../redux/actions/userActions"
 import * as Yup from "yup";
 import { AuthUserContext } from "../../Contexts/AuthUserContext";
 const validateSchema = Yup.object().shape({
@@ -277,12 +275,12 @@ const BusinessForm = ({ dispatch }) => {
                                     </button>
                                 }
                                 <button
-                                    className="button button-primary flex-center"
+                                    className="button button-primary flex  aling-center align-space-beetwen"
                                     disabled={isSubmitting || isLoadBusiness}
                                     type="submit"
                                 >
-                                    {isLoadBusiness ? <Spinner /> : values.id == 0 ? "Crear" : "editar"}
-                                    {isSubmitting && <Spinner type="Circles" />}
+                                    {isLoadBusiness ? <Spinner className="spinner primary" type="Circles" height="40px" width="40px" /> : values.id == 0 ? "Crear" : "editar"}
+                                    {isSubmitting && <Spinner className="spinner primary" type="Circles" height="40px" width="40px" />}
                                 </button>
                             </div>
                         </Grid>

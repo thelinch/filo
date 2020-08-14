@@ -4,8 +4,11 @@ namespace Filo\Transactions\Domain;
 
 use Filo\Partners\Domain\PartnerId;
 use Filo\Partners\Domain\PartnerName;
+use Filo\Partners\Domain\PartnerPhone;
 use Filo\Transactions\Application\OnMyWayState\TransactionStateTransitionOnMyWay;
 use Filo\Users\Domain\UserId;
+use Filo\Users\Domain\UserName;
+use Filo\Users\Domain\UserPhone;
 use JsonSerializable;
 use src\Shared\Domain\Aggregate\AggregateRoot;
 
@@ -17,10 +20,13 @@ class Transaction extends AggregateRoot implements JsonSerializable
     private PartnerId $partnerId;
     private TransactionState $state;
     private UserId $userId;
+    private UserName $userName;
     private TransactionDirection $direction;
     private TransactionAmountPayment $amountPayment;
     private TransactionPhone $phone;
     private TransactionCode $code;
+    private PartnerPhone $partnerPhone;
+    private UserPhone $userPhone;
     private PartnerName $partnerName;
     private TransactionCreatedAt $createdAt;
     public function __construct(
@@ -45,6 +51,30 @@ class Transaction extends AggregateRoot implements JsonSerializable
         $this->direction = $direction;
         $this->amountPayment = $amountPayment;
         $this->phone = $phone;
+    }
+    public function setPartnerPhone(string $value)
+    {
+        $this->partnerPhone = new PartnerPhone($value);
+    }
+    public function setUserPhone(string $value): void
+    {
+        $this->userPhone = new UserPhone($value);
+    }
+    public function setUserName(string $value): void
+    {
+        $this->userName = new UserName($value);
+    }
+    public function PartnerPhone(string $value): PartnerPhone
+    {
+        return $this->partnerPhone;
+    }
+    public function userPhone(): UserPhone
+    {
+        return $this->userPhone;
+    }
+    public function userName(): UserName
+    {
+        return $this->userName;
     }
     public function setPartnerName(string $value): void
     {
@@ -95,8 +125,10 @@ class Transaction extends AggregateRoot implements JsonSerializable
     public function jsonSerialize()
     {
         return [
+
             "id" => $this->id->value(),
-            "business" => $this->partnerName->value(),
+            "user" => ["name" => $this->userName->value(), "phone" => $this->userPhone->value()],
+            "business" => ["name" => $this->partnerName->value(), "phone" => $this->partnerPhone->value()],
             "items" => $this->details,
             "total" => $this->total()->value(),
             "state" => $this->state()->value(),

@@ -1,17 +1,14 @@
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import {
     Formik, Form, Field, ErrorMessage
 } from 'formik';
 import Grid from "@material-ui/core/Grid";
-import Input from "@material-ui/core/Input";
-import PropTypes from 'prop-types';
 import Spinner from "../Spinner/Spinner";
 import * as Yup from "yup";
 import cookie from 'react-cookies';
 import { connect } from 'react-redux';
 import { CredentialService } from "../../Services/CredentialService";
 import { login } from "../../redux/actions/authActions";
-import { setUser } from "../../Util/Util";
 import { navigate } from "@reach/router"
 import { AuthUserContext } from "../../Contexts/AuthUserContext";
 const validateSchema = Yup.object().shape({
@@ -21,15 +18,21 @@ const validateSchema = Yup.object().shape({
 
 const InitSession = (props) => {
     const { setUserAuthenticated } = useContext(AuthUserContext)
+    const [userAuthSuccess, setUserAuthSuccess] = useState(false)
     const onSubmit = async (values) => {
-        let token = (await CredentialService.login(values)).data
-        cookie.remove("token");
-        cookie.save("token", token.access_token);
-        let userData = (await CredentialService.me()).data
-        setUserAuthenticated(userData);
-        props.dispatch(login());
-        navigate(props.redirectUrl ?? "/");
+        try {
+            let token = (await CredentialService.login(values)).data
+            cookie.remove("token");
+            cookie.save("token", token.access_token);
+            setUserAuthSuccess(true)
+            let userData = (await CredentialService.me()).data
+            setUserAuthenticated(userData);
+            props.dispatch(login());
+            navigate(props.redirectUrl ?? "/");
 
+        } catch (error) {
+
+        }
     }
 
     return <Formik initialValues={{ email: "", password: "" }} validationSchema={validateSchema} enableReinitialize={true} onSubmit={onSubmit} mapPropsToValues={() => {
@@ -63,13 +66,17 @@ const InitSession = (props) => {
                             </div>
                         </Grid>
                         <Grid item xs={12}>
+                            {
+                                userAuthSuccess && <span style={{ padding: ".4rem", color: "darkgray" }}>Usuario autorizado ,cargando informacion....</span>
+                            }
                             <div className="button-toolbar form-button-toolbar" style={{ float: "right" }}>
                                 <button
-                                    className="button flex-center button-primary"
+                                    className="button button-primary flex  aling-center align-space-beetwen"
                                     type="submit"
+                                    disabled={isSubmitting}
                                 >
                                     Ingresar
-                                    {isSubmitting && (<Spinner />)}
+                                    {isSubmitting && (<Spinner className="spinner primary" type="Circles" height="30px" width="30px" />)}
                                 </button>
                             </div>
                         </Grid>

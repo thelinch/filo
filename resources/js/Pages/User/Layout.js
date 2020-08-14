@@ -31,6 +31,8 @@ const Layout = (props) => {
 
                             <CartShoppingPage isAuthenticated={props.isAuthenticated} path="/cart" />
                             <TransactionPage path="/buys" />
+                            <TransactionPage path="/sales" />
+
                         </Router>
                     </div>
                 </SearchProvider>
