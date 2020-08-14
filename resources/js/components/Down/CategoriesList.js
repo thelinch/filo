@@ -7,6 +7,11 @@ import { Avatar } from "@material-ui/core";
 const CategoriesList = ({ categories, handleClick }) => {
     const [selectcategory, setSelectcategory] = useState(-1);
     const selectItem = (idCategory) => () => {
+        if (selectcategory == idCategory) {
+            setSelectcategory(-1)
+            handleClick(-1)
+            return;
+        }
         setSelectcategory(idCategory)
         handleClick(idCategory)
     }
