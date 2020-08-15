@@ -14,6 +14,12 @@ export function messageSuccess(message = "¡Operacion exitosa!") {
         background: "#388e3c"
     })
 }
+export function messageSuccessTransaction(code) {
+    return MySwal.fire({
+        html: `¡Operacion exitosa! codigo: <a href=/buys/?item=${code}>${code}</a>`,
+        position: "center"
+    })
+}
 export function messageError(message) {
     return MySwal.fire({
         text: message,

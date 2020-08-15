@@ -75,7 +75,6 @@ const PartnerPage = (props) => {
     }
     const handleClickProduct = (productId) => () => {
         let product = products.find(product => product.id == productId);
-        console.log(product)
         addToCart(product)
 
     }

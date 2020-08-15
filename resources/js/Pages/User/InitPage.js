@@ -85,10 +85,10 @@ class InitPage extends React.Component {
 
     }
     handleClickPartner = (partner) => () => {
-        if (!partner.isAvailableForAttend) {
-            this.handleOpenSnackBar()
-            return;
-        }
+        /*   if (!partner.isAvailableForAttend) {
+              this.handleOpenSnackBar()
+              return;
+          } */
         navigate(`/partner/${partner.id}`, { state: { partner: Object.seal(partner) } })
     }
     render() {

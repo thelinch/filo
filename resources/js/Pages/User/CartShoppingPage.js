@@ -6,6 +6,7 @@ import { CartContext } from "../../Contexts/CartContext";
 import { generateUuid, transformDomainToJson } from "../../Util/Util";
 import { TransactionService } from "../../Services/TransactionService";
 import ShoppingCartForm from "../../components/Form/ShoppingCartForm";
+import { messageSuccessTransaction } from "../../Util/Swal";
 
 const CartShoppingPage = (props) => {
     const { items, updateCart } = useContext(CartContext)
@@ -14,8 +15,9 @@ const CartShoppingPage = (props) => {
         let partnerId = items[0].partner._id;
         let itemsMap = items.map((item) => (transformDomainToJson(item)))
         let buyBody = { items: itemsMap, id: generateUuid(), partnerId, ...values }
-        await TransactionService.save(buyBody);
+        let code = (await TransactionService.save(buyBody)).data;
         updateCart([]);
+        messageSuccessTransaction(code);
     }
     return <Grid container>
         <div className="text-center" style={{ width: "100%" }}>

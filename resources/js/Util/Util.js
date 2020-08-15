@@ -43,6 +43,9 @@ export function updateDayToArray(array, object) {
     }
     return array;
 }
+export function agrupedTransactions(items) {
+
+}
 export function setUser(user) {
     localStorage.setItem("user", JSON.stringify(user))
 }
