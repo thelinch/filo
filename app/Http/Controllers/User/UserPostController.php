@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use Filo\Users\Application\Create\UserCreator;
+use Filo\Users\Domain\UserCity;
 use Filo\Users\Domain\UserDirection;
 use Filo\Users\Domain\UserEmail;
 use Filo\Users\Domain\UserId;
@@ -29,7 +30,7 @@ class UserPostController extends ApiController
 
     public function __invoke(Request $request)
     {
-        $userParameters = $request->only(["id", "name", "phone", "email", "password", "direction"]);
+        $userParameters = $request->only(["id", "name", "phone", "email", "password", "direction", "city"]);
         $rolesUser = collect(["diner"])->map(fn ($role) => new UserRole($role))->toArray();
         $this->userCreator->__invoke(
             new UserId($userParameters["id"]),
@@ -38,6 +39,7 @@ class UserPostController extends ApiController
             new UserEmail($userParameters["email"]),
             new  UserPhone($userParameters["phone"]),
             new UserDirection($userParameters["direction"]),
+            new UserCity($userParameters["city"]["id"], "defecto"),
             ...$rolesUser
         );
     }

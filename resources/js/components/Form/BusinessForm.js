@@ -38,7 +38,7 @@ const validateSchema = Yup.object().shape({
 })
 const BusinessForm = ({ dispatch }) => {
     const { setUserIsAdminAuth, userIsAdmin, userAuth } = useContext(AuthUserContext)
-    const [business, setBusiness] = useState({ id: 0, name: "", description: "", email: "", category: { id: "" }, city: { id: "" }, address: "", phone: userAuth.phone, amountdelivery: "", photo: [], workdays: [], state: 1 })
+    const [business, setBusiness] = useState({ id: 0, name: "", description: "", email: "", category: { id: "" }, city: { id: userAuth ? userAuth.city.id : "" }, address: "", phone: userAuth.phone, amountdelivery: "", photo: [], workdays: [], state: 1 })
     const [categories, setCategories] = useState([])
     const [isLoadBusiness, setIsLoadBusiness] = useState(true)
     const [cities, setCities] = useState([{ label: "Yanahuanca", value: 2 }, { label: "Tingo Maria", value: 1 }])

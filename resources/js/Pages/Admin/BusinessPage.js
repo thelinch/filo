@@ -10,7 +10,7 @@ const BusinessPage = (props) => {
             !userIsAdmin && <Grid item xs={12}>
                 <div className="notification default">
                     <p>
-                        Registra tu negocio y vende por el metodo de delivery
+                        Registra tu negocio ,gestionalo y vende por delivery!!
                 </p>
                 </div>
             </Grid>
