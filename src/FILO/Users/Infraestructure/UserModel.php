@@ -2,6 +2,7 @@
 
 namespace Filo\Users\Infraestructure;
 
+use Filo\Partners\Infraestructure\CityModel;
 use Filo\Partners\Infraestructure\PartnerModel;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -11,7 +12,7 @@ use Spatie\Permission\Traits\HasRoles;
 class UserModel extends Authenticatable
 {
     use HasApiTokens, Notifiable, HasRoles;
-    protected $fillable = ["id", "name", "email", "password", "phone", "direction"];
+    protected $fillable = ["id", "name", "email", "password", "phone", "direction", "city_id"];
     protected $keyType = 'string';
     protected $primaryKey = 'id';
     public $incrementing = false;
@@ -24,5 +25,9 @@ class UserModel extends Authenticatable
     public function partner()
     {
         return $this->hasOne(PartnerModel::class, "user_id");
+    }
+    public function city()
+    {
+        return $this->belongsTo(CityModel::class);
     }
 }

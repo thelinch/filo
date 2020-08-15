@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { hasContentObject, encode, decode } from "../Util/Util"
-import cookie from "react-cookies";
 import ProductDomain from "../Domain/ProductDomain";
+import { messageError } from "../Util/Swal";
 export const CartContext = React.createContext();
 export const CartProvider = (props) => {
     const decodeItems = (itemsEnconded) => {
@@ -14,6 +14,12 @@ export const CartProvider = (props) => {
     }
     const [items, setItems] = useState(localStorage.getItem("cart-items") ? decodeItems(JSON.parse(localStorage.getItem("cart-items"))) : []);
     const addToCart = (itemP) => {
+
+        console.log("item", itemP, itemP.partner._id)
+        if (items.some((item) => item.partner._id != itemP.partner._id)) {
+            messageError("Los productos deben pertenecer a la misma empresa")
+            return;
+        }
         let newItems = items;
         if (hasContentObject(items, itemP)) {
             let indexItem = newItems.findIndex(item => item.id == itemP.id)

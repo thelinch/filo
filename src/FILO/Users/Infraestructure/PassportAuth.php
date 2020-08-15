@@ -4,6 +4,7 @@ namespace Filo\Users\Infraestructure;
 
 use Filo\Users\Domain\JwtAuth;
 use Filo\Users\Domain\User;
+use Filo\Users\Domain\UserCity;
 use Filo\Users\Domain\UserDirection;
 use Filo\Users\Domain\UserEmail;
 use Filo\Users\Domain\UserId;
@@ -17,6 +18,10 @@ use Illuminate\Support\Facades\Auth;
 
 class PassportAuth implements JwtAuth
 {
+
+    public function __construct()
+    {
+    }
     function login(string $password, string $email): array
     {
         $data = [];
@@ -52,6 +57,7 @@ class PassportAuth implements JwtAuth
             new UserPhone($userModel->phone),
             new UserPassword($userModel->password),
             new UserEmail($userModel->email),
+            new UserCity($userModel->city->id, $userModel->city->name),
             ...$userRoles
         );
     }

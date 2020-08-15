@@ -3,6 +3,7 @@
 namespace Filo\Users\Application\Create;
 
 use Filo\Users\Domain\User;
+use Filo\Users\Domain\UserCity;
 use Filo\Users\Domain\UserDirection;
 use Filo\Users\Domain\UserEmail;
 use Filo\Users\Domain\UserId;
@@ -22,9 +23,9 @@ class UserCreator
         $this->repository = $repository;
     }
 
-    public function __invoke(UserId $id, UserName $name, UserPassword $password, UserEmail $email, UserPhone $phone, UserDirection $direction, UserRole ...$roles)
+    public function __invoke(UserId $id, UserName $name, UserPassword $password, UserEmail $email, UserPhone $phone, UserDirection $direction, UserCity $city, UserRole ...$roles)
     {
-        $user =   User::create($id, $name, $direction, $email, $password, $phone, ...$roles);
+        $user =   User::create($id, $name, $direction, $email, $password, $phone, $city, ...$roles);
         $this->repository->create($user);
     }
 }

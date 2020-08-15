@@ -14,7 +14,9 @@ class User extends AggregateRoot  implements JsonSerializable
     private UserPhone $phone;
     private UserPassword $password;
     private UserEmail $email;
+    private UserCity $city;
     private array $roles;
+
     public function __construct(
         UserId $id,
         UserDirection $direction,
@@ -22,9 +24,11 @@ class User extends AggregateRoot  implements JsonSerializable
         UserPhone $phone,
         UserPassword $password,
         UserEmail $email,
+        UserCity $city,
         UserRole ...$roles
     ) {
         $this->id = $id;
+        $this->city = $city;
         $this->direction = $direction;
         $this->name = $name;
         $this->phone = $phone;
@@ -32,10 +36,10 @@ class User extends AggregateRoot  implements JsonSerializable
         $this->email = $email;
         $this->roles = $roles;
     }
-    public static function create(UserId $id, UserName $name, UserDirection $direction, UserEmail $email, UserPassword $password, UserPhone $phone, UserRole ...$roles): self
+    public static function create(UserId $id, UserName $name, UserDirection $direction, UserEmail $email, UserPassword $password, UserPhone $phone, UserCity $city, UserRole ...$roles): self
     {
 
-        return new self($id, $direction, $name, $phone, $password, $email, ...$roles);
+        return new self($id, $direction, $name, $phone, $password, $email, $city, ...$roles);
     }
     public function roles(): array
     {
@@ -49,8 +53,13 @@ class User extends AggregateRoot  implements JsonSerializable
             "phone" => $this->phone()->value(),
             "email" => $this->email->value(),
             "direction" => $this->direction()->value(),
+            "city" => $this->city(),
             "roles" => collect($this->roles)->map(fn (UserRole $role) => $role->value())
         ];
+    }
+    public function city()
+    {
+        return $this->city;
     }
     public function update(UserName $name, UserDirection $direction, UserEmail $email, UserPassword $password, UserPhone $phone)
     {

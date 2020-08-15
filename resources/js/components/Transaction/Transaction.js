@@ -5,7 +5,7 @@ import TransactionItems from "./TransactionItems"
 import PropTypes from "prop-types";
 import ReactTooltip from 'react-tooltip';
 const Transaction = ({ transaction, path, onCancelled, onOnMyWay, onAttended, transactionSelect }) => {
-    return <Paper className={"transaction ".concat(transactionSelect && transactionSelect == transaction.id ? "select-item" : "")}>
+    return <Paper className={"transaction ".concat(transactionSelect && (transactionSelect == transaction.id || transactionSelect == transaction.code) ? "select-item" : "")}>
         <div className="transaction-title">
             {
                 <h2 className="title">{
